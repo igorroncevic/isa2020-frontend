@@ -1,0 +1,16 @@
+os: linux
+language: node_js
+node_js:
+  - 14
+cache: npm
+
+notifications:
+  email: false
+
+install:
+  - npm ci
+
+script:
+  - npm run build
+
+
