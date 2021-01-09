@@ -1,5 +1,7 @@
 # Pharmacy App (pharmacyappquasar)
 
+[![Build Status](https://travis-ci.com/igorroncevic/isa2020-frontend.svg?token=vSoDqCzY75G1QcCMR5Pt&branch=master)](https://travis-ci.com/igorroncevic/isa2020-frontend)
+
 Student project pharmacy app frontend
 
 ## Install the dependencies
