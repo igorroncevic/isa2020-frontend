@@ -2,11 +2,11 @@
   <q-card class="my-card column full-height q-pm-lg" flat bordered>
       <q-card-section horizontal>
         <q-card-section class="q-pt-xs">
-          <div class="text-h5 q-mt-sm q-mb-xs">{{term.type}}</div>
+          <div class="text-h5 q-mt-sm q-mb-xs">{{capitalize(term.type)}}</div>
           <div class="text-body1">
-            Term start: {{term.start}} <br>
-            Term end: {{term.end}} <br>
-            Term doctor: {{term.doctor}} <br>
+            Term start: {{dateFormat(term.startTime)}} <br>
+            Term end: {{dateFormat(term.endTime)}} <br>
+            Term doctor: {{term.doctor.name}} {{term.doctor.surname}} <br>
           </div>
         </q-card-section>
       </q-card-section>
@@ -20,11 +20,17 @@
 </template>
 
 <script>
+import moment from 'moment'
 import TermService from './../../services/TermService'
 import {successfullyScheduled, schedulingError} from './../../notifications/terms'
 
 export default {
    props: ['term'],
+   mounted(){
+      this.term.type = this.capitalize(this.term.type)
+      this.term.startTime = this.dateFormat(this.term.startTime)
+      this.term.endTime = this.dateFormat(this.term.endTime)
+   },
    methods: {
       async schedule(){
          let termData = {
@@ -39,6 +45,14 @@ export default {
             schedulingError(this.term.type)
          }
          this.$router.go()
+      },
+   
+      dateFormat(date){
+         return moment(date).format("LT LL")
+      },
+      capitalize(s){
+         if (typeof s !== 'string') return ''
+         return s.charAt(0).toUpperCase() + s.slice(1)
       }
    }
 }

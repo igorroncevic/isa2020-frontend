@@ -8,13 +8,17 @@
 
 <script>
 import TermCard from "./TermCard.vue";
+import TermService from "./../../services/TermService";
 
 export default {
   components: { TermCard },
+  async beforeMount(){
+     this.terms = await TermService.getAllTerms(this.$route.query.type);
+  },
   data() {
     return {
       terms: [
-        {
+        /*{
           id: "1d96a5d6-f5f6-4a74-9208-109991010f31",
           start: "2021-02-28 12:25",
           end: "2021-02-28 13:00",
@@ -34,7 +38,7 @@ export default {
           end: "2021-02-28 14:35",
           doctor: "Pera Peric",
           type:"Checkup"
-        },
+        },*/
       ],
     };
   },
