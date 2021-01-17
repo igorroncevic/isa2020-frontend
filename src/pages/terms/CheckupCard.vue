@@ -18,6 +18,7 @@
 
     <q-card-actions>
       <q-btn
+        v-if="this.checkup.patient == null"
         @click="scheduleCheckup"
         flat
         icon="event"
@@ -25,7 +26,7 @@
         color="primary"
       ></q-btn>
       <q-btn
-        v-if="this.checkup.patient.id === this.patientId"
+        v-if="this.checkup.patient != null"
         @click="cancelCheckup"
         flat
         icon="cancel_schedule_send"
