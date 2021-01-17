@@ -5,9 +5,13 @@ const routes = [
     children:[ 
     { path: "", component: () => import("pages/Index.vue") },
     { 
-       path: "/terms/schedule", 
-       component: () => import("pages/terms/ScheduleTerm.vue")
-    }
+       path: "/checkups/schedule", 
+       component: () => import("pages/terms/ScheduleCheckup.vue")
+    },
+    { 
+      path: "/checkups/patient/:patientId", 
+      component: () => import("pages/terms/CancelCheckup.vue")
+   },
    ]
   },
   // Always leave this as last one,
