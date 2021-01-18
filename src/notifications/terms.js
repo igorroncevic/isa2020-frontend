@@ -18,10 +18,30 @@ export function successfullyScheduled(termType, doctorSurname){
    Notify.create(config);
 }
 
+export function successfullyCancelled(termType, doctorSurname){
+   let config = {
+      type: 'positive',
+      color: 'teal',
+      message: `Successfuly cancelled a ${termType} with dr. ${doctorSurname}!`,
+      icon: "check"
+   }
+
+   Notify.create(config);
+}
+
 export function schedulingError(termType){
    let config = {
       type: 'negative',
       message: `An error occured while scheduling this ${termType}. Please try again.`
+   }
+
+   Notify.create(config);
+}
+
+export function cancellingError(termType){
+   let config = {
+      type: 'negative',
+      message: `An error occured while cancelling this ${termType}. Please try again.`
    }
 
    Notify.create(config);
