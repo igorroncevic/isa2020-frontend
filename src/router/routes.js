@@ -11,7 +11,11 @@ const routes = [
     { 
       path: "/checkups/patient/:patientId", 
       component: () => import("pages/terms/CancelCheckup.vue")
-   },
+    },
+    { 
+      path: "/phadmin/profile", 
+      component: () => import("pages/terms/PharmacyAdminProfile.vue")
+    },
    ]
   },
   // Always leave this as last one,
