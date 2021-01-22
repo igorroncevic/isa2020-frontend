@@ -3,7 +3,7 @@ import axios from "axios";
 class PharmacyAdminService {
     constructor() {
         this.apiClient = axios.create({
-            baseURL: "http://localhost:8085/api/users"
+            baseURL: "http://localhost:8085/api/phadmin"
         });
     }
 

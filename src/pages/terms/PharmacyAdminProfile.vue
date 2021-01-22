@@ -2,12 +2,7 @@
   <q-page padding>
     <div class="q-pa-md" style="max-width: 400px">
 
-      <q-form
-        @submit="onSubmit"
-        @reset="onReset"
-        class="q-gutter-md"
-      >
-        <q-input :readonly=editEnabled
+      <q-input :readonly=readOnly
           rounded outlined
           v-model="user.name"
           label="Your name"
@@ -15,7 +10,7 @@
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
 
-        <q-input :readonly=editEnabled
+        <q-input :readonly=readOnly
           rounded outlined
           v-model="user.surname"
           label="Your surname"
@@ -23,7 +18,7 @@
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
 
-        <q-input :readonly=editEnabled
+        <q-input :readonly=readOnly
           rounded outlined
           v-model="user.email"
           label="Your email"
@@ -31,11 +26,18 @@
           :rules="[ val => val && val.length > 0 || 'Please type something']"
         />
 
+        <q-input :readonly=readOnly
+          rounded outlined
+          v-model="user.phoneNumber"
+          label="Your phone number"
+          lazy-rules
+          :rules="[ val => val && val.length > 0 || 'Please type something']"
+        />
+
         <div>
-          <q-btn label="Edit profile" type="submit" color="primary"/>
-          <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+          <q-btn round :color="btnColor" :icon="btnIcon" @click="editClick" />
+          <q-btn round color="primary" v-show=!readOnly icon="save" @click="saveClick" />
         </div>
-      </q-form>
 
     </div>
   </q-page>
@@ -52,15 +54,30 @@ export default {
     return {
       user: {
       },
-      editEnabled: true,
+      tempUser: {},
+      readOnly: true,
+      btnColor: 'primary',
+      btnIcon: 'edit'
     }
   },
   methods: {
-    onSubmit () {
-      this.editEnabled = false
+    editClick () {
+      if(this.readOnly === true) {
+        this.readOnly = false
+        this.tempUser = JSON.parse(JSON.stringify(this.user));
+        this.btnColor = 'red'
+        this.btnIcon = 'highlight_off'
+      } else {
+        this.readOnly = true
+        this.user = this.tempUser
+        this.btnColor = 'primary'
+        this.btnIcon = 'edit'
+      }
     },
-    onReset () {
-      this.editEnabled = true
+    saveClick () {
+      this.readOnly = true
+      this.btnColor = 'primary'
+      this.btnIcon = 'edit'
     }
   }
 }
