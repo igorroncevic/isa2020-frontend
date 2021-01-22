@@ -9,7 +9,7 @@ class PharmacyAdminService {
 
     async getMyData() {
         let user = await this.apiClient
-          .get("/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa") //Zakucano dok ne implementiramo autentitkaciju
+          .get("/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa") //Zakucano dok ne implementiramo autorizaciju
           .then(response => {
             return response.data;
           })
@@ -20,6 +20,20 @@ class PharmacyAdminService {
           });
     
         return user;
+      }
+
+      async updateUserData(data) {
+        let responseData = this.apiClient
+          .put("", data)
+          .then(response => {
+            console.log(response);
+            return response.data;
+          })
+          .catch(err => {
+            console.log(err);
+            return {};
+          });
+        return responseData;
       }
 }
 

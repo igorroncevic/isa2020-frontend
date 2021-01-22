@@ -74,7 +74,8 @@ export default {
         this.btnIcon = 'edit'
       }
     },
-    saveClick () {
+    async saveClick () {
+      this.user = await PharmacyAdminService.updateUserData(this.user)
       this.readOnly = true
       this.btnColor = 'primary'
       this.btnIcon = 'edit'
