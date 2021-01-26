@@ -38,69 +38,69 @@
 </template>
 
 <script>
-import moment from "moment";
-import CheckupService from "./../../services/CheckupService";
+import moment from 'moment'
+import CheckupService from './../../services/CheckupService'
 import {
   successfullyScheduled,
   schedulingError,
   successfullyCancelled,
-  cancellingError,
-} from "./../../notifications/terms";
+  cancellingError
+} from './../../notifications/terms'
 
 export default {
-  props: ["checkup"],
-  data() {
+  props: ['checkup'],
+  data () {
     return {
-      patientId: "5ffe884f-9cd8-42f5-adc4-2a27cd8d2737",
-    };
+      patientId: '5ffe884f-9cd8-42f5-adc4-2a27cd8d2737'
+    }
   },
-  mounted() {
-    console.log(this.checkup);
-    this.checkup.type = this.capitalize(this.checkup.type);
-    this.checkup.startTime = this.dateFormat(this.checkup.startTime);
-    this.checkup.endTime = this.dateFormat(this.checkup.endTime);
+  mounted () {
+    console.log(this.checkup)
+    this.checkup.type = this.capitalize(this.checkup.type)
+    this.checkup.startTime = this.dateFormat(this.checkup.startTime)
+    this.checkup.endTime = this.dateFormat(this.checkup.endTime)
   },
   methods: {
-    async scheduleCheckup() {
-      let checkupData = {
+    async scheduleCheckup () {
+      const checkupData = {
         patientId: this.patientId,
-        checkupId: this.checkup.id,
-      };
-      console.log(checkupData);
-      let success = await CheckupService.scheduleCheckup(checkupData);
+        checkupId: this.checkup.id
+      }
+      console.log(checkupData)
+      const success = await CheckupService.scheduleCheckup(checkupData)
 
       if (success) {
-        successfullyScheduled(this.checkup.type, this.checkup.doctor.surname);
+        successfullyScheduled(this.checkup.type, this.checkup.doctor.surname)
       } else {
-        schedulingError(this.checkup.type);
+        schedulingError(this.checkup.type)
       }
-      setTimeout(() => this.$router.go(), 2000);
+      setTimeout(() => this.$router.go(), 2000)
     },
 
-    async cancelCheckup() {
-      let checkupData = {
+    async cancelCheckup () {
+      const checkupData = {
         patientId: this.patientId,
-        checkupId: this.checkup.id,
-      };
-      let success = await CheckupService.cancelCheckup(checkupData);
+        checkupId: this.checkup.id
+      }
+      const success = await CheckupService.cancelCheckup(checkupData)
 
       if (success) {
-        successfullyCancelled(this.checkup.type, this.checkup.doctor.surname);
+        successfullyCancelled(this.checkup.type, this.checkup.doctor.surname)
       } else {
-        cancellingError(this.checkup.type);
+        cancellingError(this.checkup.type)
       }
-      setTimeout(() => this.$router.go(), 2000);
+      setTimeout(() => this.$router.go(), 2000)
     },
 
-    dateFormat(date) {
-      return moment(date).format("LT LL");
+    dateFormat (date) {
+      return moment(date).format('LT LL')
     },
-    capitalize(s) {
-      if (typeof s !== "string") return "";
-      return s.charAt(0).toUpperCase() + s.slice(1);
-    },
-  },
-};
+    capitalize (s) {
+      if (typeof s !== 'string') return ''
+      return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+  }
+}
 </script>
 
 <style>

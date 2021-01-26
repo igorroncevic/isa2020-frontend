@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import PharmacyAdminService from "./../../services/PharmacyAdminService";
+import PharmacyAdminService from './../../services/PharmacyAdminService'
 
 export default {
-  async beforeMount(){
-     this.user = await PharmacyAdminService.getMyData()
+  async beforeMount () {
+    this.user = await PharmacyAdminService.getMyData()
   },
   data () {
     return {
@@ -62,9 +62,9 @@ export default {
   },
   methods: {
     editClick () {
-      if(this.readOnly === true) {
+      if (this.readOnly === true) {
         this.readOnly = false
-        this.tempUser = JSON.parse(JSON.stringify(this.user));
+        this.tempUser = JSON.parse(JSON.stringify(this.user))
         this.btnColor = 'red'
         this.btnIcon = 'highlight_off'
       } else {

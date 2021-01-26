@@ -7,20 +7,20 @@
 </template>
 
 <script>
-import CheckupCard from "./CheckupCard.vue";
-import CheckupService from "./../../services/CheckupService";
+import CheckupCard from './CheckupCard.vue'
+import CheckupService from './../../services/CheckupService'
 
 export default {
   components: { CheckupCard },
-  async beforeMount(){
-     this.checkups = await CheckupService.getAllCheckups();
+  async beforeMount () {
+    this.checkups = await CheckupService.getAllCheckups()
   },
-  data() {
+  data () {
     return {
-      checkups: [],
-    };
-  },
-};
+      checkups: []
+    }
+  }
+}
 </script>
 
 <style>
