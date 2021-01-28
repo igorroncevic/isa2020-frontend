@@ -22,7 +22,8 @@ const routes = [
     path: '/doctor',
     component: () => import('layouts/DoctorLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') }
+      { path: '', component: () => import('pages/Index.vue') },
+      { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') }
     ]
   },
   // Always leave this as last one,

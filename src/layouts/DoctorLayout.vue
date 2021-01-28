@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Apoteka
+          Pharmacy
         </q-toolbar-title>
 
         <q-icon name="account_circle" size="md"/>
@@ -32,7 +32,7 @@
           class="text-grey-8"
         >
         <p class="text-center">
-          Meni
+          Menu
         </p>
         </q-item-label>
         <MenuCard
@@ -54,19 +54,19 @@ import MenuCard from 'components/MenuCard.vue'
 
 const menuData = [
   {
-    title: 'Moj profil',
+    title: 'My profile',
     caption: 'quasar.dev',
     icon: 'account_circle',
     link: '/doctor/acc'
   },
   {
-    title: 'Kalendar',
+    title: 'My calendar',
     caption: 'quasar.dev',
     icon: 'event',
     link: 'https://quasar.dev'
   },
   {
-    title: 'Odjava',
+    title: 'Log out',
     caption: 'quasar.dev',
     icon: 'logout',
     link: 'https://quasar.dev'
