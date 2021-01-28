@@ -13,6 +13,10 @@ const routes = [
         component: () => import('pages/terms/CancelCheckup.vue')
       },
       {
+        path: '/counselings/schedule',
+        component: () => import('pages/terms/ScheduleCounseling.vue')
+      },
+      {
         path: '/phadmin/profile',
         component: () => import('pages/terms/PharmacyAdminProfile.vue')
       }
