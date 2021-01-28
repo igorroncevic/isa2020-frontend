@@ -122,36 +122,9 @@
 </template>
 
 <script>
-import DoctorService from './../../services/DoctorService'
 export default {
   data () {
     return {
-      doctor: {},
-      edit: false
-    }
-  },
-  async mounted () {
-    this.doctor = await DoctorService.getMyData()
-  },
-  methods: {
-    async onSubmit () {
-      var res = await DoctorService.updateUserData(this.doctor)
-      if (res === 'err') {
-        this.$q.notify({
-          color: 'red-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      } else {
-        this.$q.notify({
-          color: 'green-4',
-          textColor: 'white',
-          icon: 'cloud_done',
-          message: 'Submitted'
-        })
-      }
-      this.edit = false
     }
   }
 }
