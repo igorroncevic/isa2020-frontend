@@ -63,13 +63,18 @@ const menuData = [
     title: 'My calendar',
     caption: 'quasar.dev',
     icon: 'event',
-    link: 'https://quasar.dev'
+    link: '/doctor/calendar'
+  },
+  {
+    title: 'My patients',
+    caption: 'quasar.dev',
+    icon: 'people',
+    link: '/doctor/patients'
   },
   {
     title: 'Log out',
     caption: 'quasar.dev',
-    icon: 'logout',
-    link: 'https://quasar.dev'
+    icon: 'logout'
   }
 ]
 
