@@ -7,20 +7,20 @@
 </template>
 
 <script>
-import CheckupCard from "./CheckupCard.vue";
-import CheckupService from "./../../services/CheckupService";
+import CheckupCard from './CheckupCard.vue'
+import CheckupService from './../../services/CheckupService'
 
 export default {
   components: { CheckupCard },
-  async beforeMount(){
-     this.checkups = await CheckupService.getAllPatientsCheckups(this.$route.params.patientId);
+  async beforeMount () {
+    this.checkups = await CheckupService.getAllPatientsCheckups(this.$route.params.patientId)
   },
-  data() {
+  data () {
     return {
-      checkups: [],
-    };
-  },
-};
+      checkups: []
+    }
+  }
+}
 </script>
 
 <style>
