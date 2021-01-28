@@ -6,7 +6,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="doctor/patients" style="text-decoration:none;color:white">
+          <router-link to="patients" style="text-decoration:none;color:white">
     <q-card-section>
               <div class="row justify-center">
                 <div class="text-h4">My patients</div>
@@ -44,7 +44,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="doctor/newCheckup" style="text-decoration:none;color:white">
+          <router-link to="/newCheckup" style="text-decoration:none;color:white">
       <q-card-section >
               <div class="row justify-center">
                 <div class="text-h4">New chekup</div>
@@ -84,7 +84,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="doctor/calendar" style="text-decoration:none;color:white">
+          <router-link to="calendar" style="text-decoration:none;color:white">
       <q-card-section >
               <div class="row justify-center">
                 <div class="text-h4">My calendar</div>
@@ -103,7 +103,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="doctor/acc" style="text-decoration:none;color:white">
+          <router-link to="acc" style="text-decoration:none;color:white">
       <q-card-section >
               <div class="row justify-center">
                 <div class="text-h4">My profile</div>
