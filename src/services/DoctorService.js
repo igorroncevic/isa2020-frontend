@@ -21,6 +21,22 @@ class DoctorService {
     return user
   }
 
+  async getAllPharmacists () {
+    // Za sada samo ovaj poziv, kada implementiramo autentikaciju bice provera da li je registrovani
+    // korisnik ili administrator apoteke
+    const user = await this.apiClient
+      .get('/pharmacists')
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return {}
+      })
+
+    return user
+  }
+
   async updateUserData (data) {
     const responseData = this.apiClient
       .put('', data)
