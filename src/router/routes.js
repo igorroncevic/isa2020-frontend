@@ -18,7 +18,15 @@ const routes = [
       },
       {
         path: '/phadmin/profile',
-        component: () => import('pages/terms/PharmacyAdminProfile.vue')
+        component: () => import('pages/profiles/PharmacyAdminProfile.vue')
+      },
+      {
+        path: '/pharmacists',
+        component: () => import('pages/PharmacistsList.vue')
+      },
+      {
+        path: '/dermatologists',
+        component: () => import('pages/DermatologistsList.vue')
       }
     ]
   },
