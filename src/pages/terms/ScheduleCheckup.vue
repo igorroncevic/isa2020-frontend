@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import CheckupCard from "./CheckupCard.vue";
+import CheckupCard from './../../components/CheckupCard'
 import CheckupService from "./../../services/CheckupService";
 
 export default {
