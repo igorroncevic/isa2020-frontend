@@ -97,11 +97,6 @@ export default {
       }
 
       return nameFiltered
-
-      const lowerTerms = terms ? terms.toLowerCase() : ''
-      return rows.filter(
-        row => cols.some(col => (cellValue(col, row) + '').toLowerCase().indexOf(lowerTerms) !== -1)
-      )
     },
     removeFilters() {
       this.filter.pharmacy = null
