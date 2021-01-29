@@ -39,13 +39,13 @@
 
 <script>
 import moment from 'moment'
-import CheckupService from './../../services/CheckupService'
+import CheckupService from './../services/CheckupService'
 import {
   successfullyScheduled,
   schedulingError,
   successfullyCancelled,
   cancellingError
-} from './../../notifications/terms'
+} from './../notifications/terms'
 
 export default {
   props: ['checkup'],

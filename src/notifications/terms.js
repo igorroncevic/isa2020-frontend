@@ -46,3 +46,22 @@ export function cancellingError(termType){
 
    Notify.create(config);
 }
+
+export function startTimeBeforeEndTime(){
+   let config = {
+      type: 'negative',
+      message: `Counseling's start time cannot be after end time.`
+   }
+
+   Notify.create(config);
+}
+
+export function noPharmaciesAreAvailable(){
+   let config = {
+      type: 'info',
+      message: `No pharmacies are available during selected time period.\nPlease select a different time period.`,
+      multiline: true
+   }
+
+   Notify.create(config);
+}
