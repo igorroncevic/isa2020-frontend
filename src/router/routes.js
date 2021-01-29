@@ -13,6 +13,10 @@ const routes = [
         component: () => import('pages/terms/CancelCheckup.vue')
       },
       {
+        path: '/counselings/schedule',
+        component: () => import('pages/terms/ScheduleCounseling.vue')
+      },
+      {
         path: '/phadmin/profile',
         component: () => import('pages/profiles/PharmacyAdminProfile.vue')
       },
@@ -30,7 +34,8 @@ const routes = [
     path: '/doctor',
     component: () => import('layouts/DoctorLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
+      { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') }
     ]
   },
