@@ -26,7 +26,7 @@ const routes = [
     path: '/doctor',
     component: () => import('layouts/DoctorLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') }
     ]
   },
