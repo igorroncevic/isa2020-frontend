@@ -11,7 +11,7 @@ class PharmacyService {
         let pharmacies = await this.apiClient
             .get(`/search${filters}`)
             .then(response => {
-                return response.data;
+                return response;
             })
             .catch(err => {
                 return err.response;

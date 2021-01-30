@@ -4,7 +4,8 @@
       <q-card-section>
         <div class="text-h6">{{ pharmacy.name }}</div>
         <div class="text-left">
-          {{ pharmacy.address.street }}, {{ pharmacy.address.city }}, {{ pharmacy.address.country }}
+          {{ pharmacy.address.street }}, {{ pharmacy.address.city }},
+          {{ pharmacy.address.country }}
         </div>
         <div class="text-subtitle2">
           Average mark: {{ pharmacy.averageMark }}
@@ -16,7 +17,20 @@
 
 <script>
 export default {
-  props: ["pharmacy"]
+  props: {
+    pharmacy: {
+      type: Object,
+      required: false,
+      default: {
+        name: "",
+        address: {
+          street: "",
+          city: "",
+          country: "",
+        },
+      },
+    },
+  },
 };
 </script>
 
@@ -24,5 +38,7 @@ export default {
 .my-card {
   width: 100%;
   max-width: 400px;
+  width: 20rem;
+  height: 8rem;
 }
 </style>
