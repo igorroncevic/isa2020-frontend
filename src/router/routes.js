@@ -17,8 +17,12 @@ const routes = [
         component: () => import('pages/terms/PharmacyAdminProfile.vue')
       },
       {
-        path: 'users/register',
+        path: '/patients/register',
         component: () => import('pages/registeredUser/Registration.vue')
+      },
+      {
+        path: '/activate/:id',
+        component: () => import('pages/registeredUser/AccountConfirmation.vue')
       }
     ]
   },
