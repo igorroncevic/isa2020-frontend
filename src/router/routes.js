@@ -17,6 +17,10 @@ const routes = [
         component: () => import('pages/terms/ScheduleCounseling.vue')
       },
       {
+        path: '/counselings/patient/:patientId',
+        component: () => import('pages/terms/CancelCounseling.vue')
+      },
+      {
         path: '/phadmin/profile',
         component: () => import('pages/profiles/PharmacyAdminProfile.vue')
       },
