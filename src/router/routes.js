@@ -31,6 +31,10 @@ const routes = [
       {
         path: '/dermatologists',
         component: () => import('pages/DermatologistsList.vue')
+      },
+      {
+        path: '/pharmacies',
+        component: () => import('pages/PharmaciesList.vue')
       }
     ]
   },
