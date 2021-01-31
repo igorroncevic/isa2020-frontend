@@ -48,6 +48,14 @@ const routes = [
       { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') }
     ]
   },
+  {
+    path: '/patients/register',
+    component: () => import('pages/registeredUser/Registration.vue')
+  },
+  {
+    path: '/activate/:id',
+    component: () => import('pages/registeredUser/AccountConfirmation.vue')
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
