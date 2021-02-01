@@ -34,6 +34,20 @@ class PatientService {
       })
     return success
   }
+
+  async addPenalty (patient) {
+    const success = this.apiClient
+      .put('/addPenalty/' + patient)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
 }
 
 const patientService = new PatientService()

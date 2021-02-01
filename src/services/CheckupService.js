@@ -35,6 +35,19 @@ class CheckupService {
     return checkups
   }
 
+  async getById (id) {
+    const term = this.apiClient
+      .get('/' + id)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return term
+  }
+
   async scheduleCheckup (data) {
     const success = this.apiClient
       .put('/schedule', data)
@@ -52,6 +65,20 @@ class CheckupService {
   async cancelCheckup (data) {
     const success = this.apiClient
       .put('/cancel', data)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async deleteCheckup (id) {
+    const success = this.apiClient
+      .delete('/' + id)
       .then(response => {
         console.log(response)
         return true
