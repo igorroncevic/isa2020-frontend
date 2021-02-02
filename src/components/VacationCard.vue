@@ -105,8 +105,4 @@ export default {
   width: 20rem;
   height: 15rem;
 }
-.vscrolling_container {
-  height: 100%;
-  overflow: auto;
-}
 </style>

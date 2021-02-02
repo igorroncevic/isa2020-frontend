@@ -36,14 +36,8 @@ import {errorFetchingData} from './../notifications/globalErrors'
 
 export default {
   components: { VacationCard },
-  async beforeMount() {
-    let response = await VacationService.getAllPendingVacations();
-    if(response.status === 200){
-      this.pending = [...response.data]
-      this.displayData = this.pending
-    }else{
-      errorFetchingData()
-    }
+  beforeMount() {
+    this.refreshPending(null)
   },
   data() {
     return {
