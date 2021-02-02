@@ -1,26 +1,29 @@
 <template>
+<div>
+ <h4 class="text-primary text-center text-bold">Available checkups</h4>
   <q-page padding>
-     <div class="row-xs-12 row-sm-4 row-md-3 row-lg-3">
+     <div class="q-pa-md q-gutter-md row justify-around">
          <checkup-card v-for="checkup in checkups" v-bind:key="checkup.id" :checkup="checkup"></checkup-card>
      </div>
   </q-page>
+  </div>
 </template>
 
 <script>
 import CheckupCard from './../../components/CheckupCard'
-import CheckupService from "./../../services/CheckupService";
+import CheckupService from './../../services/CheckupService'
 
 export default {
   components: { CheckupCard },
-  async beforeMount(){
-     this.checkups = await CheckupService.getAllCheckups();
+  async beforeMount () {
+    this.checkups = await CheckupService.getAllCheckups()
   },
-  data() {
+  data () {
     return {
-      checkups: [],
-    };
-  },
-};
+      checkups: []
+    }
+  }
+}
 </script>
 
 <style>

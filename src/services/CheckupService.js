@@ -1,69 +1,96 @@
-import axios from "axios";
+import axios from 'axios'
 
 class CheckupService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
-      baseURL: "http://localhost:8085/api/checkups"
-    });
+      baseURL: 'http://localhost:8085/api/checkups'
+    })
   }
 
-  async getAllCheckups() {
-    let checkups = await this.apiClient
-      .get("/")
+  async getAllCheckups () {
+    const checkups = await this.apiClient
+      .get('/')
       .then(response => {
-        return response.data;
+        return response.data
       })
       .catch(err => {
-        console.log(err);
-        return [];
-      });
+        console.log(err)
+        return []
+      })
 
-    return checkups;
+    return checkups
   }
 
-  async getAllPatientsCheckups(patientId) {
-   let checkups = await this.apiClient
-     .get(`/patient/${patientId}`)
-     .then(response => {
-       return response.data;
-     })
-     .catch(err => {
-       console.log(err);
-       return [];
-     });
-
-   return checkups;
- }
-
-  async scheduleCheckup(data) {
-    let success = this.apiClient
-      .put("/schedule", data)
+  async getAllPatientsCheckups (patientId) {
+    const checkups = await this.apiClient
+      .get(`/patient/${patientId}`)
       .then(response => {
-        console.log(response);
-        return true;
+        return response.data
       })
       .catch(err => {
-        console.log(err);
-        return false;
-      });
-    return success;
+        console.log(err)
+        return []
+      })
+
+    return checkups
   }
 
-  async cancelCheckup(data) {
-   let success = this.apiClient
-     .put("/cancel", data)
-     .then(response => {
-       console.log(response);
-       return true;
-     })
-     .catch(err => {
-       console.log(err);
-       return false;
-     });
-   return success;
- }
+  async getById (id) {
+    const term = this.apiClient
+      .get('/patientCheckup/' + id)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return term
+  }
+
+  async scheduleCheckup (data) {
+    const success = this.apiClient
+      .put('/schedule', data)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async cancelCheckup (data) {
+    const success = this.apiClient
+      .put('/cancel', data)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async deleteCheckup (id) {
+    const success = this.apiClient
+      .delete('/' + id)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
 }
 
-const checkupService = new CheckupService();
+const checkupService = new CheckupService()
 
-export default checkupService;
+export default checkupService
