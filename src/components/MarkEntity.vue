@@ -42,8 +42,8 @@ export default {
   beforeMount() {
       if(this.selectedType == "Dermatologist" || this.selectedType == "Pharmacist"){
           // Entity for marking is a dermatologist or a pharmacist
-          this.card.title = `dr. ${this.entity.name} ${this.entity.surname}`
-          this.description.push(`Role: ${this.entity.role}`)
+          this.cardTitle = `dr. ${this.entity.name} ${this.entity.surname}`
+          this.description.push(`Average mark: ${this.entity.averageMark}`)
       } if(this.selectedType == "Medicine"){
           this.cardTitle = this.capitalize(this.entity.name);
           this.description.push(`Loyalty points: ${this.entity.loyaltyPoints}`)

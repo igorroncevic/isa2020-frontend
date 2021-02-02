@@ -169,8 +169,6 @@ export default {
       this.selectedEntity = this.entitiesToMark.filter(
         (entity) => entity.id == id
       )[0];
-      console.log(this.entitiesToMark);
-      console.log(this.selectedEntity);
       this.step = 3;
     },
     async giveMark() {
@@ -204,7 +202,7 @@ export default {
       }
     },
     async updateMark(markData) {
-      console.log(markData)
+      console.log(markData);
       let response = await MarkService.updateMark(markData);
       if (response.status == 200) {
         successfullyUpdatedMark(this.getResponseMessage());
