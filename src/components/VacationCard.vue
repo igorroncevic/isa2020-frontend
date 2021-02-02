@@ -6,9 +6,16 @@
         <div class="text-left">
           {{ dateFormat(vacation.startDate) }} - {{ dateFormat(vacation.endDate) }}
         </div>
-        <div>
+        <div v-if="vacation.status == 'pending'" >
           <q-btn class="q-mtr-sm" color="primary" label="Approve" @click="approveClick" />
           <q-btn class="q-ma-sm" color="red" label="Refuse" @click="prompt = true" />
+        </div>
+        <div class="q-ma-md">
+          <q-scroll-area v-if="vacation.status == 'refused'" style="height: 150px; max-width: 300px;">
+            <div class="text-left">
+              {{ vacation.rejectionReason }}
+            </div>
+          </q-scroll-area>
         </div>
       </q-card-section>
     </q-card>
@@ -20,10 +27,10 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input dense v-model="refusal.rejectionReason" autofocus @keyup.enter="prompt = false" />
+          <q-input v-model="refusal.rejectionReason" autofocus filled type="textarea" @keyup.enter="prompt = false"/>
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary">
+        <q-card-actions align="right" class="text-primary" >
           <q-btn flat label="Cancel" v-close-popup />
           <q-btn flat label="Confirm" @click="refuseClick" />
         </q-card-actions>
@@ -61,6 +68,7 @@ export default {
         rejectionReason: ""
       },
       prompt: false,
+      pending: false
     };
   },
   methods: {
@@ -95,6 +103,10 @@ export default {
   width: 100%;
   max-width: 400px;
   width: 20rem;
-  height: 8rem;
+  height: 15rem;
+}
+.vscrolling_container {
+  height: 100%;
+  overflow: auto;
 }
 </style>
