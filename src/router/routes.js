@@ -45,7 +45,8 @@ const routes = [
       { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
       { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
-      { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') }
+      { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') },
+      { path: 'startChekup/:id', component: () => import('pages/Checkup.vue') }
     ]
   },
   {
