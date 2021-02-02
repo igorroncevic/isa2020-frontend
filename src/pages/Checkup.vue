@@ -122,11 +122,11 @@
           <div v-show="show" class="text-h5" v-bind:style="'color:'+color">
                 {{checkText}}
           </div>
-          <q-input filled  label="Therapy start date" v-model="startDate" mask="date" :rules="['date']">
+          <q-input filled  label="Therapy start date" v-model="startDate"  :rules="['dd-MM-yyyy']">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="startDate">
+                  <q-date v-model="startDate" mask="DD-MM-YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -135,11 +135,11 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input filled  label="Therapy end date" v-model="endDate" mask="date" :rules="['date']">
+          <q-input filled  label="Therapy end date" v-model="endDate"  :rules="['DD-MM-YYYY']">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date :options="date=>date > startDate" v-model="endDate">
+                  <q-date :options="date=>date > startDate" v-model="endDate" mask="DD-MM-YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -188,6 +188,7 @@
 <script>
 import checkupService from './../services/CheckupService'
 import patientService from './../services/PatientService'
+import reportService from './../services/ReportService'
 import pharmacyMedicinesService from './../services/PharmacyMedicinesService'
 export default {
   data () {
@@ -200,7 +201,7 @@ export default {
       model: 'start',
       editor: '',
       options: [{ label: 'None', value: null }],
-      medicine: null,
+      medicine: { label: 'None', value: null },
       alergicMedicines: [],
       tab: 'report',
       splitterModel: 20,
@@ -221,6 +222,7 @@ export default {
       var option = {}
       option.label = element.name
       option.value = element.id
+      option.loyaltyPoints = element.loyaltyPoints
       if (this.alergicMedicines.includes(element.name)) { option.disable = true }
       this.options.push(option)
     })
@@ -249,7 +251,7 @@ export default {
             timeout: 500,
             icon: 'error',
             position: 'center',
-            message: 'Eror!'
+            message: 'Error!'
           })
         }
       }
@@ -272,7 +274,73 @@ export default {
       }
       this.show = true
     },
-    finishCheckup () {
+    async saveReport () {
+      var report = {
+        termId: this.res.id,
+        text: this.editor
+      }
+      var res = await reportService.post(report)
+      if (res === false) {
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          timeout: 300,
+          icon: 'error',
+          position: 'center',
+          message: 'Checkup not saved,ERROR!'
+        })
+      } else {
+        this.$q.notify({
+          color: 'positive',
+          timeout: 150,
+          textColor: 'white',
+          position: 'center',
+          message: 'Checkup successfully saved!',
+          type: 'positive'
+        })
+      }
+      return res
+    },
+    async finishCheckup () {
+      if (this.medicine.value !== null) {
+        if (this.avaliable === false) {
+          this.$q.notify({
+            color: 'negative',
+            timeout: 150,
+            textColor: 'white',
+            position: 'center',
+            message: 'First check availability!',
+            type: 'error'
+          })
+          return
+        }
+        if (this.endDate === '' || this.startDate === '') {
+          this.$q.notify({
+            color: 'negative',
+            timeout: 150,
+            textColor: 'white',
+            position: 'center',
+            message: 'Set therapy start and end date!',
+            type: 'error'
+          })
+          return
+        }
+        var res = await this.saveReport()
+        var reportMedicine = {
+          endDate: this.endDate,
+          startDate: this.startDate,
+          medicineQuantity: this.quantity,
+          report: res,
+          medicine: {
+            id: this.medicine.value,
+            loyaltyPoints: this.medicine.loyaltyPoints,
+            name: this.medicine.label
+          }
+        }
+        reportService.postReportMedicine(reportMedicine)
+      } else {
+        await this.saveReport()
+      }
     }
   }
 }
