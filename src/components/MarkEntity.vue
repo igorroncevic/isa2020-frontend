@@ -43,10 +43,13 @@ export default {
       if(this.selectedType == "Dermatologist" || this.selectedType == "Pharmacist"){
           // Entity for marking is a dermatologist or a pharmacist
           this.cardTitle = `dr. ${this.entity.name} ${this.entity.surname}`
-          this.description.push(`Average mark: ${this.entity.averageMark}`)
+          let averageMark = this.entity.averageMark == 0 ? "Not marked yet" : this.entity.averageMark;
+          this.description.push(`Average mark: ${averageMark}`)
       } if(this.selectedType == "Medicine"){
           this.cardTitle = this.capitalize(this.entity.name);
           this.description.push(`Loyalty points: ${this.entity.loyaltyPoints}`)
+          let averageMark = this.entity.mark == 0 ? "Not marked yet" : this.entity.mark;
+          this.description.push(`Average mark: ${averageMark}`)
       } else if(this.selectedType == "Pharmacy"){
           this.cardTitle = `${this.entity.name}`
           this.description.push(this.entity.street + ", " + this.entity.city + ", " + this.entity.country)
