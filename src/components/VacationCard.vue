@@ -8,10 +8,27 @@
         </div>
         <div>
           <q-btn class="q-mtr-sm" color="primary" label="Approve" @click="approveClick" />
-          <q-btn class="q-ma-sm" color="red" label="Refuse" @click="refuseClick" />
+          <q-btn class="q-ma-sm" color="red" label="Refuse" @click="prompt = true" />
         </div>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="prompt" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">Reason for refusal</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input dense v-model="refusal.rejectionReason" autofocus @keyup.enter="prompt = false" />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Cancel" v-close-popup />
+          <q-btn flat label="Confirm" @click="refuseClick" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -20,6 +37,8 @@ import moment from 'moment'
 import VacationService from "./../services/VacationService";
 import {successfulyAccepted} from './../notifications/vacations'
 import {failedToAccept} from './../notifications/vacations'
+import {successfulyRefused} from './../notifications/vacations'
+import {failedToRefuse} from './../notifications/vacations'
 
 export default {
   props: {
@@ -36,21 +55,36 @@ export default {
       },
     },
   },
+  data() {
+    return {
+      refusal: {
+        rejectionReason: ""
+      },
+      prompt: false,
+    };
+  },
   methods: {
     dateFormat (date) {
       return moment(date).format('LL')
     },
     async approveClick() {
-        let response = await VacationService.approveVacation(this.vacation.id);
-        if(response.status === 200){
-          successfulyAccepted(this.vacation.doctor.surname);
-          this.$emit('refresh_vacations');
-        }else{
-          failedToAccept();
-        }
+      let response = await VacationService.approveVacation(this.vacation.id);
+      if(response.status === 200){
+        successfulyAccepted(this.vacation.doctor.surname);
+        this.$emit('refresh_vacations');
+      }else{
+        failedToAccept();
+      }
     },
-    refuseClick() {
-
+    async refuseClick() {
+      let response = await VacationService.refuseVacation(this.vacation.id, this.refusal);
+      if(response.status === 200){
+        successfulyRefused(this.vacation.doctor.surname);
+        this.$emit('refresh_vacations');
+        this.prompt = false;
+      }else{
+        failedToRefuse();
+      }
     }
   }
 };

@@ -30,7 +30,19 @@ class VacationService {
             return err.response;
           });
         return success;
-      }
+    }
+
+    async refuseVacation(id, data) {
+        let success = await this.apiClient
+          .patch(`/${id}/refuse`, data)
+          .then(response => {
+            return response;
+          })
+          .catch(err => {
+            return err.response;
+          });
+        return success;
+    }
 
 }
 
