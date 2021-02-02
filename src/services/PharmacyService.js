@@ -20,6 +20,18 @@ class PharmacyService {
         return pharmacies;
     }
 
+    async getAllPatientsPharmacies(data) {
+        let pharmacies = await this.apiClient
+            .get(`/patient/${id}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return pharmacies;
+    }
 }
 
 const pharmacyService = new PharmacyService();
