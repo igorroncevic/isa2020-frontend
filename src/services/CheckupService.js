@@ -37,7 +37,7 @@ class CheckupService {
 
   async getById (id) {
     const term = this.apiClient
-      .get('/' + id)
+      .get('/patientCheckup/' + id)
       .then(response => {
         return response.data
       })

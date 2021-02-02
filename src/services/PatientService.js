@@ -48,6 +48,18 @@ class PatientService {
       })
     return success
   }
+
+  async getAlergicMedicines (patient) {
+    var res = []
+    await this.apiClient.get('http://localhost:8085/api/patients/alergicMedicines/' + patient)
+      .then(response => {
+        response.data.forEach(el => {
+          res.push(el.name)
+        })
+      })
+      .catch(console.error())
+    return res
+  }
 }
 
 const patientService = new PatientService()
