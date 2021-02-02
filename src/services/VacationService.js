@@ -20,6 +20,18 @@ class VacationService {
         return vacations;
     }
 
+    async approveVacation(id) {
+        let success = await this.apiClient
+          .patch(`/${id}/approve`)
+          .then(response => {
+            return response;
+          })
+          .catch(err => {
+            return err.response;
+          });
+        return success;
+      }
+
 }
 
 const vacationService = new VacationService();

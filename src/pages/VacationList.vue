@@ -11,6 +11,7 @@
 
       <div class="vacation-card">
         <vacation-card
+          v-on:refresh_vacations="refreshData"
           v-for="vacation in vacations"
           v-bind:key="vacation.id"
           :vacation="vacation"
@@ -41,7 +42,14 @@ export default {
     };
   },
   methods: {
-    
+    async refreshData(event) {
+      let response = await VacationService.getAllPendingVacations();
+      if(response.status === 200){
+        this.vacations = [...response.data]
+      }else{
+        errorFetchingData()
+      } 
+    }
   },
 };
 </script>
