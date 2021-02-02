@@ -49,7 +49,9 @@ export default {
           this.description.push(`Loyalty points: ${this.entity.loyaltyPoints}`)
       } else if(this.selectedType == "Pharmacy"){
           this.cardTitle = `${this.entity.name}`
-          this.description.push(this.entity.address.street + ", " + this.entity.address.city + ", " + this.entity.address.country)
+          this.description.push(this.entity.street + ", " + this.entity.city + ", " + this.entity.country)
+          let averageMark = this.entity.mark == 0 ? "Not marked yet" : this.entity.mark;
+          this.description.push(`Average mark: ${averageMark}`)
       }
   },
   data(){

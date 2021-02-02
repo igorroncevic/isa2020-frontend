@@ -20,7 +20,7 @@ class PharmacyService {
         return pharmacies;
     }
 
-    async getAllPatientsPharmacies(data) {
+    async getAllPatientsPharmacies(id) {
         let pharmacies = await this.apiClient
             .get(`/patient/${id}`)
             .then(response => {
