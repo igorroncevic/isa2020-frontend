@@ -48,8 +48,18 @@ const routes = [
     children: [
       { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
       { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
-      { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') }
+      { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
+      { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') },
+      { path: 'startChekup/:id', component: () => import('pages/Checkup.vue') }
     ]
+  },
+  {
+    path: '/patients/register',
+    component: () => import('pages/registeredUser/Registration.vue')
+  },
+  {
+    path: '/activate/:id',
+    component: () => import('pages/registeredUser/AccountConfirmation.vue')
   },
   // Always leave this as last one,
   // but you can also remove it

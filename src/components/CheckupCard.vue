@@ -2,15 +2,20 @@
   <q-card class="my-card column full-height q-pm-lg" flat bordered>
     <q-card-section horizontal>
       <q-card-section class="q-pt-xs">
-        <div class="text-h5 q-mt-sm q-mb-xs">
+        <q-card-section>
+        <div class="text-h5 text-primary q-mt-sm q-mb-xs">
           {{ capitalize(checkup.type) }}
         </div>
+        </q-card-section>
+        <q-separator inset></q-separator>
+        <q-card-section>
         <div class="text-body1">
           Checkup start: {{ dateFormat(checkup.startTime) }} <br />
           Checkup end: {{ dateFormat(checkup.endTime) }} <br />
           Checkup doctor: {{ checkup.doctor.name }}
           {{ checkup.doctor.surname }} <br />
         </div>
+        </q-card-section>
       </q-card-section>
     </q-card-section>
 
@@ -18,9 +23,9 @@
 
     <q-card-actions>
       <q-btn
+        outline
         v-if="this.checkup.patient == null"
         @click="scheduleCheckup"
-        flat
         icon="event"
         label="Schedule"
         color="primary"
@@ -39,6 +44,7 @@
 
 <script>
 import moment from 'moment'
+
 import CheckupService from './../services/CheckupService'
 import {
   successfullyScheduled,
