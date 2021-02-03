@@ -4,6 +4,7 @@
     clickable
     tag="a"
     target="_blank"
+    :active="active"
   >
     <q-item-section
       v-if="icon"
@@ -41,6 +42,10 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    active:{
+      type: Boolean,
+      default: false
     }
   }
 }
