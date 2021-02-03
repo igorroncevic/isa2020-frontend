@@ -46,6 +46,7 @@ import {successfulyAccepted} from './../notifications/vacations'
 import {failedToAccept} from './../notifications/vacations'
 import {successfulyRefused} from './../notifications/vacations'
 import {failedToRefuse} from './../notifications/vacations'
+import {badRejectionMessage} from './../notifications/vacations'
 
 export default {
   props: {
@@ -85,6 +86,10 @@ export default {
       }
     },
     async refuseClick() {
+      if(this.refusal.rejectionReason.length < 10 || this.refusal.rejectionReason > 255) {
+        badRejectionMessage();
+        return
+      }
       let response = await VacationService.refuseVacation(this.vacation.id, this.refusal);
       if(response.status === 200){
         successfulyRefused(this.vacation.doctor.surname);

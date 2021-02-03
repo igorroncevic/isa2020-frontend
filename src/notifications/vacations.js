@@ -46,3 +46,12 @@ export function successfulyAccepted(doctorSurname){
  
     Notify.create(config);
  }
+
+ export function badRejectionMessage(){
+   let config = {
+      type: 'negative',
+      message: `Rejection reason message must be between 10 and 255 characters.`
+   }
+
+   Notify.create(config);
+ }
