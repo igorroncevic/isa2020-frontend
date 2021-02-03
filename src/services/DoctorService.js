@@ -53,6 +53,20 @@ class DoctorService {
     return user
   }
 
+  async getAllPatientsDoctors (data) {
+    // Get all doctors that patient interacted with earlier.
+    const doctors = await this.apiClient
+      .post('/patient', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return doctors
+  }
+
   async updateUserData (data) {
     const responseData = this.apiClient
       .put('', data)
