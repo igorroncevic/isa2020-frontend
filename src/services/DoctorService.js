@@ -66,6 +66,17 @@ class DoctorService {
       })
     return responseData
   }
+
+  async getDoctorPatients (doctorId) {
+    const data = this.apiClient.get('http://localhost:8085/api/doctors/patients/' + doctorId)
+      .then(resonse => {
+        return resonse.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    return data
+  }
 }
 
 const doctorService = new DoctorService()
