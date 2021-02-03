@@ -73,6 +73,19 @@ class PatientService {
 
     return patient;
   }
+
+  async updatePatientsInfo(data) {
+    let success = await this.apiClient
+      .put('/profile', data)
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return err.response;
+      });
+
+    return success;
+  }
 }
 
 const patientService = new PatientService()

@@ -38,6 +38,7 @@
           style="grid-column: 6/16"
           :editing="editing"
           :currentUser="currentUser"
+          @updateData="(user) => updateData(user)"
         />
         <PatientLoyalty
           :loyalty="currentUser.loyalty"
@@ -67,22 +68,22 @@ import {
   notSelectedAllergyToAdd,
   errorOccurredWhileAddingAllergy,
 } from "./../../notifications/medicines";
+import {
+  failedUpdatingProfileData,
+  successfullyUpdatedProfileData,
+} from "./../../notifications/patients";
 
 export default {
   components: { EditPatientDataDialog, PatientAllergiesTable, PatientLoyalty },
   async beforeMount() {
     let response = await PatientService.getPatientsProfileInfo(this.patientId);
-    if (response.status == 200)
-      this.currentUser = Object.assign(this.currentUser, response.data);
+    if (response.status == 200) this.currentUser = { ...response.data };
 
     response = await MedicineService.getAllMedicinesPatientsNotAlergicTo(
       this.patientId
     );
     if (response.status == 200)
-      this.notAllergicMedicines = Object.assign(
-        this.notAllergicMedicines,
-        response.data
-      );
+      this.notAllergicMedicines = [...response.data]
 
     this.$nextTick(() => (this.loaded = true));
   },
@@ -110,6 +111,17 @@ export default {
         setTimeout(() => this.$router.go(), 2500);
       } else {
         errorOccurredWhileAddingAllergy(allergy.name);
+      }
+    },
+    async updateData(user) {
+      console.log(user)
+      let response = await PatientService.updatePatientsInfo(user);
+      if (response.status == 200) {
+        successfullyUpdatedProfileData();
+        setTimeout(() => this.$router.go(), 2500);
+      } else {
+        failedUpdatingProfileData();
+        return;
       }
     },
   },

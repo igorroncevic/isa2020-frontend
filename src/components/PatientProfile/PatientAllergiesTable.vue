@@ -70,7 +70,7 @@ export default {
 
 <style>
 .input-styling-pat {
-  width: 150px;
+  width: 130px;
   margin-left: 20px;
   font-size: 16px;
 }

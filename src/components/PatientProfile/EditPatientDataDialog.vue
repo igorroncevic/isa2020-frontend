@@ -100,26 +100,28 @@
       style="align-items: center"
     >
       <q-btn
-        class="q-mt-md"
-        label="Update password"
-        type="submit"
-        color="primary"
-        v-bind:disable="!updatingPassword"
-      />
-      <q-btn
         flat
-        class="q-mt-md q-ml-md"
-        label="Cancel"
+        class="q-mt-md"
+        label="Cancel password update"
         type="submit"
         color="primary"
         v-bind:disable="!updatingPassword"
-        @click="updatingPassword = !updatingPassword"
+        @click="cancelPasswordUpdate"
       />
     </div>
+    
+      <q-btn
+        class="q-mt-xl"
+        label="Update personal info"
+        type="submit"
+        color="primary"
+        @click="updateData"
+      />
   </div>
 </template>
 
 <script>
+import {passwordsDoNotMatch, cantLeaveAnyFieldsEmpty} from './../../notifications/globalErrors'
 export default {
   props: {
     currentUser: {
@@ -130,7 +132,7 @@ export default {
     }
   },
   beforeMount() {
-    this.changeUser = Object.assign(this.changeUser, this.currentUser);
+    this.changeUser = {...this.currentUser};
   },
   data() {
     return {
@@ -141,6 +143,33 @@ export default {
       changeUser: {},
     };
   },
+  methods:{
+    cancelPasswordUpdate(){
+      this.updatingPassword = false;
+      this.newPassword = "";
+      this.confirmPassword = "";
+    },
+    updateData(){
+      if(this.newPassword != this.confirmPassword){
+        passwordsDoNotMatch()
+        return
+      }
+
+      if(this.changeUser.name == "" || this.changeUser.surname == "" || this.changeUser.phoneNumber == ""){
+        cantLeaveAnyFieldsEmpty()
+        return
+      }
+
+      this.$emit("updateData", {
+        id: this.changeUser.id,
+        name: this.changeUser.name,
+        surname: this.changeUser.surname,
+        phoneNumber: this.changeUser.phoneNumber,
+        newPassword: this.newPassword,
+        confirmPassword: this.confirmPassword,
+      })
+    }
+  }
 };
 </script>
 
