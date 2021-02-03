@@ -71,19 +71,16 @@ export default {
       menuItems: [
         {
           title: "Home",
-          caption: "quasar.dev",
           icon: "home",
           link: "/patient/",
         },
         {
           title: "My profile",
-          caption: "quasar.dev",
           icon: "account_circle",
           link: "/patient/profile",
         },
         {
           title: "Log out",
-          caption: "quasar.dev",
           icon: "logout",
         },
       ],
