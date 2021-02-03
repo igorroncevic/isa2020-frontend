@@ -40,6 +40,7 @@ const routes = [
         path: '/vacations',
         component: () => import('pages/VacationList.vue')
       },
+      {
         path: '/mark',
         component: () => import('pages/Mark.vue')
       }
