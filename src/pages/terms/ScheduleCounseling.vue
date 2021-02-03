@@ -189,7 +189,7 @@ export default {
 
       if (response.status == 200) {
         successfullyScheduled("counseling", data.surname);
-        setTimeout(() => this.$router.push({ path: "/" }), 2000);
+        setTimeout(() => this.$router.push({ path: "/" }), 2500);
       } else schedulingError("counseling");
     },
   },
