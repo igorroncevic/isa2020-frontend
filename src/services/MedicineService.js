@@ -20,6 +20,19 @@ class MedicineService {
         return success;
     }
 
+    async getAllMedicinesPatientsNotAlergicTo(patientId) {
+        let success = await this.apiClient
+            .get(`notallergic/${patientId}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return success;
+    }
+
 }
 
 const medicineService = new MedicineService()

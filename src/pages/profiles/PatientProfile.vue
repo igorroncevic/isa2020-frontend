@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="currentUser">
+  <q-page v-if="loaded">
     <div class="background-photo">
       <div class="default-background">
         <q-img
@@ -21,8 +21,8 @@
           ></q-avatar>
         </div>
       </div>
-      <div class="text-h4">
-        {{ currentUser.firstName }} {{ currentUser.lastName }}
+      <div class="text-h4 q-mt-xs">
+        {{ currentUser.name }} {{ currentUser.surname }}
       </div>
       <div class="text-subtitle-1 text-weight-regular text-grey-6">
         {{ currentUser.email }}
@@ -30,8 +30,8 @@
       <div class="displayed-data">
         <PatientAllergiesTable
           style="grid-column: 2/6"
-          v-if="viewAlergies"
-          :medicines="currentUser.allergicMedicines"
+          :medicines="currentUser.alergicMedicines"
+          :notAllergicMedicines="notAllergicMedicines"
         />
         <EditPatientDataDialog
           style="grid-column: 6/16"
@@ -40,6 +40,7 @@
         />
         <PatientLoyalty
           :loyalty="currentUser.loyalty"
+          :points="currentUser.loyaltyPoints"
           style="grid-column: 16/19"
         />
       </div>
@@ -58,39 +59,28 @@
 import EditPatientDataDialog from "./../../components/PatientProfile/EditPatientDataDialog.vue";
 import PatientLoyalty from "./../../components/PatientProfile/PatientLoyalty.vue";
 import PatientAllergiesTable from "./../../components/PatientProfile/PatientAllergiesTable.vue";
+import PatientService from "./../../services/PatientService";
+import MedicineService from "./../../services/MedicineService";
+
 export default {
   components: { EditPatientDataDialog, PatientAllergiesTable, PatientLoyalty },
-  created() {
-    this.$q.loading.show({
-      message: "Loading your user information...",
-      backgroundColor: "grey",
-    });
-  },
-  mounted() {
-    if (this.currentUser) {
-      this.$q.loading.hide();
-    }
+  async beforeMount() {
+    let response = await PatientService.getPatientsProfileInfo(this.patientId);
+    if (response.status == 200)
+      this.currentUser = Object.assign(this.currentUser, response.data);
+    
+    response = await MedicineService.getAllMedicinesPatientsNotAlergicTo(this.patientId);
+    if(response.status == 200) this.notAllergicMedicines = Object.assign(this.notAllergicMedicines, response.data)
+
+    this.$nextTick(() => (this.loaded = true));
   },
   data() {
     return {
-      currentUser: {
-        firstName: "Petar",
-        lastName: "Peric",
-        email: "email@gmail.com",
-        mobile: "065/123123",
-        allergicMedicines: [
-          { name: "Aspirin", id: "123" },
-          { name: "Aspirin2", id: "124" },
-          { name: "Aspirin3", id: "125" },
-        ],
-        loyalty: {
-          status: "regular",
-          points: 50,
-          discount: 5,
-        },
-      },
+      loaded: false,
+      currentUser: {},
       editing: false,
-      viewAlergies: true,
+      notAllergicMedicines: [],
+      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
     };
   },
 };

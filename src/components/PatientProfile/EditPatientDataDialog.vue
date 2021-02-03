@@ -4,7 +4,7 @@
       <label class="text-body1">First name:</label>
       <q-input
         class="input-styling-epdd"
-        v-model="changeUser.firstName"
+        v-model="changeUser.name"
         :readonly="editing"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -14,7 +14,19 @@
       <label class="text-body1">Last name:</label>
       <q-input
         class="input-styling-epdd"
-        v-model="changeUser.lastName"
+        v-model="changeUser.surname"
+        :readonly="editing"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'Please type something']"
+      />
+    </div>
+    <div class="row justify-center" style="align-items: center">
+      <label class="text-body1">Phone number:</label>
+      <q-input
+        class="input-styling-epdd"
+        v-model="changeUser.phoneNumber"
+        mask="###/###-###"
+        hint="Mask: ###/###-###"
         :readonly="editing"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -32,7 +44,7 @@
         label="Change password"
         type="submit"
         color="primary"
-        v-bind:disable="updatingPassword"
+        :disable="updatingPassword"
       />
     </div>
     <div
@@ -44,7 +56,7 @@
       <q-input
         class="input-styling-epdd"
         :type="isPwd ? 'password' : 'text'"
-        v-model="changeUser.enterPassword"
+        v-model="newPassword"
         lazy-rules
         :disable="!updatingPassword"
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -68,7 +80,7 @@
       <q-input
         class="input-styling-epdd"
         :type="isPwd ? 'password' : 'text'"
-        v-model="changeUser.confirmPassword"
+        v-model="confirmPassword"
         lazy-rules
         :disable="!updatingPassword"
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
@@ -117,12 +129,14 @@ export default {
       type: Boolean,
     }
   },
-  mounted() {
+  beforeMount() {
     this.changeUser = Object.assign(this.changeUser, this.currentUser);
   },
   data() {
     return {
       updatingPassword: false,
+      newPassword: "",
+      confirmPassword: "",
       isPwd: true,
       changeUser: {},
     };

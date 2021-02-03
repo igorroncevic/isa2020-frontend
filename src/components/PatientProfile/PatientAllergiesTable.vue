@@ -11,6 +11,7 @@
         </q-item-section>
       </q-item>
     </q-list>
+    <div class="text-subtitle-1" v-if="medicines.length == 0">You are not allergic to any medicines.</div>
     <div class="row justify-left q-mt-xs" style="align-items: center">
       <label class="text-body1">New allergy:</label>
       <q-select
@@ -34,11 +35,17 @@ export default {
   props: {
     medicines: {
       type: Array,
+      required: true,
+      default: () => [],
     },
+    notAllergicMedicines: {
+      type: Array,
+      required: true,
+      default: () => [],
+    }
   },
-  mounted() {
-    this.notAllergicTo.push({ name: "neki novi", id: "127" });
-    this.notAllergicTo.forEach((med) => {
+  beforeMount() {
+    this.notAllergicMedicines.forEach((med) => {
       this.newAllergyOptions.push({
         label: med.name,
         value: med.name,

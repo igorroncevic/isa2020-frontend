@@ -1,7 +1,7 @@
 <template>
-  <div class="patient-loyalty-wrapper">
-    <div class="text-h6" style="text-align: left;">Loyalty status: {{ loyalty.status }}</div>
-    <div class="text-body2" style="text-align: left;">Points: {{ loyalty.points }}</div>
+  <div class="patient-loyalty-wrapper q-mt-xs">
+    <div class="text-h6" style="text-align: left;">Loyalty status: {{ loyalty.category }}</div>
+    <div class="text-body2" style="text-align: left;">Loyalty points: {{ points }}<br/>Next rank: {{loyalty.maxPoints - points + 1}} points to go</div>
     <div class="text-body2" style="text-align: left;">
       Commodities: {{ loyalty.discount }}% discount
     </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    props: ["loyalty"]
+    props: ["loyalty", "points"]
 };
 </script>
 
