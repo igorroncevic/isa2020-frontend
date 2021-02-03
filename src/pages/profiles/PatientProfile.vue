@@ -32,6 +32,7 @@
           style="grid-column: 2/6"
           :medicines="currentUser.alergicMedicines"
           :notAllergicMedicines="notAllergicMedicines"
+          @addNewAllergyEvent="(allergy) => addNewAllergy(allergy)"
         />
         <EditPatientDataDialog
           style="grid-column: 6/16"
@@ -61,6 +62,11 @@ import PatientLoyalty from "./../../components/PatientProfile/PatientLoyalty.vue
 import PatientAllergiesTable from "./../../components/PatientProfile/PatientAllergiesTable.vue";
 import PatientService from "./../../services/PatientService";
 import MedicineService from "./../../services/MedicineService";
+import {
+  successfullyAddedAllergy,
+  notSelectedAllergyToAdd,
+  errorOccurredWhileAddingAllergy,
+} from "./../../notifications/medicines";
 
 export default {
   components: { EditPatientDataDialog, PatientAllergiesTable, PatientLoyalty },
@@ -68,9 +74,15 @@ export default {
     let response = await PatientService.getPatientsProfileInfo(this.patientId);
     if (response.status == 200)
       this.currentUser = Object.assign(this.currentUser, response.data);
-    
-    response = await MedicineService.getAllMedicinesPatientsNotAlergicTo(this.patientId);
-    if(response.status == 200) this.notAllergicMedicines = Object.assign(this.notAllergicMedicines, response.data)
+
+    response = await MedicineService.getAllMedicinesPatientsNotAlergicTo(
+      this.patientId
+    );
+    if (response.status == 200)
+      this.notAllergicMedicines = Object.assign(
+        this.notAllergicMedicines,
+        response.data
+      );
 
     this.$nextTick(() => (this.loaded = true));
   },
@@ -82,6 +94,24 @@ export default {
       notAllergicMedicines: [],
       patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
     };
+  },
+  methods: {
+    async addNewAllergy(allergy) {
+      if (allergy == null) {
+        notSelectedAllergyToAdd();
+        return;
+      }
+      let response = await MedicineService.addNewAllergyForPatient({
+        patientId: this.patientId,
+        medicineId: allergy.id,
+      });
+      if (response.status == 201) {
+        successfullyAddedAllergy(allergy.name);
+        setTimeout(() => this.$router.go(), 2500);
+      } else {
+        errorOccurredWhileAddingAllergy(allergy.name);
+      }
+    },
   },
 };
 </script>

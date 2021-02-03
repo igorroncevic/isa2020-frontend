@@ -5,7 +5,7 @@
       <q-input
         class="input-styling-epdd"
         v-model="changeUser.name"
-        :readonly="editing"
+        :readonly="!editing"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
@@ -15,7 +15,7 @@
       <q-input
         class="input-styling-epdd"
         v-model="changeUser.surname"
-        :readonly="editing"
+        :readonly="!editing"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
@@ -27,7 +27,7 @@
         v-model="changeUser.phoneNumber"
         mask="###/###-###"
         hint="Mask: ###/###-###"
-        :readonly="editing"
+        :readonly="!editing"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />

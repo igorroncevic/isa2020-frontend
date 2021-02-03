@@ -55,14 +55,14 @@ export default {
   },
   data() {
     return {
-      newAllergy: "",
+      newAllergy: null,
       notAllergicTo: [],
       newAllergyOptions: [],
     };
   },
   methods: {
     addNewAllergy() {
-      console.log(this.newAllergy);
+      this.$emit("addNewAllergyEvent", this.newAllergy)
     },
   },
 };
