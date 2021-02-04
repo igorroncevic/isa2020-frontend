@@ -153,10 +153,52 @@
 
           <q-tab-panel name="schedule">
             <div class="text-h4 q-mb-md">Schedule new checkup:</div>
+            <div style="max-width:400px">
+            <q-input filled label="Select date" v-model="termDate" readonly :rules="['YYYY-MM-DDDD']">
+      <template v-slot:append>
+        <q-icon name="event" class="cursor-pointer">
+          <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+            <q-date v-model="termDate" mask="YYYY-MM-DD">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" flat />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+            <q-input filled label="Start time"  v-model="termTime" mask="time" :rules="['time']">
+              <template v-slot:append>
+                <q-icon name="access_time" class="cursor-pointer">
+                  <q-popup-proxy transition-show="scale" transition-hide="scale">
+                    <q-time v-model="termTime" format24="true">
+                      <div class="row items-center justify-end">
+                        <q-btn v-close-popup label="Close" color="primary" flat />
+                      </div>
+                    </q-time>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+          </q-input>
+          <q-input filled label="Start time"  readonly v-model="termEndTime" mask="time" :rules="['time']">
+              <template v-slot:append>
+                <q-icon name="access_time" class="cursor-pointer">
+                  <q-popup-proxy transition-show="scale" transition-hide="scale">
+                    <q-time v-model="termEndTime" :options="optionsTimeFn">
+                      <div class="row items-center justify-end">
+                        <q-btn v-close-popup label="Close" color="primary" flat />
+                      </div>
+                    </q-time>
+                  </q-popup-proxy>
+                </q-icon>
+              </template>
+          </q-input>
+            </div>
+            <q-btn color="primary"  @click="schedule">Schedule </q-btn>
           </q-tab-panel>
           <q-tab-panel name="save">
             <div class="text-h4 q-mb-md">Finish checkup?</div>
-            <q-btn icon="save" @click="finishCheckup" color="primary" size="xl">Finish</q-btn>
+            <q-btn icon="save" @click="finishCheckup" color="primary"  size="xl">Finish</q-btn>
           </q-tab-panel>
         </q-tab-panels>
       </template>
@@ -190,6 +232,7 @@ import checkupService from './../services/CheckupService'
 import patientService from './../services/PatientService'
 import reportService from './../services/ReportService'
 import pharmacyMedicinesService from './../services/PharmacyMedicinesService'
+import termService from './../services/TermService'
 export default {
   data () {
     return {
@@ -211,7 +254,11 @@ export default {
       checkText: 'Found',
       color: 'green',
       avaliable: false,
-      alergicDialog: false
+      alergicDialog: false,
+      termDate: '',
+      termTime: '',
+      termEndTime: '',
+      scheduled: ''
     }
   },
   async mounted () {
@@ -340,6 +387,50 @@ export default {
         reportService.postReportMedicine(reportMedicine)
       } else {
         await this.saveReport()
+      }
+    },
+    optionsTimeFn (hr, min, sec) {
+      var hrs = this.termTime.split(':')[0]
+      var mins = this.termTime.split(':')[1]
+      if (hr < hrs) { return false }
+      if (min !== null && hr != null && hr == hrs && min < mins) {
+        return false
+      }
+
+      return true
+    },
+    formatTime (date, time) {
+      return date + 'T' + time + ':00.000+01:00'
+    },
+    async schedule () {
+      var data = {
+        patientId: this.res.patient.id,
+        doctorId: 'a5ac174a-45b3-487f-91cb-3d3f727d6f1c',
+        pharmacyId: 'e93cab4a-f007-412c-b631-7a9a5ee2c6ed',
+        startTime: this.formatTime(this.termDate, this.termTime),
+        endTime: this.formatTime(this.termDate, this.termEndTime),
+        type: 'checkup'
+      }
+      var res = await termService.postTerm(data)
+      if (res != null && res !== '') {
+        this.$q.notify({
+          color: 'positive',
+          timeout: 150,
+          textColor: 'white',
+          position: 'center',
+          message: 'Checkup sucessfully scheduled!',
+          type: 'positive'
+        })
+        this.scheduled = true
+      } else {
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          timeout: 500,
+          icon: 'error',
+          position: 'center',
+          message: 'Error,try another date and time!'
+        })
       }
     }
   }
