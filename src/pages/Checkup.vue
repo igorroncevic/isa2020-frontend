@@ -158,7 +158,7 @@
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-            <q-date v-model="termDate" mask="YYYY-MM-DD">
+            <q-date v-model="termDate" mask="YYYY-MM-DD"  :options="optionsFnDate">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />
               </div>
@@ -398,6 +398,20 @@ export default {
       }
 
       return true
+    },
+    optionsFnDate (date) {
+      var dateN = new Date()
+      var year = dateN.getFullYear().toString()
+      var day = dateN.getDate().toString()
+      var month = dateN.getMonth() + 1
+      month = month.toString()
+      if (day.length === 1) {
+        day = '0' + day
+      }
+      if (month.length == 1) {
+        month = '0' + month
+      }
+      return date >= year + '/' + month + '/' + day
     },
     formatTime (date, time) {
       return date + 'T' + time + ':00.000+01:00'
