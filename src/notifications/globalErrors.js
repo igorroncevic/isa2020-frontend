@@ -15,3 +15,21 @@ export function errorFetchingData(){
 
    Notify.create(config);
 }
+
+export function passwordsDoNotMatch(){
+   let config = {
+      type: 'negative',
+      message: `New password and confirm password do not match.`,
+   }
+
+   Notify.create(config);
+}
+
+export function cantLeaveAnyFieldsEmpty(){
+   let config = {
+      type: 'negative',
+      message: `You can't leave any fields empty.`,
+   }
+
+   Notify.create(config);
+}

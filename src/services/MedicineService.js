@@ -9,7 +9,33 @@ class MedicineService {
 
     async getAllPatientsMedicines(patientId) {
         let success = await this.apiClient
-            .get(`patient/${patientId}`)
+            .get(`/patient/${patientId}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return success;
+    }
+
+    async getAllMedicinesPatientsNotAlergicTo(patientId) {
+        let success = await this.apiClient
+            .get(`/notallergic/${patientId}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return success;
+    }
+
+    async addNewAllergyForPatient(data) {
+        let success = await this.apiClient
+            .post('/allergy', data)
             .then(response => {
                 return response;
             })

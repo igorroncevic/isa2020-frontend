@@ -43,7 +43,14 @@ const routes = [
       {
         path: '/mark',
         component: () => import('pages/Mark.vue')
-      }
+      },
+    ]
+  },
+  {
+    path: '/patient',
+    component: () => import('layouts/PatientLayout.vue'),
+    children: [
+      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
     ]
   },
   {
