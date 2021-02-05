@@ -49,6 +49,19 @@ class PharmacyService {
 
     return pharms
   }
+
+  async getAllPatientsPharmacies (id) {
+    const pharmacies = await this.apiClient
+      .get(`/patient/${id}`)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return pharmacies
+  }
 }
 
 const pharmacyService = new PharmacyService()

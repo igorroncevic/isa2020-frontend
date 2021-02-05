@@ -127,10 +127,10 @@ export default {
 
       let fromTimeArray = this.startTime.split(" ");
       let fromTime =
-        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+00:00";
+        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+01:00";
 
       let toTimeArray = this.endTime.split(" ");
-      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+00:00";
+      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+01:00";
 
       let response = await CounselingService.getAllAvailablePharmacies({
         fromTime,
@@ -151,10 +151,10 @@ export default {
     async choosePharmacy(id) {
       let fromTimeArray = this.startTime.split(" ");
       let fromTime =
-        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+00:00";
+        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+01:00";
 
       let toTimeArray = this.endTime.split(" ");
-      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+00:00";
+      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+01:00";
 
       let response = await CounselingService.getAllAvailablePharmacistsInPharmacy(
         id,
@@ -173,10 +173,10 @@ export default {
     async choosePharmacist(data) {
       let fromTimeArray = this.startTime.split(" ");
       let fromTime =
-        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+00:00";
+        fromTimeArray[0] + "T" + fromTimeArray[1] + ":00.000+01:00";
 
       let toTimeArray = this.endTime.split(" ");
-      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+00:00";
+      let toTime = toTimeArray[0] + "T" + toTimeArray[1] + ":00.000+01:00";
 
       let patientId = "cc6fd408-0084-420b-8078-687d8a72744b";
       let doctorId = data.id;
@@ -189,7 +189,7 @@ export default {
 
       if (response.status == 200) {
         successfullyScheduled("counseling", data.surname);
-        setTimeout(() => this.$router.push({ path: "/" }), 2000);
+        setTimeout(() => this.$router.push({ path: "/" }), 2500);
       } else schedulingError("counseling");
     },
   },

@@ -46,3 +46,21 @@ export function registrationError () {
 
   Notify.create(config)
 }
+
+export function successfullyUpdatedProfileData () {
+  const config = {
+    type: 'positive',
+    message: 'Successfully updated profile data!'
+  }
+
+  Notify.create(config)
+}
+
+export function failedUpdatingProfileData () {
+  const config = {
+    type: 'negative',
+    message: 'An error occured while updating the data. Please try again.'
+  }
+
+  Notify.create(config)
+}

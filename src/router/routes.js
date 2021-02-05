@@ -35,7 +35,22 @@ const routes = [
       {
         path: '/pharmacies',
         component: () => import('pages/PharmaciesList.vue')
+      },
+      {
+        path: '/vacations',
+        component: () => import('pages/VacationList.vue')
+      },
+      {
+        path: '/mark',
+        component: () => import('pages/Mark.vue')
       }
+    ]
+  },
+  {
+    path: '/patient',
+    component: () => import('layouts/PatientLayout.vue'),
+    children: [
+      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') }
     ]
   },
   {
@@ -45,7 +60,10 @@ const routes = [
       { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
       { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
-      { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') }
+      { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') },
+      { path: 'derm/startChekup/:id', component: () => import('pages/termReports/Checkup.vue') },
+      { path: 'pharm/startCounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
+      { path: 'patients', component: () => import('pages/DoctorPatients.vue') }
     ]
   },
   {

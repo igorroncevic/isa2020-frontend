@@ -53,6 +53,20 @@ class DoctorService {
     return user
   }
 
+  async getAllPatientsDoctors (data) {
+    // Get all doctors that patient interacted with earlier.
+    const doctors = await this.apiClient
+      .post('/patient', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return doctors
+  }
+
   async updateUserData (data) {
     const responseData = this.apiClient
       .put('', data)
@@ -79,6 +93,17 @@ class DoctorService {
         return false
       })
     return success
+  }
+
+  async getDoctorPatients (doctorId) {
+    const data = this.apiClient.get('http://localhost:8085/api/doctors/patients/' + doctorId)
+      .then(resonse => {
+        return resonse.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    return data
   }
 }
 
