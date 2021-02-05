@@ -13,7 +13,9 @@
             Pharmacy: {{ pharmacy.name }} <br />
             Location: {{ pharmacy.address.street }},
             {{ pharmacy.address.city }}, {{ pharmacy.address.country }} <br />
-            Average mark: {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
+            <div class="" v-if="pharmacy.averageMark">
+              Average mark: {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
+            </div>
           </div>
         </div>
       </q-card-section>
@@ -70,13 +72,16 @@ export default {
     choosingDate: {
       type: Boolean,
     },
+    reservationId: {
+      type: String,
+    }
   },
   methods: {
     reserveMedicine() {
       this.$emit("reserveMedicine", this.medicine.id);
     },
     cancelMedicine() {
-      this.$emit("cancelMedicine", this.medicine.id);
+      this.$emit("cancelMedicine", this.reservationId);
     },
     choosePharmacy() {
       this.$emit("chosenPharmacy", {

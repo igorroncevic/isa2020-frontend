@@ -2,7 +2,7 @@
 <q-page-container>
 <q-page padding class="q-gutter-y-xl column items-center ">
   <div class="row text-h3 text-primary">
-    My patients  &nbsp
+    My patients  &nbsp;
    <q-input outlined bottom-slots v-model="search" label="Search"   :dense="dense">
 
         <template v-slot:append>

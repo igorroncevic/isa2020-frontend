@@ -8,7 +8,7 @@ class MedicineService {
     }
 
     async getAllPatientsMedicines(patientId) {
-        let success = await this.apiClient
+        let medicines = await this.apiClient
             .get(`/patient/${patientId}`)
             .then(response => {
                 return response;
@@ -17,7 +17,20 @@ class MedicineService {
                 return err.response;
             });
 
-        return success;
+        return medicines;
+    }
+
+    async getAllPatientsReservedMedicines(patientId) {
+        let medicines = await this.apiClient
+            .get(`/reserved/${patientId}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
     }
 
     async getAllMedicinesPatientsNotAlergicTo(patientId) {
@@ -49,6 +62,19 @@ class MedicineService {
     async reserveMedicine(data) {
         let success = await this.apiClient
             .post('/reserve', data)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return success;
+    }
+
+    async cancelMedicine(data) {
+        let success = await this.apiClient
+            .post('/cancel', data)
             .then(response => {
                 return response;
             })
