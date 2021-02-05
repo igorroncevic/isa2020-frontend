@@ -43,14 +43,14 @@ const routes = [
       {
         path: '/mark',
         component: () => import('pages/Mark.vue')
-      },
+      }
     ]
   },
   {
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
+      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') }
     ]
   },
   {
@@ -64,6 +64,15 @@ const routes = [
       { path: 'derm/startChekup/:id', component: () => import('pages/termReports/Checkup.vue') },
       { path: 'pharm/startCounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
       { path: 'patients', component: () => import('pages/DoctorPatients.vue') }
+    ]
+  },
+  {
+    path: '/sysadmin',
+    component: () => import('layouts/SysAdminLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/sysAdmin/SysAdminUserRegistration.vue') },
+      { path: 'loyalty', component: () => import('pages/sysAdmin/LoyaltyProgramme.vue') },
+      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') }
     ]
   },
   {

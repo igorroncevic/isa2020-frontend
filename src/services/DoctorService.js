@@ -81,6 +81,20 @@ class DoctorService {
     return responseData
   }
 
+  async registerNewDermatologist (dermData) {
+    const success = this.apiClient
+      .post('/register', dermData)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
   async getDoctorPatients (doctorId) {
     const data = this.apiClient.get('http://localhost:8085/api/doctors/patients/' + doctorId)
       .then(resonse => {

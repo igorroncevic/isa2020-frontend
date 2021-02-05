@@ -19,70 +19,65 @@
 
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="login">
-            <div class="q-pa-md row items-center q-gutter-md">
-                <q-card class="my-card">
-                    <q-card-section>
-                       <h4 class="text-primary text-center text-bold">Log in</h4>
-                    </q-card-section>
-                    <q-separator></q-separator>
-                    <q-card-section>
-                    <div class="q-pa-md">
-                        <q-form class="q-gutter-md" @submit="onSubmitLogin" style="width:600px">
-                            <q-input
-                                filled
-                                label="Email *"
-                                hint="Input your email address"
-                                v-model="emailLogin"
-                                lazy-rules
-                                style="width:580px"
-                                :rules="[ val => val && val.length > 0 || 'Please input your email address']"
-                            />
+            <div class="column q-pa-lg">
+              <div class="row">
+                <q-card square class="shadow-24" style="width:625px;height:350px;">
+                  <q-card-section>
+                    <q-form class="q-px-md q-pt-xl q-gutter-md"  @submit="onSubmitLogin">
+                      <q-input
+                        filled
+                        label="Email *"
+                        hint="Input your email address"
+                        v-model="emailLogin"
+                        lazy-rules
+                        :rules="[ val => val && val.length > 0 || 'Please input your email address']"
+                      >
+                      <template v-slot:prepend>
+                          <q-icon name="email" />
+                        </template>
+                      </q-input>
 
-                            <q-input
-                              v-model="passLogin"
-                              filled
-                              :type="isPass ? 'passLogin' : 'password'"
-                              style="width:580px"
-                              label="Password *"
-                              hint="Input your password"
-                              lazy-rules
-                              :rules="[ val => val && val.length > 0 || 'Please input your password']"
-                              >
-                              <template v-slot:append>
-                                <q-icon
-                                  :name="isPass ? 'visibility' : 'visibility_off'"
-                                  class="cursor-pointer"
-                                  @click="isPass = !isPass"
-                                ></q-icon>
-                              </template>
-                            </q-input>
-
-                            <div>
-                                <q-btn label="Log in" type="submit" color="primary"/>
-                            </div>
-                        </q-form>
+                      <q-input
+                        v-model="passLogin"
+                        filled
+                        :type="isPass ? 'passLogin' : 'password'"
+                        label="Password *"
+                        hint="Input your password"
+                        lazy-rules
+                        :rules="[ val => val && val.length > 0 || 'Please input your password']"
+                      >
+                      <template v-slot:prepend>
+                          <q-icon name="lock" />
+                        </template>
+                      <template v-slot:append>
+                        <q-icon
+                          :name="isPass ? 'visibility' : 'visibility_off'"
+                          class="cursor-pointer"
+                          @click="isPass = !isPass"
+                          ></q-icon>
+                        </template>
+                    </q-input>
+                    <div class="q-mt-lg">
+                    <q-btn unelevated type="submit" size="lg" color="primary" class="full-width text-white" label="Log in" />
                     </div>
-                </q-card-section>
+                  </q-form>
+                  </q-card-section>
                 </q-card>
+              </div>
             </div>
           </q-tab-panel>
 
           <q-tab-panel name="register">
-            <div class="q-pa-md q-gutter-md col justify-end">
-                <q-card class="my-card">
-                    <q-card-section>
-                       <h4 class="text-primary text-center text-bold">Register</h4>
-                    </q-card-section>
-                    <q-separator></q-separator>
-                    <q-card-section>
-                         <div class="q-pa-md">
-                            <q-form class="q-gutter-md" @submit="onSubmit"  style="width:600px">
+            <div class="column q-pa-lg">
+              <div class="row">
+                <q-card square class="shadow-24" style="width:625px;height:1000px;">
+                  <q-card-section>
+                            <q-form class="q-px-md q-pt-xl q-gutter-md" @submit="onSubmit">
                             <q-input
                                 filled
                                 label="Name *"
                                 hint="Input your name"
                                 v-model="pName"
-                                style="width:580px"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input your name']"
                             />
@@ -92,7 +87,6 @@
                                 label="Surname *"
                                 hint="Input your surname"
                                 v-model="pSurname"
-                                style="width:580px"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input your surname']"
                             />
@@ -102,7 +96,6 @@
                                 label="Address *"
                                 hint="Input your address"
                                 v-model="pAddress"
-                                style="width:580px"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input your address']"
                             />
@@ -111,7 +104,6 @@
                                 filled
                                 label="City *"
                                 hint="Input name of your city"
-                                style="width:580px"
                                 v-model="pCity"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input name of your city']"
@@ -121,7 +113,6 @@
                                 filled
                                 label="Country *"
                                 hint="Input name of your country"
-                                style="width:580px"
                                 v-model="pState"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input name of your country']"
@@ -132,7 +123,6 @@
                                 type="number"
                                 label="Phone number *"
                                 hint="Input your phone number"
-                                style="width:580px"
                                 v-model="pPhoneNum"
                                 lazy-rules
                                 :rules="[ val => val !== null && val !== '' || 'Input your phone number',
@@ -144,7 +134,6 @@
                                 filled
                                 label="Email *"
                                 hint="Input your email address"
-                                style="width:580px"
                                 v-model="pEmail"
                                 lazy-rules
                                 :rules="[ val => val && val.length > 0 || 'Please input your email address']"
@@ -154,7 +143,6 @@
                               v-model="pPass1"
                               filled
                               :type="isPass1 ? 'pPass1' : 'password'"
-                              style="width:580px"
                               label="Password *"
                               hint="Input your password"
                               lazy-rules
@@ -173,7 +161,6 @@
                               v-model="pPass2"
                               filled
                               :type="isPass2 ? 'pPass2' : 'password'"
-                              style="width:580px"
                               label="Password *"
                               hint="Confirm your password"
                               lazy-rules
@@ -188,14 +175,13 @@
                                 ></q-icon>
                               </template>
                             </q-input>
-
-                            <div>
-                                <q-btn label="Register" type="submit" color="primary"/>
+                           <div class="q-mt-lg">
+                            <q-btn unelevated type="submit" size="lg" color="primary" class="full-width text-white" label="Sign up" />
                             </div>
                             </q-form>
-                         </div>
                     </q-card-section>
                 </q-card>
+            </div>
             </div>
           </q-tab-panel>
 
