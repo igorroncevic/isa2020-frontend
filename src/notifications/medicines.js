@@ -54,3 +54,23 @@ export function errorOccurredWhileReservingMedicine(name, pharmacy) {
 
    Notify.create(config);
 }
+
+export function successfullyCancelledMedicine(name, pharmacy) {
+   let config = {
+      type: 'positive',
+      message: `Successfully cancelled ${name} from ${pharmacy}!`
+   }
+
+   Notify.create(config);
+}
+
+export function errorOccurredWhileCancellingMedicine(name, pharmacy) {
+   let config = {
+      type: 'negative',
+      message: `An error occurred while cancelling ${name} from ${pharmacy}. Please try again.`,
+      multiLine: true,
+   }
+
+   Notify.create(config);
+}
+
