@@ -1,28 +1,41 @@
 import axios from 'axios'
 
-class PharmacyAdminService {
+class LoyaltyService {
   constructor () {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/phadmin'
+      baseURL: 'http://localhost:8085/api/loyalty'
     })
   }
 
-  async getMyData () {
-    const user = await this.apiClient
-      .get('/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa') // Zakucano dok ne implementiramo autorizaciju
+  async getAllLoyaltys () {
+    const loyalty = await this.apiClient
+      .get('/all')
       .then(response => {
         return response.data
       })
       .catch(err => {
         console.log(err)
-        return {
-        }
+        return {}
       })
 
-    return user
+    return loyalty
   }
 
-  async updateUserData (data) {
+  async addNewLoyalty (data) {
+    const success = this.apiClient
+      .post('/add', data)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async updateLoyaltyData (data) {
     const responseData = this.apiClient
       .put('', data)
       .then(response => {
@@ -36,9 +49,9 @@ class PharmacyAdminService {
     return responseData
   }
 
-  async registerNewPharmacyAdmin (adminData) {
+  async deleteLoyalty (id) {
     const success = this.apiClient
-      .post('/register', adminData)
+      .delete('/' + id)
       .then(response => {
         console.log(response)
         return true
@@ -51,6 +64,6 @@ class PharmacyAdminService {
   }
 }
 
-const pharmacyAdminService = new PharmacyAdminService()
+const loyaltyService = new LoyaltyService()
 
-export default pharmacyAdminService
+export default loyaltyService
