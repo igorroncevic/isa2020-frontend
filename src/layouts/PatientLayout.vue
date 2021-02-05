@@ -75,6 +75,11 @@ export default {
           link: "/patient/",
         },
         {
+          title: "Medicines",
+          icon: "medication",
+          link: "/patient/medicines",
+        },
+        {
           title: "My profile",
           icon: "account_circle",
           link: "/patient/profile",
@@ -88,7 +93,7 @@ export default {
   },
   methods:{
       activeDrawerItem(link){
-          return this.$router.currentRoute.fullPath == link
+        return this.$router.currentRoute.fullPath == link
       }
   }
 };

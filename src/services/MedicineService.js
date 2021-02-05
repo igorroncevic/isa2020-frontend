@@ -21,8 +21,34 @@ class MedicineService {
     }
 
     async getAllMedicinesPatientsNotAlergicTo(patientId) {
-        let success = await this.apiClient
+        let medicines = await this.apiClient
             .get(`/notallergic/${patientId}`)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
+    async getAllMedicinesForFiltering(data) {
+        let medicines = await this.apiClient
+            .post('/filter', data)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
+    async reserveMedicine(data) {
+        let success = await this.apiClient
+            .post('/reserve', data)
             .then(response => {
                 return response;
             })

@@ -35,3 +35,22 @@ export function errorOccurredWhileAddingAllergy(name) {
  
     Notify.create(config);
 }
+
+export function successfullyReservedMedicine(name, pharmacy) {
+   let config = {
+      type: 'positive',
+      message: `Successfully reserved ${name} from ${pharmacy}!`
+   }
+
+   Notify.create(config);
+}
+
+export function errorOccurredWhileReservingMedicine(name, pharmacy) {
+   let config = {
+      type: 'negative',
+      message: `An error occurred while reserving ${name} from ${pharmacy}. Please try again.`,
+      multiLine: true,
+   }
+
+   Notify.create(config);
+}

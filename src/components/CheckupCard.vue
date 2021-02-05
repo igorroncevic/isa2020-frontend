@@ -61,7 +61,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.checkup)
     this.checkup.type = this.capitalize(this.checkup.type)
     this.checkup.startTime = this.dateFormat(this.checkup.startTime)
     this.checkup.endTime = this.dateFormat(this.checkup.endTime)

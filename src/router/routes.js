@@ -50,7 +50,10 @@ const routes = [
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') }
+      { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
+      { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
+      { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
+      { path: 'medicines/cancel', component: () => import('pages/medicines/CancelMedicines.vue') },
     ]
   },
   {
