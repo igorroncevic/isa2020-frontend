@@ -49,6 +49,15 @@ const routes = [
     ]
   },
   {
+    path: '/sysadmin',
+    component: () => import('layouts/SysAdminLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/sysAdmin/SysAdminUserRegistration.vue') },
+      { path: 'loyalty', component: () => import('pages/sysAdmin/LoyaltyProgramme.vue') },
+      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') }
+    ]
+  },
+  {
     path: '/patients/register',
     component: () => import('pages/registeredUser/Registration.vue')
   },

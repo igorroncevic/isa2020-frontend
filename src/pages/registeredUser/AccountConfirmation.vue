@@ -12,7 +12,7 @@
         <div class="row">
             <div class="col-9 text-h5 text-bold text-center q-mt-lg text-grey-8">Your ISA Pharmacy online account has been created</div>
             <div class="col-3 q-mt-md" align="right">
-                <q-img src="../../assets/verified-account.png"
+                <q-img src="../../assets/pictures/verified-account.png"
                     height="100px"
                     width="100px"
                 />

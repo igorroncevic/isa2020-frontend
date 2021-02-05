@@ -66,6 +66,20 @@ class DoctorService {
       })
     return responseData
   }
+
+  async registerNewDermatologist (dermData) {
+    const success = this.apiClient
+      .post('/register', dermData)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
 }
 
 const doctorService = new DoctorService()

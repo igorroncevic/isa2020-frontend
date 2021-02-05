@@ -7,11 +7,11 @@ Notify.setDefaults({
   actions: [{ icon: 'close', color: 'white' }]
 })
 
-export function errorFetchingData(){
-   let config = {
-      type: 'negative',
-      message: `An error occurred while fetching data. Please reload the page and try again.`,
-   }
+export function errorFetchingData () {
+  const config = {
+    type: 'negative',
+    message: 'An error occurred while fetching data. Please reload the page and try again.'
+  }
 
-   Notify.create(config);
+  Notify.create(config)
 }
