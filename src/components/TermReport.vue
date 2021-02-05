@@ -1,6 +1,5 @@
 <template>
-<q-page-container>
-<q-page padding class="q-gutter-y-xl column items-center ">
+<div>
 <q-dialog v-model="persistent" persistent transition-show="scale" transition-hide="scale">
       <q-card class="bg-primary text-white" style="width: 600px">
         <q-card-section>
@@ -19,7 +18,7 @@
         color="white"
         text-color="primary"
         :options="[
-          {label: 'Start checkup', value: 'start'},
+          {label: 'Start ' + termType, value: 'start'},
           {label: 'Patient did not apper ', value: 'notApper'}
         ]"
       />
@@ -59,8 +58,8 @@
         >
           <q-tab name="report" icon="history_edu" label="Report" />
           <q-tab name="medicines" icon="healing" label="Medicines" />
-          <q-tab name="schedule" icon="today" label="Schedule checkup" />
-          <q-tab name="save" icon="save" label="Save checkup" />
+          <q-tab name="schedule" icon="today" :label="'Schedule ' + termType " />
+          <q-tab name="save" icon="save" label="Save report" />
         </q-tabs>
       </template>
 
@@ -126,7 +125,7 @@
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date v-model="startDate" mask="DD-MM-YYYY">
+                  <q-date v-model="startDate" :options="optionsFnDate" mask="DD-MM-YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -135,11 +134,11 @@
               </q-icon>
             </template>
           </q-input>
-          <q-input filled  label="Therapy end date" v-model="endDate"  :rules="['DD-MM-YYYY']">
+          <q-input filled  label="Therapy end date" v-model="endDate" readonly  :rules="['DD-MM-YYYY']">
             <template v-slot:append>
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                  <q-date :options="date=>date > startDate" v-model="endDate" mask="DD-MM-YYYY">
+                  <q-date :options="therapyEndValidation" v-model="endDate" mask="DD-MM-YYYY">
                     <div class="row items-center justify-end">
                       <q-btn v-close-popup label="Close" color="primary" flat />
                     </div>
@@ -152,9 +151,9 @@
           </q-tab-panel>
 
           <q-tab-panel name="schedule">
-            <div class="text-h4 q-mb-md">Schedule new checkup:</div>
+            <div class="text-h4 q-mb-md">Schedule new {{termType}}:</div>
             <div style="max-width:400px">
-            <q-input filled label="Select date" v-model="termDate" readonly :rules="['YYYY-MM-DDDD']">
+            <q-input filled label="Select date" v-model="termDate" readonly :rules="['YYYY-MM-DD']">
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -197,7 +196,7 @@
             <q-btn color="primary"  @click="schedule">Schedule </q-btn>
           </q-tab-panel>
           <q-tab-panel name="save">
-            <div class="text-h4 q-mb-md">Finish checkup?</div>
+            <div class="text-h4 q-mb-md">Finish {{termType}}?</div>
             <q-btn icon="save" @click="finishCheckup" color="primary"  size="xl">Finish</q-btn>
           </q-tab-panel>
         </q-tab-panels>
@@ -220,8 +219,7 @@
     </q-card>
   </div>
   </div>
-</q-page>
-</q-page-container>
+</div>
 </template>
 <style lang="sass" scoped>
 .my-custom-toggle
@@ -234,6 +232,7 @@ import reportService from './../services/ReportService'
 import pharmacyMedicinesService from './../services/PharmacyMedicinesService'
 import termService from './../services/TermService'
 export default {
+  props: ['termType'],
   data () {
     return {
       id: '',
@@ -334,7 +333,7 @@ export default {
           timeout: 300,
           icon: 'error',
           position: 'center',
-          message: 'Checkup not saved,ERROR!'
+          message: 'Report not saved,ERROR!'
         })
       } else {
         this.$q.notify({
@@ -342,7 +341,7 @@ export default {
           timeout: 150,
           textColor: 'white',
           position: 'center',
-          message: 'Checkup successfully saved!',
+          message: 'Report successfully saved!',
           type: 'positive'
         })
       }
@@ -416,6 +415,13 @@ export default {
     formatTime (date, time) {
       return date + 'T' + time + ':00.000+01:00'
     },
+    therapyEndValidation (date) {
+      var arr = this.startDate.split('-')
+      var year = arr[2]
+      var month = arr[1]
+      var day = arr[0]
+      return date > year + '/' + month + '/' + day
+    },
     async schedule () {
       var data = {
         patientId: this.res.patient.id,
@@ -423,7 +429,7 @@ export default {
         pharmacyId: 'e93cab4a-f007-412c-b631-7a9a5ee2c6ed',
         startTime: this.formatTime(this.termDate, this.termTime),
         endTime: this.formatTime(this.termDate, this.termEndTime),
-        type: 'checkup'
+        type: this.termType
       }
       var res = await termService.postTerm(data)
       if (res != null && res !== '') {
@@ -432,7 +438,7 @@ export default {
           timeout: 150,
           textColor: 'white',
           position: 'center',
-          message: 'Checkup sucessfully scheduled!',
+          message: this.termType + ' sucessfully scheduled!',
           type: 'positive'
         })
         this.scheduled = true
