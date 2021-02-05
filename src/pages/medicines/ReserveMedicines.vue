@@ -28,13 +28,6 @@
       <q-space />
 
       <div class="row-xs-12 row-sm-4 row-md-3 row-lg-3">
-        <div class="text-body1 no-medicines">
-          {{
-            medicines.length == 0
-              ? "There are no medicines that match your filter criteria."
-              : ""
-          }}
-        </div>
         <div class="medicine-card">
           <medicine-filter-card
             v-for="med in medicines"
@@ -43,6 +36,13 @@
             @reserveMedicine="(id) => chooseMedicine(id)"
             :reserving="true"
           />
+        </div>
+        <div class="text-body1 no-medicines">
+          {{
+            medicines.length == 0
+              ? "There are no medicines that match your filter criteria."
+              : ""
+          }}
         </div>
       </div>
     </q-step>
@@ -93,10 +93,11 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 import MedicineFilterCard from "./../../components/MedicineFilterCard";
 import MedicineService from "./../../services/MedicineService";
 import DateInput from "./../../components/DateInput.vue";
+import {errorOccurredWhileReservingMedicine, successfullyReservedMedicine} from './../../notifications/medicines'
 
 export default {
   components: { MedicineFilterCard, DateInput },
@@ -127,7 +128,6 @@ export default {
       nameFilter: "",
       selectedMedicine: { id: 1 },
       selectedPharmacy: { id: 2 },
-      selectedDate: null,
       availablePharmacies: [],
       step: 1,
       pickupTime: null,
@@ -157,8 +157,6 @@ export default {
         ...this.availablePharmacies.filter((ph) => ph.id == pharmacy.id)[0],
       };
 
-      console.log(this.selectedPharmacy);
-
       this.step = 3;
     },
     async chooseDate() {
@@ -166,10 +164,11 @@ export default {
         patientId: this.patientId,
         medicineId: this.selectedMedicine.id,
         pharmacyId: this.selectedPharmacy.id,
-        pickupDate: moment(this.selectedDate).format("DD/MM/YYYY"),
+        pickupDate: moment(this.pickupTime).format("DD/MM/yyyy"),
       });
 
-      console.log(response);
+      if(response.status == 200) successfullyReservedMedicine(this.selectedMedicine.name, this.selectedPharmacy.name)
+      else errorOccurredWhileReservingMedicine(this.selectedMedicine.name, this.selectedPharmacy.name)
     },
   },
 };
@@ -187,13 +186,14 @@ export default {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-top: -2rem;
+  margin-top: 1rem;
 }
 
 .no-medicines {
-  width: 100%;
+  width: 50%;
   position: relative;
   left: 30%;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 </style>
