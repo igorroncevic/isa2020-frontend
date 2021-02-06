@@ -142,6 +142,11 @@ export default {
   },
   methods: {
     async sortPaginateCheckup() {
+      if (
+        (this.checkups.length == 0 || this.checkups.length == 1) &&
+        this.checkupPages == 1
+      )
+        return; // Da se ne salju zahtjevi bezveze
       let checkupResponse = await CheckupService.getAllPatientsPastCheckupsPaginated(
         {
           id: this.patientId,
@@ -157,6 +162,12 @@ export default {
       }
     },
     async sortPaginateCounseling() {
+      if (
+        (this.counselings.length == 0 || this.counselings.length == 1) &&
+        this.counselingPages == 1
+      )
+        return; // Da se ne salju zahtjevi bezveze
+
       let counselingResponse = await CounselingService.getAllPatientsPastCounselingsPaginated(
         {
           id: this.patientId,
