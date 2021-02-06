@@ -20,6 +20,18 @@ class TermService {
 
     return checkups
   }
+
+  async getDoctorTerms (doctor) {
+    const terms = await this.apiClient.get('/doctor/' + doctor)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+    return terms
+  }
 }
 
 const termService = new TermService()
