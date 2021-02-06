@@ -84,7 +84,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="calendar" style="text-decoration:none;color:white">
+          <router-link to="derm/schedule" style="text-decoration:none;color:white">
       <q-card-section >
               <div class="row justify-center">
                 <div class="text-h4">My calendar</div>
