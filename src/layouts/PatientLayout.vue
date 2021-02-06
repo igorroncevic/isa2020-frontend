@@ -72,12 +72,27 @@ export default {
         {
           title: "Home",
           icon: "home",
-          link: "/patient/",
+          link: "/patient/home",
+        },
+        {
+          title: "Upcoming Terms",
+          icon: "event",
+          link: "/patient/calendar",
+        },
+        {
+          title: "Schedule Term",
+          icon: "schedule_send",
+          link: "/patient/schedule",
         },
         {
           title: "Medicines",
           icon: "medication",
           link: "/patient/medicines",
+        },
+        {
+          title: "Pharmacies",
+          icon: "home_work",
+          link: "/patient/pharmacies",
         },
         {
           title: "My profile",
