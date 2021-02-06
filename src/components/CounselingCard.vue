@@ -80,6 +80,7 @@ export default {
 <style>
 .my-card {
   width: 100%;
-  max-width: 20rem;
+  max-width: 25rem;
+  max-height: 15rem;
 }
 </style>

@@ -69,11 +69,12 @@ export default {
   data() {
     return {
       drawerOpen: false,
+      anyOtherActive: false,
       menuItems: [
         {
           title: "Home",
           icon: "home",
-          link: "/patient/home",
+          link: "/patient/",
         },
         {
           title: "Upcoming Terms",
@@ -103,13 +104,15 @@ export default {
         {
           title: "Log out",
           icon: "logout",
+          link: "/patient/logout",
         },
       ],
     };
   },
   methods: {
     activeDrawerItem(link) {
-      return this.$router.currentRoute.fullPath == link;
+      let rest = String(link).substr("/patient/".length);
+      return this.$route.path.includes(rest);
     },
     menuCardClicked(title) {
       if (title == "Log out") console.log("Log out");

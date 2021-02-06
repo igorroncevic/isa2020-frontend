@@ -26,7 +26,7 @@ const routes = [
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: 'home', component: () => import('pages/homePages/PatientHome.vue') },  // Nova
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') },  // Nova
       { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },  // Nova
       { path: 'history', component: () => import('pages/PatientHistory.vue') }, // Nova
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
