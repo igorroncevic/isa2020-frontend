@@ -35,6 +35,7 @@
             :title="link.title"
             :icon="link.icon"
             :active="activeDrawerItem(link.link)"
+            @clicked="(title) => menuCardClicked(title)"
           />
         </q-list>
       </q-scroll-area>
@@ -80,9 +81,9 @@ export default {
           link: "/patient/calendar",
         },
         {
-          title: "Schedule Term",
-          icon: "schedule_send",
-          link: "/patient/schedule",
+          title: "Term History",
+          icon: "history",
+          link: "/patient/history",
         },
         {
           title: "Medicines",
@@ -106,10 +107,13 @@ export default {
       ],
     };
   },
-  methods:{
-      activeDrawerItem(link){
-        return this.$router.currentRoute.fullPath == link
-      }
-  }
+  methods: {
+    activeDrawerItem(link) {
+      return this.$router.currentRoute.fullPath == link;
+    },
+    menuCardClicked(title) {
+      if (title == "Log out") console.log("Log out");
+    },
+  },
 };
 </script>
