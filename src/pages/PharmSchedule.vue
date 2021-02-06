@@ -1,28 +1,22 @@
 <template>
-    <div>
-        <term-dialog :dialog="dialog" :eventObject="eventObject"/>
-        <DaykeepCalendar :prevent-event-detail="true" event-ref="MYCALENDAR"  :event-array="terms" ></DaykeepCalendar>
-       </div>
+<q-page padding>
+<div>
+    <DoctorSchedule :terms="terms" :doctor="pharm"></DoctorSchedule>
+</div>
+</q-page>
 </template>
 <script>
-import { DaykeepCalendar } from '@daykeep/calendar-quasar'
+import DoctorSchedule from './../components/DoctorSchedule.vue'
 import TermService from './../services/TermService'
-import TermDialog from './../components/TermDialog.vue'
 export default {
-  components: {
-    DaykeepCalendar,
-    TermDialog
-  },
-  data () {
+  components: { DoctorSchedule },
+  data: function () {
     return {
-      eventObject: {},
-      clicks: 0,
-      dialog: false,
       terms: []
     }
   },
   async mounted () {
-    var res = await TermService.getDoctorTerms('a5ac174a-45b3-487f-91cb-3d3f727d6f1c')
+    var res = await TermService.getDoctorTerms('b0a591d4-f627-45ba-8aa9-926e85c93e08')
     res.forEach(element => {
       var patient = {}
       if (element.patient) {
@@ -58,20 +52,6 @@ export default {
       }
       this.terms.push(term)
     })
-    await this.$root.$on(
-      'click-event-MYCALENDAR',
-      (eventDetailObject) => {
-        this.eventObject = eventDetailObject
-        this.dialog = false
-        this.dialog = true
-      })
-  },
-  beforeDestroy () {
-    this.$root.$off(
-      'click-event-MYCALENDAR',
-      function (eventDetailObject) {
-      }
-    )
   }
 }
 </script>

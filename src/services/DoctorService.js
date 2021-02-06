@@ -67,6 +67,19 @@ class DoctorService {
     return doctors
   }
 
+  async getDoctorPharmacyList (doctor) {
+    const pharmacyList = await this.apiClient
+      .get('/pharmacyList/' + doctor)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return pharmacyList
+  }
+
   async updateUserData (data) {
     const responseData = this.apiClient
       .put('', data)
