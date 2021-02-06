@@ -20,6 +20,20 @@ class MedicineService {
         return success;
     }
 
+    async getAllMedicines() {
+        let medicines = await this.apiClient
+            .get(`/all`)
+            .then(response => {
+                return response.data;
+            })
+            .catch(err => {
+                console.log(err.response)
+                return [];
+            });
+
+        return medicines;
+    }
+
 }
 
 const medicineService = new MedicineService()

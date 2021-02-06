@@ -31,6 +31,20 @@ class PharmacyMedicinesService {
       })
     return res
   }
+
+  async addMedicineToPharmacy(data) {
+    let success = await this.apiClient
+        .post("", data)
+        .then(response => {
+            return true;
+        })
+        .catch(err => {
+            return false;
+        });
+
+    return success;
+  }
+
 }
 
 const pharmacyMedicinesService = new PharmacyMedicinesService()
