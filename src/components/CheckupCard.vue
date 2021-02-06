@@ -2,7 +2,9 @@
   <q-card class="my-card" flat bordered>
     <q-card-section vertical>
       <q-card-section>
-        <div class="text-h5 text-primary text-weight-medium">Checkup</div>
+        <div class="text-h5 text-primary text-weight-medium">
+          {{capitalize(checkup.type)}}
+        </div>
       </q-card-section>
       <q-separator></q-separator>
       <q-card-section>
@@ -11,6 +13,7 @@
           <span class="text-primary text-weight-medium"> End: </span> {{ dateFormat(checkup.endTime) }} <br />
           <span class="text-primary text-weight-medium"> Doctor: </span> {{ checkup.doctor.name }}
           {{ checkup.doctor.surname }} <br />
+          <span class="text-primary text-weight-medium"> Price: </span> ${{ checkup.price }}
         </div>
 
         <div
@@ -108,6 +111,7 @@ export default {
 .my-card {
   width: 90%;
   max-width: 10rem;
+  max-height: 12rem !important;
 }
 
 .q-card__section--vert {

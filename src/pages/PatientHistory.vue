@@ -12,11 +12,11 @@
             v-model="checkupSorting"
             :options="sortingOptions"
             label="Sort by"
+            @input="sortPaginateCheckup"
           />
         </div>
         <div class="list">
           <checkup-card
-            :scheduling="true"
             v-for="checkup in checkups"
             :key="checkup.id"
             :checkup="checkup"
@@ -35,7 +35,7 @@
             v-model="currentCheckupPage"
             :max="checkupPages"
             :direction-links="true"
-            @input="changeCheckupPage"
+            @input="sortPaginateCheckup"
           >
           </q-pagination>
         </div>
@@ -48,9 +48,15 @@
             v-model="counselingSorting"
             :options="sortingOptions"
             label="Sort by"
+            @input="sortPaginateCounseling"
           />
         </div>
         <div class="list">
+          <checkup-card
+            v-for="counseling in counselings"
+            :key="counseling.id"
+            :checkup="counseling"
+          />
           <div
             v-if="counselings.length == 0"
             class="text-subtitle1 font-weight-medium"
@@ -65,7 +71,7 @@
             v-model="currentCounselingPage"
             :max="counselingPages"
             :direction-links="true"
-            @input="changeCounselingPage"
+            @input="sortPaginateCounseling"
           >
           </q-pagination>
         </div>
@@ -88,6 +94,7 @@ export default {
         id: this.patientId,
         sort: this.transformSortParameter(this.counselingSorting),
         page: this.currentCounselingPage,
+        termType: "counseling",
       }
     );
 
@@ -101,13 +108,13 @@ export default {
         id: this.patientId,
         sort: this.transformSortParameter(this.checkupSorting),
         page: this.currentCheckupPage,
+        termType: "checkup",
       }
     );
 
     if (checkupResponse.status == 200) {
       this.checkups = [...checkupResponse.data.terms];
       this.checkupPages = checkupResponse.data.totalPages;
-      console.log(checkupResponse)
     }
 
     this.$nextTick(() => this.$forceUpdate());
@@ -134,10 +141,36 @@ export default {
     };
   },
   methods: {
-    changeCheckupPage() {
-      console.log(this.currentCheckupPage);
+    async sortPaginateCheckup() {
+      let checkupResponse = await CheckupService.getAllPatientsPastCheckupsPaginated(
+        {
+          id: this.patientId,
+          sort: this.transformSortParameter(this.checkupSorting),
+          page: this.currentCheckupPage,
+          termType: "checkup",
+        }
+      );
+
+      if (checkupResponse.status == 200) {
+        this.checkups = [...checkupResponse.data.terms];
+        this.checkupPages = checkupResponse.data.totalPages;
+      }
     },
-    async changeCounselingPage() {},
+    async sortPaginateCounseling() {
+      let counselingResponse = await CounselingService.getAllPatientsPastCounselingsPaginated(
+        {
+          id: this.patientId,
+          sort: this.transformSortParameter(this.counselingSorting),
+          page: this.currentCounselingPage,
+          termType: "counseling",
+        }
+      );
+
+      if (counselingResponse.status == 200) {
+        this.counselings = [...counselingResponse.data.terms];
+        this.counselingPages = counselingResponse.data.totalPages;
+      }
+    },
     transformSortParameter(parameter) {
       if (parameter.includes("Date")) {
         let parts = parameter.split(" ");
