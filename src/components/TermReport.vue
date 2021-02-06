@@ -206,7 +206,7 @@
     <div class="col">
   <q-card
       class="my-card text-white"
-      style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
+      style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:200px"
     >
       <q-card-section>
         <div class="text-h6">Patient <q-icon name="face" size="md"/> </div>

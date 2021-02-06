@@ -44,6 +44,19 @@ class TermService {
       })
     return terms
   }
+
+  async checkIsCurrentTherm (doctor, patient) {
+    const term = await this.apiClient
+      .get('nowTerm/' + patient + '/' + doctor)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return term
+  }
 }
 
 const termService = new TermService()

@@ -1,5 +1,5 @@
 <template>
-<q-page padding class="q-gutter-y-xl column items-center ">
+<q-page padding>
 <term-report termType="checkup"/>
 </q-page>
 
