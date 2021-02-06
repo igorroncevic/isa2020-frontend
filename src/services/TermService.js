@@ -32,6 +32,18 @@ class TermService {
       })
     return terms
   }
+
+  async getDoctorTermsByPharmacy (doctor, pharmacy) {
+    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+    return terms
+  }
 }
 
 const termService = new TermService()

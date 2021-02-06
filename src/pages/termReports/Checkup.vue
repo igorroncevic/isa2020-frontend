@@ -1,9 +1,7 @@
 <template>
-    <q-page-container>
 <q-page padding class="q-gutter-y-xl column items-center ">
 <term-report termType="checkup"/>
 </q-page>
-    </q-page-container>
 
 </template>
 <script>

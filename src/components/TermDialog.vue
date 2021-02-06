@@ -139,7 +139,7 @@
             <q-item >
               <q-item-section>
                 <template >
-                  <q-btn @click="startCheckup" color="primary">Start schedule/counseling</q-btn>
+                  <q-btn @click="startCheckup" color="primary">Start {{eventObject.summary}}</q-btn>
                 </template>
               </q-item-section>
             </q-item>
@@ -224,7 +224,7 @@ export default {
         return
       }
       if (this.startCheckupCheck()) {
-        this.$router.push('derm/startCheckup/' + this.eventObject.id)
+        this.$router.push('start' + this.eventObject.summary + '/' + this.eventObject.id)
       } else {
         this.$q.notify({
           color: 'negative',
