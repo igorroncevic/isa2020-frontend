@@ -111,6 +111,7 @@ export default {
   },
   methods: {
     activeDrawerItem(link) {
+      if(link == "/patient/") return false;
       let rest = String(link).substr("/patient/".length);
       return this.$route.path.includes(rest);
     },
