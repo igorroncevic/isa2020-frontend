@@ -16,7 +16,6 @@
         </div>
         <div class="list">
           <checkup-card
-          
             :scheduling="true"
             v-for="checkup in checkups"
             :key="checkup.id"
@@ -32,7 +31,7 @@
         </div>
         <div class="paging">
           <q-pagination
-          v-if="checkups.length != 0"
+            v-if="checkups.length != 0"
             v-model="currentCheckupPage"
             :max="checkupPages"
             :direction-links="true"
@@ -78,11 +77,44 @@
 <script>
 import CheckupCard from "./../components/CheckupCard";
 import CounselingCard from "./../components/CounselingCard";
+import CounselingService from "./../services/CounselingService";
+import CheckupService from "./../services/CheckupService";
 
 export default {
   components: { CheckupCard, CounselingCard },
+  async beforeMount() {
+    let counselingResponse = await CounselingService.getAllPatientsPastCounselingsPaginated(
+      {
+        id: this.patientId,
+        sort: this.transformSortParameter(this.counselingSorting),
+        page: this.currentCounselingPage,
+      }
+    );
+
+    if (counselingResponse.status == 200) {
+      this.counselings = [...counselingResponse.data.terms];
+      this.counselingPages = counselingResponse.data.totalPages;
+    }
+
+    let checkupResponse = await CheckupService.getAllPatientsPastCheckupsPaginated(
+      {
+        id: this.patientId,
+        sort: this.transformSortParameter(this.checkupSorting),
+        page: this.currentCheckupPage,
+      }
+    );
+
+    if (checkupResponse.status == 200) {
+      this.checkups = [...checkupResponse.data.terms];
+      this.checkupPages = checkupResponse.data.totalPages;
+      console.log(checkupResponse)
+    }
+
+    this.$nextTick(() => this.$forceUpdate());
+  },
   data() {
     return {
+      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
       checkupSorting: "Date Desc.",
       counselingSorting: "Date Desc.",
       sortingOptions: [
@@ -90,33 +122,14 @@ export default {
         "Date Asc.",
         "Price Desc.",
         "Price Asc.",
-        "Duration Desc.",
-        "Duration Asc.",
+        //"Duration Desc.",
+        //"Duration Asc.",
       ],
       currentCheckupPage: 1,
       currentCounselingPage: 1,
       checkupPages: 2,
       counselingPages: 3,
-      checkups: [
-        {
-          id: 1,
-          startTime: Date.now(),
-          endTime: Date.now(),
-          doctor: { name: "Pera", surname: "Peric" },
-        },
-        {
-          id: 2,
-          startTime: Date.now(),
-          endTime: Date.now(),
-          doctor: { name: "Pera", surname: "Peric" },
-        },
-        {
-          id: 3,
-          startTime: Date.now(),
-          endTime: Date.now(),
-          doctor: { name: "Pera", surname: "Peric" },
-        },
-      ],
+      checkups: [],
       counselings: [],
     };
   },
@@ -124,8 +137,14 @@ export default {
     changeCheckupPage() {
       console.log(this.currentCheckupPage);
     },
-    changeCounselingPage() {
-      console.log(this.currentCounselingPage);
+    async changeCounselingPage() {},
+    transformSortParameter(parameter) {
+      if (parameter.includes("Date")) {
+        let parts = parameter.split(" ");
+        return "startTime " + parts[1];
+      } else {
+        return parameter.toLowerCase();
+      }
     },
   },
 };

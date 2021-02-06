@@ -21,6 +21,20 @@ class CheckupService {
     return checkups
   }
 
+  async getAllPatientsPastCheckupsPaginated(data) {
+    const checkups = await this.apiClient
+      .post(`/past`, data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+
+    return checkups
+  }
+
   async getAllPatientsCheckups (patientId) {
     const checkups = await this.apiClient
       .get(`/patient/${patientId}`)

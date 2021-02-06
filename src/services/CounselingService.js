@@ -74,6 +74,19 @@ class CounselingService {
         return checkups;
     }
 
+    async getAllPatientsPastCounselingsPaginated(data) {
+        let checkups = await this.apiClient
+            .post(`/past`, data)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                console.log(err);
+                return [];
+            });
+
+        return checkups;
+    }
 }
 
 const counselingService = new CounselingService();
