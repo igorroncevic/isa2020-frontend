@@ -6,8 +6,7 @@
       :columns="columns"
       row-key="id"
       :filter="filter"
-      :loading="loading"
-      @row-click="onRowClick"
+      :loading="loading"  
     >
 
       <template v-slot:top>
@@ -15,6 +14,26 @@
         <div class="q-pa-sm">
           <q-btn round color="red" icon="add" @click="addMedicineClick"/>
         </div>
+      </template>
+      <template v-slot:body-cell-action="props">
+        <q-td :props="props">
+          <q-btn
+          color="positive"
+          icon-right="euro_symbol"
+          no-caps
+          flat
+          dense
+          @click="showPricings(data.indexOf(props.row))"
+        />
+          <q-btn
+          color="negative"
+          icon-right="delete"
+          no-caps
+          flat
+          dense
+          @click="deleteval(data.indexOf(props.row))"
+        />
+        </q-td>
       </template>
 
     </q-table>
@@ -36,6 +55,8 @@
 import PharmacyMedicinesService from './../services/PharmacyMedicinesService'
 import MedicineService from './../services/MedicineService'
 import {medicineAlreadyExists} from './../notifications/pharmacyMedicines'
+import {cantDeleteMedicine} from './../notifications/pharmacyMedicines'
+import {successfulyDeletedMedicine} from './../notifications/pharmacyMedicines'
 
 export default {
   async beforeMount () {
@@ -51,7 +72,8 @@ export default {
       columns: [
         { name: 'name', align: 'center', label: 'Name', field: 'name', sortable: true },
         { name: 'loyaltyPoints', align: 'center', label: 'Loyalty points', field: 'loyaltyPoints', sortable: true},
-        { name: 'quantity', align: 'center', label: 'Quantity', field: 'quantity', sortable: true}
+        { name: 'quantity', align: 'center', label: 'Quantity', field: 'quantity', sortable: true},
+        { name: 'action', label: '', field: 'action'}
       ],
       data: [],
       allMedicines: [],
@@ -79,6 +101,18 @@ export default {
         } else {
             medicineAlreadyExists()
         }
+    },
+    async deleteval(index){
+      let success = await PharmacyMedicinesService.deletePharmacyMedicine("e93cab4a-f007-412c-b631-7a9a5ee2c6ed", this.data[index].id);
+      if(success) {
+        this.data = await PharmacyMedicinesService.getPharmacyMedicines("e93cab4a-f007-412c-b631-7a9a5ee2c6ed");
+        successfulyDeletedMedicine()
+      } else {
+        cantDeleteMedicine()
+      }
+    },
+    showPricings(index) {
+      this.card = true
     }
   }
 }

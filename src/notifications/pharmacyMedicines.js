@@ -9,9 +9,27 @@ Notify.setDefaults({
 
 export function medicineAlreadyExists() {
     let config = {
-       type: 'info',
+       type: 'negative',
        message: `This medicine is already in pharmacy.`
     }
  
     Notify.create(config);
- }
+}
+
+export function cantDeleteMedicine() {
+   let config = {
+      type: 'negative',
+      message: `This medicine can't be deleted because some patient has reserved it.`
+   }
+
+   Notify.create(config);
+}
+
+export function successfulyDeletedMedicine() {
+   let config = {
+      type: 'positive',
+      message: `Successfuly deleted this medicine from pharmacy.`
+   }
+
+   Notify.create(config);
+}
