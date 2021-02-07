@@ -1,103 +1,115 @@
 import axios from 'axios'
 
 class MedicineService {
-    constructor() {
-        this.apiClient = axios.create({
-            baseURL: 'http://localhost:8085/api/medicines'
-        })
-    }
+  constructor () {
+    this.apiClient = axios.create({
+      baseURL: 'http://localhost:8085/api/medicines'
+    })
+  }
 
-    async getAllPatientsMedicines(patientId) {
-        let medicines = await this.apiClient
-            .get(`/patient/${patientId}`)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async getAllPatientsMedicines (patientId) {
+    const medicines = await this.apiClient
+      .get(`/patient/${patientId}`)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return medicines;
-    }
+    return medicines
+  }
 
-    async getAllPatientsReservedMedicines(patientId) {
-        let medicines = await this.apiClient
-            .get(`/reserved/${patientId}`)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async getAllPatientsReservedMedicines (patientId) {
+    const medicines = await this.apiClient
+      .get(`/reserved/${patientId}`)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return medicines;
-    }
+    return medicines
+  }
 
-    async getAllMedicinesPatientsNotAlergicTo(patientId) {
-        let medicines = await this.apiClient
-            .get(`/notallergic/${patientId}`)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async getAllMedicinesPatientsNotAlergicTo (patientId) {
+    const medicines = await this.apiClient
+      .get(`/notallergic/${patientId}`)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return medicines;
-    }
+    return medicines
+  }
 
-    async getAllMedicinesForFiltering(data) {
-        let medicines = await this.apiClient
-            .post('/filter', data)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async getAllMedicinesForFiltering (data) {
+    const medicines = await this.apiClient
+      .post('/filter', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return medicines;
-    }
+    return medicines
+  }
 
-    async reserveMedicine(data) {
-        let success = await this.apiClient
-            .post('/reserve', data)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async reserveMedicine (data) {
+    const success = await this.apiClient
+      .post('/reserve', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return success;
-    }
+    return success
+  }
 
-    async cancelMedicine(data) {
-        let success = await this.apiClient
-            .post('/cancel', data)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async cancelMedicine (data) {
+    const success = await this.apiClient
+      .post('/cancel', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return success;
-    }
+    return success
+  }
 
-    async addNewAllergyForPatient(data) {
-        let success = await this.apiClient
-            .post('/allergy', data)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+  async addNewAllergyForPatient (data) {
+    const success = await this.apiClient
+      .post('/allergy', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-        return success;
-    }
+    return success
+  }
 
+  async getSpecification (medicine) {
+    const res = await this.apiClient
+      .get('/specification/' + medicine)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return res
+  }
 }
 
 const medicineService = new MedicineService()

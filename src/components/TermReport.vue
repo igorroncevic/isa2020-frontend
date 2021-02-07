@@ -50,6 +50,69 @@
       style="height: 700px;width:1200px"
     >
 
+    <q-dialog v-model="specificationDialog">
+      <q-card>
+        <q-card-section class="row items-center q-pb-none bg-primary">
+          <div class="text-h4 text-white text-center">{{medicine.label}} specification </div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+            <div class="row justify-center">
+                <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
+                    <q-input
+                        filled
+                        readonly
+                        label="Replacement medicine*"
+                        v-model="specification.replacementMedicineCode"
+                        style="width:250px"
+                    />
+               </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
+                    <q-input
+                        filled
+                        type="number"
+                        label="Recommended dose per day*"
+                        v-model="specification.recommendedDose"
+                        style="width:250px"
+                    />
+                </div>
+            </div>
+            <div class="row justify-center">
+                <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
+                    <q-input
+                        v-model="specification.contraindications"
+                        filled
+                        readonly
+                        type="textarea"
+                        label="Contraindications"
+
+                    />
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
+                    <q-input
+                        v-model="specification.drugComposition"
+                        filled
+                        readonly
+                        type="textarea"
+                        label="Drug composition"
+
+                    />
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
+                    <q-input
+                        v-model="specification.additionalNotes"
+                        filled
+                        readonly
+                        type="textarea"
+                        label="Additional notes"
+                    />
+                </div>
+             </div>
+        <q-card-section>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
       <template v-slot:before>
         <q-tabs
           v-model="tab"
@@ -101,7 +164,10 @@
           <q-tab-panel name="medicines">
            <div class="text-h4 q-mb-md">Prescribe medicine</div>
            <div style="max-width:400px">
-          <q-select filled v-model="medicine" :options="options" label="Select medicine"/>
+             <div class="row q-gutter-x-md">
+          <q-select filled v-model="medicine" :options="options" label="Select medicine" style="width:200px"/>
+          <q-btn @click="getSpecification" flat color="primary" label="Specification" />
+             </div>
           <div class="row items-center">
           <p> *Medicines which patient is alergic to are disabled</p>
           <q-btn @click="alergicDialog=true" flat color="primary" label="List" />
@@ -120,6 +186,9 @@
           </div>
           <div v-show="show" class="text-h5" v-bind:style="'color:'+color">
                 {{checkText}}
+          </div>
+          <div v-show="showReplacement" class="text-h6">
+              Replacement medicine : {{replacementMedicine}}
           </div>
           <q-input filled  label="Therapy start date" v-model="startDate"  :rules="['dd-MM-yyyy']">
             <template v-slot:append>
@@ -231,6 +300,7 @@ import patientService from './../services/PatientService'
 import reportService from './../services/ReportService'
 import pharmacyMedicinesService from './../services/PharmacyMedicinesService'
 import termService from './../services/TermService'
+import medicineService from './../services/MedicineService'
 export default {
   props: ['termType'],
   data () {
@@ -257,7 +327,11 @@ export default {
       termDate: '',
       termTime: '',
       termEndTime: '',
-      scheduled: ''
+      scheduled: '',
+      showReplacement: false,
+      replacementMedicine: '',
+      specification: {},
+      specificationDialog: false
     }
   },
   async mounted () {
@@ -302,6 +376,15 @@ export default {
         }
       }
     },
+    async getSpecification () {
+      if (this.medicine.value == null) {
+        return
+      }
+      this.specification = await medicineService.getSpecification(this.medicine.value)
+      if (this.specification != null) {
+        this.specificationDialog = true
+      }
+    },
     async checkMedicine () {
       var data = {
         medicineId: this.medicine.value,
@@ -309,7 +392,7 @@ export default {
         medicineQuantity: this.quantity
       }
       var res = await pharmacyMedicinesService.checkAvaliable(data)
-      if (res) {
+      if (res === 'available') {
         this.color = 'green'
         this.checkText = 'Medicine avaliable!'
         this.avaliable = true
@@ -317,6 +400,12 @@ export default {
         this.color = 'red'
         this.checkText = 'Medicine not avaliable!'
         this.avaliable = false
+        if (res !== 'unavailable' && !this.alergicMedicines.includes(res)) {
+          this.replacementMedicine = res
+          this.showReplacement = true
+        } else {
+          this.showReplacement = false
+        }
       }
       this.show = true
     },

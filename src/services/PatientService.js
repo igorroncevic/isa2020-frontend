@@ -1,15 +1,18 @@
 import axios from 'axios'
 
 class PatientService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/patients'
     })
+    this.apiClientAuth = axios.create({
+      baseURL: 'http://localhost:8085/auth'
+    })
   }
 
-  async registerNewPatient(patient) {
-    const success = this.apiClient
-      .post('/register', patient)
+  async registerNewPatient (patient) {
+    const success = this.apiClientAuth
+      .post('/signup/patient', patient)
       .then(response => {
         console.log(response)
         return true
