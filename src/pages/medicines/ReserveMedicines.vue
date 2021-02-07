@@ -54,15 +54,17 @@
       :done="step > 2"
       :header-nav="step > 2"
     >
-      <medicine-filter-card
-        v-for="pharmacy in availablePharmacies"
-        :pharmacy="pharmacy"
-        :key="pharmacy.id"
-        :medicine="selectedMedicine"
-        :reserving="true"
-        :choosingPharmacy="true"
-        @chosenPharmacy="(data) => choosePharmacy(data)"
-      />
+      <div class="medicine-card">
+        <medicine-filter-card
+          v-for="pharmacy in availablePharmacies"
+          :pharmacy="pharmacy"
+          :key="pharmacy.id"
+          :medicine="selectedMedicine"
+          :reserving="true"
+          :choosingPharmacy="true"
+          @chosenPharmacy="(data) => choosePharmacy(data)"
+        />
+      </div>
     </q-step>
     <q-step
       :name="3"
@@ -84,7 +86,11 @@
         <date-input
           v-model="pickupTime"
           :date="pickupTime"
-          @datechange="(val) => (this.pickupTime = val)"
+          @datechange="
+            (val) => {
+              this.pickupTime = val;
+            }
+          "
         />
         <q-btn @click="chooseDate" color="primary" label="Reserve" />
       </div>
@@ -97,7 +103,10 @@ import moment from "moment";
 import MedicineFilterCard from "./../../components/MedicineFilterCard";
 import MedicineService from "./../../services/MedicineService";
 import DateInput from "./../../components/DateInput.vue";
-import {errorOccurredWhileReservingMedicine, successfullyReservedMedicine} from './../../notifications/medicines'
+import {
+  errorOccurredWhileReservingMedicine,
+  successfullyReservedMedicine,
+} from "./../../notifications/medicines";
 
 export default {
   components: { MedicineFilterCard, DateInput },
@@ -167,8 +176,16 @@ export default {
         pickupDate: moment(this.pickupTime).format("DD/MM/yyyy"),
       });
 
-      if(response.status == 200) successfullyReservedMedicine(this.selectedMedicine.name, this.selectedPharmacy.name)
-      else errorOccurredWhileReservingMedicine(this.selectedMedicine.name, this.selectedPharmacy.name)
+      if (response.status == 200)
+        successfullyReservedMedicine(
+          this.selectedMedicine.name,
+          this.selectedPharmacy.name
+        );
+      else
+        errorOccurredWhileReservingMedicine(
+          this.selectedMedicine.name,
+          this.selectedPharmacy.name
+        );
     },
   },
 };
@@ -187,6 +204,12 @@ export default {
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: 1rem;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 15px;
+  column-gap: 15px;
 }
 
 .no-medicines {

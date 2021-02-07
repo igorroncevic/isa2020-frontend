@@ -1,54 +1,50 @@
 <template>
-  <q-card class="my-card row full-height q-pm-lg" flat bordered>
-    <q-card-section horizontal>
-      <q-card-section class="q-pt-xs">
-        <div class="text-h5 q-mt-sm q-mb-xs">
+  <q-card class="my-card" flat bordered>
+    <q-card-section vertical>
+      <q-card-section>
+        <div class="text-h5 text-primary text-weight-medium">
           {{ medicine.name }}
         </div>
-        <div class="text-body2">
-          ID: {{ medicine.id }} <br />
-          Loyalty points: {{ medicine.loyaltyPoints }} <br />
+      </q-card-section>
 
-          <div class="text-body2" v-if="choosingPharmacy">
-            Pharmacy: {{ pharmacy.name }} <br />
-            Location: {{ pharmacy.address.street }},
+      <q-separator></q-separator>
+
+      <q-card-section>
+        <div class="text-body1"  v-if="!choosingPharmacy">
+          <span class="text-primary text-weight-medium"> ID: </span> {{ medicine.id }} <br />
+          <span class="text-primary text-weight-medium"> Loyalty points: </span> {{ medicine.loyaltyPoints }} <br />
+          </div>
+
+          <div class="text-body1" v-if="choosingPharmacy">
+            <span class="text-primary text-weight-medium"> Pharmacy: </span> {{ pharmacy.name }} <br />
+            <span class="text-primary text-weight-medium"> Location: </span> {{ pharmacy.address.street }},
             {{ pharmacy.address.city }}, {{ pharmacy.address.country }} <br />
             <div class="" v-if="pharmacy.averageMark">
-              Average mark: {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
+              <span class="text-primary text-weight-medium"> Average mark: </span> {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
             </div>
           </div>
         </div>
+
+        <div class="q-ml-md q-mt-sm q-mb-md relative-position float-right">
+          <q-btn
+            v-if="reserving && !choosingPharmacy && !choosingDate"
+            @click="reserveMedicine"
+            flat
+            icon="book_online"
+            label="Reserve"
+            color="primary"
+          ></q-btn>
+          <q-btn
+            v-if="reserving && choosingPharmacy && !choosingDate"
+            @click="choosePharmacy"
+            flat
+            icon="book_online"
+            label="Choose pharmacy"
+            color="primary"
+          ></q-btn>
+        </div>
       </q-card-section>
     </q-card-section>
-
-    <q-separator v-if="!choosingDate"></q-separator>
-
-    <q-card-actions>
-      <q-btn
-        v-if="reserving && !choosingPharmacy && !choosingDate"
-        @click="reserveMedicine"
-        flat
-        icon="book_online"
-        label="Reserve"
-        color="primary"
-      ></q-btn>
-      <q-btn
-        v-if="reserving && choosingPharmacy && !choosingDate"
-        @click="choosePharmacy"
-        flat
-        icon="book_online"
-        label="Choose pharmacy"
-        color="primary"
-      ></q-btn>
-      <q-btn
-        v-if="!reserving"
-        @click="cancelMedicine"
-        flat
-        icon="cancel_schedule_send"
-        label="Cancel"
-        color="red"
-      ></q-btn>
-    </q-card-actions>
   </q-card>
 </template>
 
@@ -74,7 +70,7 @@ export default {
     },
     reservationId: {
       type: String,
-    }
+    },
   },
   methods: {
     reserveMedicine() {
@@ -94,8 +90,13 @@ export default {
 
 <style>
 .my-card {
-  width: 100%;
+  width: 90%;
   max-width: 25rem;
-  max-height: 14rem;
+  height: 12rem !important;
+  max-height: 12rem !important;
+}
+
+.q-card__section--vert {
+  padding: 8px !important;
 }
 </style>
