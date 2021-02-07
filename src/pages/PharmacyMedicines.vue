@@ -48,6 +48,46 @@
           <q-btn class="q-mt-lg" color="primary" label="Add new medicine" @click="addNewMedicine"/>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="pricingsDialog">
+      <q-card class="q-pa-lg">
+        <div class="col text-h6 ellipsis">
+          {{ this.selectedMedicine.name }} pricings
+        </div>
+        <q-table
+          class="q-pa-sm"
+          :data="dataPricingHistory"
+          :columns="columnsPricingsHistory"
+          row-key="id"
+          :filter="filter"
+          :loading="loading"
+          hide-header
+          hide-bottom
+        >
+          <template v-slot:body-cell-action="props">
+            <q-td :props="props" >
+              <q-btn
+              v-if="props.row.endDate > getTodayDate()"
+              color="neutral"
+              icon-right="edit"
+              no-caps
+              flat
+              dense
+              @click="editPricing()"
+            />
+              <q-btn
+              v-if="props.row.startDate > getTodayDate()"
+              color="negative"
+              icon-right="delete"
+              no-caps
+              flat
+              dense
+              @click="deletePricing(dataPricingHistory.indexOf(props.row))"
+            />
+            </q-td>
+          </template>
+        </q-table>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -57,6 +97,12 @@ import MedicineService from './../services/MedicineService'
 import {medicineAlreadyExists} from './../notifications/pharmacyMedicines'
 import {cantDeleteMedicine} from './../notifications/pharmacyMedicines'
 import {successfulyDeletedMedicine} from './../notifications/pharmacyMedicines'
+import PricingsService from './../services/PricingsService'
+import moment from 'moment'
+import { date } from 'quasar'
+import {cantDeletePricing} from './../notifications/pricings'
+import {successfulyDeletedPricing} from './../notifications/pricings'
+
 
 export default {
   async beforeMount () {
@@ -65,6 +111,10 @@ export default {
   },
   data () {
     return {
+      pricingsDialog: false,
+      selectedMedicine: {
+        name: null
+      },
       card: false,
       loading: false,
       filter: "",
@@ -75,7 +125,14 @@ export default {
         { name: 'quantity', align: 'center', label: 'Quantity', field: 'quantity', sortable: true},
         { name: 'action', label: '', field: 'action'}
       ],
+      columnsPricingsHistory: [
+        { name: 'startDate', align: 'center', label: 'Start date', field: 'startDate', sortable: true, format: val => moment(val).format('LL')},
+        { name: 'endDate', align: 'center', label: 'End date', field: 'endDate', sortable: true, format: val => moment(val).format('LL')},
+        { name: 'price', align: 'center', label: 'Price', field: 'price', sortable: true },
+        { name: 'action', label: '', field: 'action'}
+      ],
       data: [],
+      dataPricingHistory: [],
       allMedicines: [],
       selectedNewMedicine: null,
       original: []
@@ -111,8 +168,27 @@ export default {
         cantDeleteMedicine()
       }
     },
-    showPricings(index) {
-      this.card = true
+    async showPricings(index) {
+      this.selectedMedicine = this.data[index]
+      this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+      this.pricingsDialog = true
+    },
+    async deletePricing(index) {
+      console.log(index)
+      let success = await PricingsService.deletePricing(this.dataPricingHistory[index].id)
+      if(success) {
+        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+        successfulyDeletedPricing()
+      } else {
+        cantDeletePricing()
+      }
+    },
+    editPricing() {
+
+    },
+    getTodayDate() {
+      let timeStamp = Date.now()
+      return date.formatDate(timeStamp, 'YYYY-MM-DDTHH:mm:ss.SSSZ')
     }
   }
 }

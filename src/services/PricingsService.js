@@ -9,7 +9,7 @@ class PricingsService {
 
   async getCurrentPricingsForPharmacy () {
     const pricings = await this.apiClient
-      .get('/pharmacy/25fff0b2-ad45-4310-ac7f-96bcc5e517c1') // const ,login not inplemented yet
+      .get('/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed') // const ,login not inplemented yet
       .then(response => {
         return response.data
       })
@@ -23,7 +23,7 @@ class PricingsService {
 
   async getAllMedicinePricings (medicineId) {
     const pricings = await this.apiClient
-      .get(`/pharmacy/25fff0b2-ad45-4310-ac7f-96bcc5e517c1/medicine/${medicineId}`) // const ,login not inplemented yet
+      .get(`/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed/medicine/${medicineId}`) // const ,login not inplemented yet
       .then(response => {
         return response.data
       })
@@ -33,6 +33,20 @@ class PricingsService {
       })
 
     return pricings
+  }
+
+  async deletePricing (id) {
+    const success = this.apiClient
+      .delete('/' + id)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
   }
 
 }
