@@ -55,6 +55,7 @@ import {
   schedulingError,
   successfullyCancelled,
   cancellingError,
+  alreadyScheduled,
 } from "./../notifications/terms";
 import CounselingService from "src/services/CounselingService";
 
@@ -75,14 +76,16 @@ export default {
         patientId: this.patientId,
         checkupId: this.term.id,
       };
-      const success = await CheckupService.scheduleCheckup(checkupData);
+      const response = await CheckupService.scheduleCheckup(checkupData);
 
-      if (success) {
+      if (response.status == 200) {
         successfullyScheduled("checkup", this.term.doctor.surname);
+        setTimeout(() => this.$router.go(), 2000);
+      } else if (response.status == 409) {
+        alreadyScheduled();
       } else {
         schedulingError("checkup");
       }
-      setTimeout(() => this.$router.go(), 2000);
     },
 
     async cancelTerm() {
@@ -90,18 +93,16 @@ export default {
         patientId: this.patientId,
         termId: this.term.id,
       };
-      let success;
+      let response;
       if (this.term.type == "checkup")
-        success = await CheckupService.cancelCheckup(termData);
-      else
-        success = await CounselingService.cancelCounseling(termData);
+        response = await CheckupService.cancelCheckup(termData);
+      else response = await CounselingService.cancelCounseling(termData);
 
-      if (success) {
+      if (response.status == 200) {
         successfullyCancelled(this.term.type, this.term.doctor.surname);
       } else {
         cancellingError(this.term.type);
       }
-      setTimeout(() => this.$router.go(), 2000);
     },
 
     dateFormat(date) {
@@ -119,7 +120,8 @@ export default {
 .my-card {
   width: 90%;
   max-width: 21rem;
-  max-height: 13rem !important;
+  height: 13.5rem !important;
+  max-height: 13.5rem !important;
 }
 
 .q-card__section--vert {

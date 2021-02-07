@@ -47,6 +47,20 @@
           </q-pagination>
         </div>
       </div>
+
+      <div id="scheduling-btns">
+        <q-btn
+          color="primary"
+          label="Schedule Checkup"
+          @click="moveToScheduleCheckup"
+        />
+        <q-btn
+          color="primary"
+          label="Schedule Counseling"
+          @click="moveToScheduleCounseling"
+        />
+      </div>
+
       <div class="past-counselings">
         <div class="text-h5 title">Counselings</div>
         <div class="text-caption1 sorting">
@@ -152,7 +166,7 @@ export default {
       checkups: [],
       counselings: [],
       cancelCheckups: false,
-      cancelCounselings: false
+      cancelCounselings: false,
     };
   },
   methods: {
@@ -208,6 +222,12 @@ export default {
         return parameter.toLowerCase();
       }
     },
+    moveToScheduleCheckup() {
+      this.$router.push({ path: "schedule/checkups" });
+    },
+    moveToScheduleCounseling() {
+      this.$router.push({ path: "schedule/counselings" });
+    },
   },
 };
 </script>
@@ -258,6 +278,16 @@ export default {
   grid-column: 2;
   display: flex;
   flex-direction: row;
+}
+
+#scheduling-btns {
+  grid-row: 1;
+  grid-column: 7/10;
+  display: flex;
+  flex-direction: row;
+  max-height: 2.5rem;
+  justify-content: space-evenly;
+  margin-top: 1.25rem;
 }
 
 .past-counselings {

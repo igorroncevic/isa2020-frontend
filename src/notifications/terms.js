@@ -46,6 +46,14 @@ export function cancellingError (termType) {
   Notify.create(config)
 }
 
+export function alreadyScheduled () {
+  const config = {
+    type: 'negative',
+    message: `You already have scheduled term at that time.`
+  }
+  Notify.create(config)
+}
+
 export function startTimeBeforeEndTime () {
   const config = {
     type: 'negative',

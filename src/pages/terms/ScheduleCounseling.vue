@@ -70,6 +70,7 @@ import {
   noPharmaciesAreAvailable,
   successfullyScheduled,
   schedulingError,
+  alreadyScheduled
 } from "./../../notifications/terms";
 import { badTimeRange } from "./../../notifications/datetime";
 import CounselingService from "./../../services/CounselingService";
@@ -189,8 +190,12 @@ export default {
 
       if (response.status == 200) {
         successfullyScheduled("counseling", data.surname);
-        setTimeout(() => this.$router.push({ path: "/" }), 2500);
-      } else schedulingError("counseling");
+        setTimeout(() => this.$router.push({ path: "/patient/calendar" }), 2500);
+      } else if (response.status == 409) {
+        alreadyScheduled();
+      } else {
+        schedulingError("counseling");
+      }
     },
   },
 };

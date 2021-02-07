@@ -50,12 +50,10 @@ class CounselingService {
         let success = this.apiClient
             .put("/cancel", data)
             .then(response => {
-                console.log(response);
-                return true;
+                return response
             })
             .catch(err => {
-                console.log(err);
-                return false;
+                return err.response
             });
         return success;
     }
