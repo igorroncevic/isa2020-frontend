@@ -3,12 +3,12 @@
     <div id="patient-medicines-grid">
       <div id="reserved-medicines-wrapper">
         <div
-          class="text-h5 text-primary text-weight-medium"
-          style="grid-row: 1"
+          class="text-h4 text-primary text-weight-medium"
+          style="grid-row: 1; grid-column: 1/5"
         >
           Your Reserved Medicines
         </div>
-        <div id="reserved-medicines-btns">
+        <div class="list-btns">
           <q-btn
             label="Reserve Medicines"
             color="primary"
@@ -22,7 +22,7 @@
             @click="cancellingReservedMedicine = !cancellingReservedMedicine"
           />
         </div>
-        <div id="reserved-medicines-list" v-if="reservedMedicines.length != 0">
+        <div class="card-list" v-if="reservedMedicines.length != 0">
           <reserved-medicine-card
             v-for="medicine in reservedMedicines"
             :pharmacy="medicine.pharmacy"
@@ -42,43 +42,93 @@
           You haven't reserved any medicines yet.
         </div>
       </div>
-      <div id="eprescription-wrapper">Hello</div>
-      <div id="eprescription-medicines-wrapper">Hello</div>
+      <div id="eprescription-wrapper">
+        <div
+          class="text-h4 text-primary text-weight-medium"
+          style="grid-row: 1; grid-column: 1/5"
+        >
+          Your EPrescriptions
+        </div>
+        <div class="card-list" v-if="eprescriptions.length != 0">
+          <EPrescriptionMedicinesCard
+            v-for="eprescription in eprescriptions"
+            :key="eprescription.id"
+            :eprescriptionMedicines="eprescription.eprescriptionMedicines"
+            :issueDate="eprescription.issueDate"
+            :status="eprescription.status"
+          />
+        </div>
+        <div
+          class="text-body1"
+          style="grid-row: 2"
+          v-if="eprescriptions.length == 0"
+        >
+          You haven't received any prescriptions yet.
+        </div>
+        <div class="list-btns">
+          <q-select
+            borderless
+            v-model="prescriptionSorting"
+            :options="sortingOptions"
+            label="Sort by"
+            @input="sortPrescriptions"
+          />
+          <q-select
+            borderless
+            v-model="prescriptionFiltering"
+            :options="filteringOptions"
+            label="Status"
+            @input="filterPrescriptions"
+          />
+        </div>
+      </div>
     </div>
   </q-page>
 </template>
 
 <script>
 import ReservedMedicineCard from "./../../components/ReservedMedicineCard";
+import EPrescriptionMedicinesCard from "./../../components/EPrescriptionMedicinesCard";
 import MedicineService from "./../../services/MedicineService";
+import EPrescriptionService from "./../../services/EPrescriptionService";
 import {
   successfullyCancelledMedicine,
   errorOccurredWhileCancellingMedicine,
 } from "./../../notifications/medicines";
 
 export default {
-  components: { ReservedMedicineCard },
+  components: { ReservedMedicineCard, EPrescriptionMedicinesCard },
   async mounted() {
     let response = await MedicineService.getAllPatientsReservedMedicines(
       this.patientId
     );
 
-    console.log(response.data);
-
     if (response.status == 200) this.reservedMedicines = [...response.data];
+
+    response = await EPrescriptionService.getAllPatientsEPrescriptions(
+      this.patientId
+    );
+    if (response.status == 200) this.eprescriptions = [...response.data];
   },
 
   data() {
     return {
       patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
       reservedMedicines: [],
+      eprescriptions: [],
       cancellingReservedMedicine: false,
+      prescriptionFiltering: "All of them",
+      prescriptionSorting: "Issue Date Desc.",
+      filteringOptions: ["All of them", "Pending", "Processed", "Declined"],
+      sortingOptions: ["Issue Date Desc.", "Issue Date Asc."],
     };
   },
   methods: {
     navigateToReservePage() {
       this.$router.push({ path: "/patient/medicines/reserve" });
     },
+    filterPrescriptions() {},
+    sortPrescriptions() {},
     async cancelMedicine(id) {
       let reservation = {
         ...this.reservedMedicines.filter((med) => med.id == id)[0],
@@ -111,7 +161,7 @@ export default {
 <style scoped>
 #patient-medicines-grid {
   display: grid;
-  grid-template-rows: repeat(3, 0.9fr);
+  grid-template-rows: repeat(2, 0.5fr);
   grid-template-columns: repeat(10, 1fr);
 }
 
@@ -121,10 +171,13 @@ export default {
   padding: 2rem;
   display: grid;
   grid-template-rows: 4rem auto;
+  grid-template-columns: repeat(10, 1fr);
+  row-gap: 5px;
 }
 
-#reserved-medicines-list {
+.card-list {
   grid-row: 2;
+  grid-column: 1/10;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -132,9 +185,9 @@ export default {
   row-gap: 10px;
 }
 
-#reserved-medicines-btns {
+.list-btns {
   grid-row: 1;
-  grid-column: 11;
+  grid-column: 8/11;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
@@ -145,16 +198,14 @@ export default {
 #eprescription-wrapper {
   grid-row: 2;
   grid-column: 1/11;
-  background-color: blue;
   padding: 2rem;
   display: grid;
   grid-template-rows: 4rem auto;
 }
 
-#eprescription-medicines-wrapper {
-  grid-row: 3;
-  grid-column: 1/11;
-  background-color: red;
-  padding: 2rem;
+#eprescription-wrapper .list-btns {
+  justify-content: flex-end;
+  margin-right: 3rem;
+  column-gap: 5rem;
 }
 </style>

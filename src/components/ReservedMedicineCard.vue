@@ -77,8 +77,8 @@ export default {
 .my-card {
   width: 90%;
   max-width: 25rem;
-  height: 13.5rem !important;
-  max-height: 13.5rem !important;
+  height: 14rem;
+  display: table;
 }
 
 .q-card__section--vert {
