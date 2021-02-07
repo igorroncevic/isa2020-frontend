@@ -107,10 +107,10 @@ export default {
         medicineId: allergy.id,
       });
       if (response.status == 201) {
-        successfullyAddedAllergy(allergy.name);
+        successfullyAddedAllergy(allergy.label);
         setTimeout(() => this.$router.go(), 2500);
       } else {
-        errorOccurredWhileAddingAllergy(allergy.name);
+        errorOccurredWhileAddingAllergy(allergy.label);
       }
     },
     async updateData(user) {
