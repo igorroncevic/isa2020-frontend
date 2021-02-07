@@ -14,12 +14,19 @@
             label="Sort by"
             @input="sortPaginateCheckup"
           />
+          <q-btn
+            flat
+            color="red"
+            label="Cancel"
+            @click="cancelCheckups = !cancelCheckups"
+          />
         </div>
         <div class="list">
-          <checkup-card
+          <term-card
             v-for="checkup in checkups"
             :key="checkup.id"
-            :checkup="checkup"
+            :term="checkup"
+            :cancelling="cancelCheckups"
           />
           <div
             v-if="checkups.length == 0"
@@ -50,12 +57,19 @@
             label="Sort by"
             @input="sortPaginateCounseling"
           />
+          <q-btn
+            flat
+            color="red"
+            label="Cancel"
+            @click="cancelCounselings = !cancelCounselings"
+          />
         </div>
         <div class="list">
-          <checkup-card
+          <term-card
             v-for="counseling in counselings"
             :key="counseling.id"
-            :checkup="counseling"
+            :term="counseling"
+            :cancelling="cancelCounselings"
           />
           <div
             v-if="counselings.length == 0"
@@ -81,13 +95,12 @@
 </template>
 
 <script>
-import CheckupCard from "./../components/CheckupCard";
-import CounselingCard from "./../components/CounselingCard";
+import TermCard from "./../components/TermCard";
 import CounselingService from "./../services/CounselingService";
 import CheckupService from "./../services/CheckupService";
 
 export default {
-  components: { CheckupCard, CounselingCard },
+  components: { TermCard },
   async beforeMount() {
     let counselingResponse = await CounselingService.getAllPatientsUpcomingCounselingsPaginated(
       {
@@ -117,8 +130,6 @@ export default {
       this.checkupPages = checkupResponse.data.totalPages;
     }
 
-    console.log(this.checkups);
-
     this.$nextTick(() => this.$forceUpdate());
   },
   data() {
@@ -140,6 +151,8 @@ export default {
       counselingPages: 3,
       checkups: [],
       counselings: [],
+      cancelCheckups: false,
+      cancelCounselings: false
     };
   },
   methods: {
@@ -205,6 +218,7 @@ export default {
   grid-template-columns: repeat(10, 11%);
   grid-template-rows: 4rem auto;
   row-gap: 3rem;
+  column-gap: -10px;
 }
 
 .patient-history-title {
@@ -216,7 +230,7 @@ export default {
   grid-row: 2;
   grid-column: 2/5;
   display: grid;
-  grid-template-columns: auto 7rem;
+  grid-template-columns: auto 12rem;
   grid-template-rows: 2rem auto 2rem;
   row-gap: 30px;
 }
@@ -242,13 +256,15 @@ export default {
 .sorting {
   grid-row: 1;
   grid-column: 2;
+  display: flex;
+  flex-direction: row;
 }
 
 .past-counselings {
   grid-row: 2;
   grid-column: 6/9;
   display: grid;
-  grid-template-columns: auto 7rem;
+  grid-template-columns: auto 12rem;
   grid-template-rows: 2rem auto 2rem;
   row-gap: 30px;
 }

@@ -3,17 +3,21 @@
     <q-card-section vertical>
       <q-card-section>
         <div class="text-h5 text-primary text-weight-medium">
-          {{capitalize(checkup.type)}}
+          {{ capitalize(term.type) }}
         </div>
       </q-card-section>
       <q-separator></q-separator>
       <q-card-section>
         <div class="text-body1">
-          <span class="text-primary text-weight-medium"> Start: </span> {{ dateFormat(checkup.startTime) }} <br />
-          <span class="text-primary text-weight-medium"> End: </span> {{ dateFormat(checkup.endTime) }} <br />
-          <span class="text-primary text-weight-medium"> Doctor: </span> {{ checkup.doctor.name }}
-          {{ checkup.doctor.surname }} <br />
-          <span class="text-primary text-weight-medium"> Price: </span> ${{ checkup.price }}
+          <span class="text-primary text-weight-medium"> Start: </span>
+          {{ dateFormat(term.startTime) }} <br />
+          <span class="text-primary text-weight-medium"> End: </span>
+          {{ dateFormat(term.endTime) }} <br />
+          <span class="text-primary text-weight-medium"> Doctor: </span>
+          {{ term.doctor.name }} {{ term.doctor.surname }} <br />
+          <span class="text-primary text-weight-medium"> Price: </span> ${{
+            term.price
+          }}
         </div>
 
         <div
@@ -30,7 +34,7 @@
           ></q-btn>
           <q-btn
             v-if="cancelling"
-            @click="cancelCheckup"
+            @click="cancelTerm"
             flat
             icon="cancel_schedule_send"
             label="Cancel"
@@ -52,46 +56,50 @@ import {
   successfullyCancelled,
   cancellingError,
 } from "./../notifications/terms";
+import CounselingService from "src/services/CounselingService";
 
 export default {
-  props: ["checkup", "scheduling", "cancelling"],
+  props: ["term", "scheduling", "cancelling"],
   data() {
     return {
-      patientId: "5ffe884f-9cd8-42f5-adc4-2a27cd8d2737",
+      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
     };
   },
   mounted() {
-    this.checkup.startTime = this.dateFormat(this.checkup.startTime);
-    this.checkup.endTime = this.dateFormat(this.checkup.endTime);
+    this.term.startTime = this.dateFormat(this.term.startTime);
+    this.term.endTime = this.dateFormat(this.term.endTime);
   },
   methods: {
     async scheduleCheckup() {
       const checkupData = {
         patientId: this.patientId,
-        checkupId: this.checkup.id,
+        checkupId: this.term.id,
       };
-      console.log(checkupData);
       const success = await CheckupService.scheduleCheckup(checkupData);
 
       if (success) {
-        successfullyScheduled("checkup", this.checkup.doctor.surname);
+        successfullyScheduled("checkup", this.term.doctor.surname);
       } else {
         schedulingError("checkup");
       }
       setTimeout(() => this.$router.go(), 2000);
     },
 
-    async cancelCheckup() {
-      const checkupData = {
+    async cancelTerm() {
+      const termData = {
         patientId: this.patientId,
-        checkupId: this.checkup.id,
+        termId: this.term.id,
       };
-      const success = await CheckupService.cancelCheckup(checkupData);
+      let success;
+      if (this.term.type == "checkup")
+        success = await CheckupService.cancelCheckup(termData);
+      else
+        success = await CounselingService.cancelCounseling(termData);
 
       if (success) {
-        successfullyCancelled(this.checkup.type, this.checkup.doctor.surname);
+        successfullyCancelled(this.term.type, this.term.doctor.surname);
       } else {
-        cancellingError(this.checkup.type);
+        cancellingError(this.term.type);
       }
       setTimeout(() => this.$router.go(), 2000);
     },
@@ -110,8 +118,8 @@ export default {
 <style>
 .my-card {
   width: 90%;
-  max-width: 10rem;
-  max-height: 12rem !important;
+  max-width: 21rem;
+  max-height: 13rem !important;
 }
 
 .q-card__section--vert {

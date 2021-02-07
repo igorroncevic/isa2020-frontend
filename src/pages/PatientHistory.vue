@@ -16,10 +16,10 @@
           />
         </div>
         <div class="list">
-          <checkup-card
+          <term-card
             v-for="checkup in checkups"
             :key="checkup.id"
-            :checkup="checkup"
+            :term="checkup"
           />
           <div
             v-if="checkups.length == 0"
@@ -52,10 +52,10 @@
           />
         </div>
         <div class="list">
-          <checkup-card
+          <term-card
             v-for="counseling in counselings"
             :key="counseling.id"
-            :checkup="counseling"
+            :term="counseling"
           />
           <div
             v-if="counselings.length == 0"
@@ -81,13 +81,12 @@
 </template>
 
 <script>
-import CheckupCard from "./../components/CheckupCard";
-import CounselingCard from "./../components/CounselingCard";
+import TermCard from "./../components/TermCard";
 import CounselingService from "./../services/CounselingService";
 import CheckupService from "./../services/CheckupService";
 
 export default {
-  components: { CheckupCard, CounselingCard },
+  components: { TermCard },
   async beforeMount() {
     let counselingResponse = await CounselingService.getAllPatientsPastCounselingsPaginated(
       {
