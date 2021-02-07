@@ -68,7 +68,6 @@ export default {
 <style scoped>
 .my-card {
   width: 90%;
-  height: auto;
   max-width: 25rem;
   display: table;
 }

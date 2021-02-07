@@ -7,9 +7,9 @@ class EPrescriptionService {
         });
     }
 
-    async getAllPatientsEPrescriptions(id) {
+    async getAllPatientsEPrescriptions(data) {
         let prescriptions = await this.apiClient
-            .get(`/${id}`)
+            .post(`/patient/`, data)
             .then(response => {
                 return response;
             })

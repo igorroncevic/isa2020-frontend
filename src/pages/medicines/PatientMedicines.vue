@@ -36,7 +36,7 @@
         </div>
         <div
           class="text-body1"
-          style="grid-row: 2"
+          style="grid-row: 2; grid-column: 1/5"
           v-if="reservedMedicines.length == 0"
         >
           You haven't reserved any medicines yet.
@@ -60,7 +60,7 @@
         </div>
         <div
           class="text-body1"
-          style="grid-row: 2"
+          style="grid-row: 2; grid-column: 1/5"
           v-if="eprescriptions.length == 0"
         >
           You haven't received any prescriptions yet.
@@ -71,14 +71,14 @@
             v-model="prescriptionSorting"
             :options="sortingOptions"
             label="Sort by"
-            @input="sortPrescriptions"
+            @input="filterAndSortPrescriptions"
           />
           <q-select
             borderless
             v-model="prescriptionFiltering"
             :options="filteringOptions"
             label="Status"
-            @input="filterPrescriptions"
+            @input="filterAndSortPrescriptions"
           />
         </div>
       </div>
@@ -105,9 +105,11 @@ export default {
 
     if (response.status == 200) this.reservedMedicines = [...response.data];
 
-    response = await EPrescriptionService.getAllPatientsEPrescriptions(
-      this.patientId
-    );
+    response = await EPrescriptionService.getAllPatientsEPrescriptions({
+      patientId: this.patientId,
+      filter: this.prescriptionFiltering,
+      sort: this.prescriptionSorting,
+    });
     if (response.status == 200) this.eprescriptions = [...response.data];
   },
 
@@ -127,8 +129,14 @@ export default {
     navigateToReservePage() {
       this.$router.push({ path: "/patient/medicines/reserve" });
     },
-    filterPrescriptions() {},
-    sortPrescriptions() {},
+    async filterAndSortPrescriptions() {
+      let response = await EPrescriptionService.getAllPatientsEPrescriptions({
+        patientId: this.patientId,
+        filter: this.prescriptionFiltering,
+        sort: this.prescriptionSorting,
+      });
+      if (response.status == 200) this.eprescriptions = [...response.data];
+    },
     async cancelMedicine(id) {
       let reservation = {
         ...this.reservedMedicines.filter((med) => med.id == id)[0],
