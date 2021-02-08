@@ -9,8 +9,11 @@ class TermService {
   }
 
   async postTerm(data) {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post('/', data)
+      .post('/', data, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -34,11 +37,14 @@ class TermService {
       .catch(err => {
         return err.response
       })
-      return terms;
-    }
+    return terms;
+  }
 
-  async getDoctorTerms (doctor) {
-    const terms = await this.apiClient.get('/doctor/' + doctor)
+  async getDoctorTerms(doctor) {
+    let headers = this.setupHeaders()
+    const terms = await this.apiClient.get('/doctor/' + doctor, {
+      headers
+    })
       .then(response => {
         return response.data
       })
@@ -49,8 +55,11 @@ class TermService {
     return terms
   }
 
-  async getDoctorTermsByPharmacy (doctor, pharmacy) {
-    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy)
+  async getDoctorTermsByPharmacy(doctor, pharmacy) {
+    let headers = this.setupHeaders()
+    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy, {
+      headers
+    })
       .then(response => {
         return response.data
       })
@@ -64,8 +73,8 @@ class TermService {
   setupHeaders() {
     const jwt = store.getters.getJwt;
     let headers = {
-        Accept: "application/json",
-        Authorization: "Bearer " + jwt,
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
     };
     return headers;
   }

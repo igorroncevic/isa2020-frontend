@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from './../store/index'
 
 class PromotionService {
     constructor() {
@@ -7,9 +8,21 @@ class PromotionService {
         });
     }
 
+    setupHeaders() {
+        const jwt = store.getters.getJwt;
+        let headers = {
+            Accept: "application/json",
+            Authorization: "Bearer " + jwt,
+        };
+        return headers;
+    }
+
     async getAllPatientsPromotions(id) {
+        let headers = this.setupHeaders()
         let promotions = await this.apiClient
-            .get(`/patient/${id}`)
+            .get(`/patient/${id}`, {
+                headers
+            })
             .then(response => {
                 return response;
             })

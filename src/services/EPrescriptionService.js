@@ -8,8 +8,11 @@ class EPrescriptionService {
     }
 
     async getAllPatientsEPrescriptions(data) {
+        let headers = this.setupHeaders()
         let prescriptions = await this.apiClient
-            .post(`/patient/`, data)
+            .post(`/patient/`, data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -18,6 +21,15 @@ class EPrescriptionService {
             });
 
         return prescriptions;
+    }
+
+    setupHeaders() {
+        const jwt = store.getters.getJwt;
+        let headers = {
+            Accept: "application/json",
+            Authorization: "Bearer " + jwt,
+        };
+        return headers;
     }
 }
 

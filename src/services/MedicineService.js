@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class MedicineService {
     constructor() {
@@ -7,9 +8,21 @@ class MedicineService {
         })
     }
 
+    setupHeaders() {
+        const jwt = store.getters.getJwt;
+        let headers = {
+            Accept: "application/json",
+            Authorization: "Bearer " + jwt,
+        };
+        return headers;
+    }
+
     async getAllPatientsMedicines(patientId) {
+        let headers = this.setupHeaders()
         let medicines = await this.apiClient
-            .get(`/patient/${patientId}`)
+            .get(`/patient/${patientId}`, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -21,8 +34,11 @@ class MedicineService {
     }
 
     async getAllPatientsReservedMedicines(patientId) {
+        let headers = this.setupHeaders()
         let medicines = await this.apiClient
-            .get(`/reserved/${patientId}`)
+            .get(`/reserved/${patientId}`, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -34,8 +50,11 @@ class MedicineService {
     }
 
     async getAllMedicinesPatientsNotAlergicTo(patientId) {
+        let headers = this.setupHeaders()
         let medicines = await this.apiClient
-            .get(`/notallergic/${patientId}`)
+            .get(`/notallergic/${patientId}`, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -47,8 +66,11 @@ class MedicineService {
     }
 
     async getAllMedicinesForFiltering(data) {
+        let headers = this.setupHeaders()
         let medicines = await this.apiClient
-            .post('/filter', data)
+            .post('/filter', data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -60,8 +82,11 @@ class MedicineService {
     }
 
     async reserveMedicine(data) {
+        let headers = this.setupHeaders()
         let success = await this.apiClient
-            .post('/reserve', data)
+            .post('/reserve', data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -73,8 +98,11 @@ class MedicineService {
     }
 
     async cancelMedicine(data) {
+        let headers = this.setupHeaders()
         let success = await this.apiClient
-            .post('/cancel', data)
+            .post('/cancel', data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -86,8 +114,11 @@ class MedicineService {
     }
 
     async addNewAllergyForPatient(data) {
+        let headers = this.setupHeaders()
         let success = await this.apiClient
-            .post('/allergy', data)
+            .post('/allergy', data, {
+                headers
+            })
             .then(response => {
                 return response;
             })

@@ -1,15 +1,28 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class SupplierService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/suppliers'
     })
   }
 
-  async registerNewSupplier (suppData) {
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
+  }
+
+  async registerNewSupplier(suppData) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .post('/register', suppData)
+      .post('/register', suppData, {
+        headers
+      })
       .then(response => {
         console.log(response)
         return true

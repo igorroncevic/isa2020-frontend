@@ -1,15 +1,19 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class CheckupService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/checkups'
     })
   }
 
-  async getAllCheckups () {
+  async getAllCheckups() {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .get('/')
+      .get('/', {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -22,8 +26,11 @@ class CheckupService {
   }
 
   async getAllPatientsPastCheckupsPaginated(data) {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post(`/past`, data)
+      .post(`/past`, data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -36,8 +43,11 @@ class CheckupService {
   }
 
   async getAllPatientsUpcomingCheckupsPaginated(data) {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post(`/upcoming`, data)
+      .post(`/upcoming`, data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -49,9 +59,12 @@ class CheckupService {
     return checkups
   }
 
-  async getAllPatientsCheckups (patientId) {
+  async getAllPatientsCheckups(patientId) {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .get(`/patient/${patientId}`)
+      .get(`/patient/${patientId}`, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -63,9 +76,12 @@ class CheckupService {
     return checkups
   }
 
-  async getById (id) {
+  async getById(id) {
+    let headers = this.setupHeaders()
     const term = this.apiClient
-      .get('/patientCheckup/' + id)
+      .get('/patientCheckup/' + id, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -76,9 +92,12 @@ class CheckupService {
     return term
   }
 
-  async scheduleCheckup (data) {
+  async scheduleCheckup(data) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .put('/schedule', data)
+      .put('/schedule', data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -88,9 +107,10 @@ class CheckupService {
     return success
   }
 
-  async cancelCheckup (data) {
+  async cancelCheckup(data) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .put('/cancel', data)
+      .put('/cancel', data, { headers })
       .then(response => {
         return response;
       })
@@ -100,9 +120,12 @@ class CheckupService {
     return success
   }
 
-  async deleteCheckup (id) {
+  async deleteCheckup(id) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .delete('/' + id)
+      .delete('/' + id, {
+        headers
+      })
       .then(response => {
         console.log(response)
         return true
@@ -112,6 +135,15 @@ class CheckupService {
         return false
       })
     return success
+  }
+
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
   }
 }
 

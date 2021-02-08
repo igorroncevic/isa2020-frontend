@@ -34,7 +34,7 @@ const routes = [
       { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
-      { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue')},
+      { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
       { path: 'mark', component: () => import('pages/Mark.vue') },
       { path: 'complaints', component: () => import('pages/WriteComplaint.vue') },
     ]
