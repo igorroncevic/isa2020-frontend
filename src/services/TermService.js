@@ -30,6 +30,7 @@ class TermService {
       .catch(err => {
         return err.response
       })
+    }
 
   async getDoctorTerms (doctor) {
     const terms = await this.apiClient.get('/doctor/' + doctor)

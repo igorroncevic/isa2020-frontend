@@ -7,34 +7,6 @@ class PatientService {
     })
   }
 
-  async registerNewPatient(patient) {
-    const success = this.apiClient
-      .post('/register', patient)
-      .then(response => {
-        console.log(response)
-        return true
-      })
-      .catch(err => {
-        console.log(err)
-        return false
-      })
-    return success
-  }
-
-  async login(patient) {
-    const success = this.apiClient
-      .post('/login', patient)
-      .then(response => {
-        console.log(response)
-        return true
-      })
-      .catch(err => {
-        console.log(err)
-        return false
-      })
-    return success
-  }
-
   async addPenalty(patient) {
     const success = this.apiClient
       .put('/addPenalty/' + patient)
