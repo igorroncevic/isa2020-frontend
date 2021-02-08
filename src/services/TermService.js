@@ -31,6 +31,27 @@ class TermService {
         return err.response
       })
 
+  async getDoctorTerms (doctor) {
+    const terms = await this.apiClient.get('/doctor/' + doctor)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+    return terms
+  }
+
+  async getDoctorTermsByPharmacy (doctor, pharmacy) {
+    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
     return terms
   }
 }

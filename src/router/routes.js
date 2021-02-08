@@ -32,7 +32,6 @@ const routes = [
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
       { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
       { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
-      // { path: 'medicines/cancel', component: () => import('pages/medicines/CancelMedicines.vue') }, // Prebaciti funkcionalnost u PatientMedicines
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue')},
@@ -48,9 +47,11 @@ const routes = [
       { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
       { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') },
-      { path: 'derm/startChekup/:id', component: () => import('pages/termReports/Checkup.vue') },
-      { path: 'pharm/startCounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
-      { path: 'patients', component: () => import('pages/DoctorPatients.vue') }
+      { path: 'derm/startcheckup/:id', component: () => import('pages/termReports/Checkup.vue') },
+      { path: 'pharm/startcounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
+      { path: 'patients', component: () => import('pages/DoctorPatients.vue') },
+      { path: 'pharm/schedule', component: () => import('pages/PharmSchedule.vue') },
+      { path: 'derm/schedule', component: () => import('pages/DermSchedule.vue') }
     ]
   },
   {
