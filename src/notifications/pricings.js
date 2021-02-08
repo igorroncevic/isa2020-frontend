@@ -26,19 +26,37 @@ export function successfulyDeletedPricing() {
 }
 
 export function addedNewPricing() {
-    let config = {
-       type: 'positive',
-       message: `Successfuly added new pricing.`
-    }
+   let config = {
+      type: 'positive',
+      message: `Successfuly added new pricing.`
+   }
  
-    Notify.create(config);
- }
+   Notify.create(config);
+}
 
- export function failedToAddPricing() {
-    let config = {
-       type: 'negative',
-       message: `Failed to add pricing.`
-    }
+export function failedToAddPricing() {
+   let config = {
+      type: 'negative',
+      message: `Failed to add pricing.`
+   }
  
-    Notify.create(config);
- }
+   Notify.create(config);
+}
+
+export function successfulyUpdatedPricing() {
+   let config = {
+      type: 'positive',
+      message: `Successfuly updated pricing.`
+   }
+ 
+   Notify.create(config);
+}
+
+export function failedToUpdatePricing(failMessage) {
+   let config = {
+      type: 'negative',
+      message: failMessage
+   }
+ 
+   Notify.create(config);
+}

@@ -63,6 +63,18 @@ class PricingsService {
     return success
   }
 
+  async updatePricing (id, data) {
+    const response = this.apiClient
+      .put('/' + id, data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return response
+  }
+
 }
 
 const pricingsService = new PricingsService()
