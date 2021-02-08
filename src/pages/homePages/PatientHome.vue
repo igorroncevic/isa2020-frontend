@@ -28,7 +28,12 @@
           </div>
 
           <div id="home-grid-content-terms-seemore">
-            <q-btn flat color="primary" label="See more" @click="navigateToCalendar" />
+            <q-btn
+              flat
+              color="primary"
+              label="See more"
+              @click="navigateToCalendar"
+            />
           </div>
         </div>
 
@@ -36,14 +41,20 @@
           <div id="home-grid-content-promotions-title">
             <div class="text-h5 text-primary">Ongoing Promotions</div>
           </div>
-          <div id="home-grid-content-promotions-cards">Hello</div>
+          <div id="home-grid-content-promotions-cards">
+            <promotion-card
+              v-for="promotion in promotions"
+              :key="promotion.id"
+              :promotion="promotion"
+            />
+          </div>
         </div>
 
         <div id="home-grid-side-actions">
           <div id="home-grid-side-actions-penalties">
             <div class="text-subtitle1">
               <span class="text-primary">Your penalties:</span>
-              0
+              {{ penalties }}
             </div>
           </div>
           <div id="home-grid-side-actions-mark">
@@ -53,7 +64,12 @@
               </div>
             </div>
             <div id="home-grid-side-actions-mark-btn">
-              <q-btn bordered color="primary" label="Rate us" />
+              <q-btn
+                bordered
+                color="primary"
+                label="Rate us"
+                @click="navigateToMark"
+              />
             </div>
           </div>
           <div id="home-grid-side-actions-complaint">
@@ -74,10 +90,13 @@
 
 <script>
 import TermService from "./../../services/TermService";
+import PromotionService from "./../../services/PromotionService";
+import PatientService from "./../../services/PatientService";
 import TermCard from "./../../components/TermCard";
+import PromotionCard from "./../../components/PromotionCard";
 
 export default {
-  components: { TermCard },
+  components: { TermCard, PromotionCard },
   async beforeMount() {
     let response = await TermService.getAllPatientsUpcomingTerms(
       this.patientId
@@ -86,18 +105,36 @@ export default {
     if (response) {
       if (response.status == 200) this.terms = [...response.data];
     }
+
+    response = await PromotionService.getAllPatientsPromotions(this.patientId);
+
+    if (response) {
+      if (response.status == 200) this.promotions = [...response.data];
+    }
+
+    response = await PatientService.getPatientPenalties(this.patientId);
+
+    if (response) {
+      if (response.status == 200) this.penalties = response.data;
+    }
+    
   },
   data() {
     return {
       terms: [],
+      promotions: [],
       patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      penalties: 0,
     };
   },
   methods: {
-      navigateToCalendar(){
-          this.$router.push({path: '/patient/calendar'})
-      }
-  }
+    navigateToCalendar() {
+      this.$router.push({ path: "/patient/calendar" });
+    },
+    navigateToMark() {
+      this.$router.push({ path: "/patient/mark" });
+    },
+  },
 };
 </script>
 
@@ -149,7 +186,7 @@ export default {
 #home-grid-content-terms-seemore {
   grid-column: 2;
   grid-row: 2;
-  display:flex;
+  display: flex;
   align-items: center;
 }
 
@@ -169,8 +206,9 @@ export default {
   grid-row: 2;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  background-color: blue;
+  flex-wrap: wrap;
+  column-gap: 10px;
+  row-gap: 10px;
 }
 
 #home-grid-side-actions {

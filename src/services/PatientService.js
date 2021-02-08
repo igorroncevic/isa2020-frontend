@@ -86,6 +86,19 @@ class PatientService {
 
     return success;
   }
+
+  async getPatientPenalties(id) {
+    let penalties = await this.apiClient
+      .get(`/penalties/${id}`)
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return err.response;
+      });
+
+    return penalties;
+  }
 }
 
 const patientService = new PatientService()
