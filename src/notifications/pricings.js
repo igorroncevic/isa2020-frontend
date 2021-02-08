@@ -24,3 +24,21 @@ export function successfulyDeletedPricing() {
 
    Notify.create(config);
 }
+
+export function addedNewPricing() {
+    let config = {
+       type: 'positive',
+       message: `Successfuly added new pricing.`
+    }
+ 
+    Notify.create(config);
+ }
+
+ export function failedToAddPricing() {
+    let config = {
+       type: 'negative',
+       message: `Failed to add pricing.`
+    }
+ 
+    Notify.create(config);
+ }

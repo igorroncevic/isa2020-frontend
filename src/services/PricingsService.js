@@ -49,6 +49,20 @@ class PricingsService {
     return success
   }
 
+  async addNewPricing (data) {
+    const success = this.apiClient
+      .post('', data)
+      .then(response => {
+        console.log(response.body)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
 }
 
 const pricingsService = new PricingsService()

@@ -52,6 +52,14 @@
       <q-card class="q-pa-lg">
         <div class="col text-h6 ellipsis">
           {{ this.selectedMedicine.name }} pricings
+          <q-btn
+              color="neutral"
+              icon-right="add"
+              no-caps
+              flat
+              dense
+              @click="addPricingDialog = true"
+            />
         </div>
         <q-table
           class="q-pa-sm"
@@ -88,6 +96,14 @@
         </q-table>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="addPricingDialog">
+      <q-card class="q-pa-lg">
+          <q-input class="q-ma-sm" v-model="newPricing.startDate" filled type="date" hint="Start date" />
+          <q-input class="q-ma-sm" v-model="newPricing.endDate" filled type="date" hint="End date" />
+          <q-input class="q-ma-sm" v-model.number="newPricing.price" type="number" filled hint="Price" />
+          <q-btn flat style="color: red" label="Add new pricing" @click="addNewPricing()" />
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -102,6 +118,8 @@ import moment from 'moment'
 import { date } from 'quasar'
 import {cantDeletePricing} from './../notifications/pricings'
 import {successfulyDeletedPricing} from './../notifications/pricings'
+import {addedNewPricing} from './../notifications/pricings'
+import {failedToAddPricing} from './../notifications/pricings'
 
 
 export default {
@@ -112,6 +130,7 @@ export default {
   data () {
     return {
       pricingsDialog: false,
+      addPricingDialog: false,
       selectedMedicine: {
         name: null
       },
@@ -135,7 +154,14 @@ export default {
       dataPricingHistory: [],
       allMedicines: [],
       selectedNewMedicine: null,
-      original: []
+      original: [],
+      newPricing: {
+        medicineId: "",
+        pharmacyId: "",
+        startDate: "",
+        endDate: "",
+        price: 0
+      }
     }
   },
   methods: {
@@ -183,8 +209,16 @@ export default {
         cantDeletePricing()
       }
     },
-    editPricing() {
-
+    async addNewPricing() {
+      this.newPricing.pharmacyId = "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
+      this.newPricing.medicineId = this.selectedMedicine.id
+      let success = await PricingsService.addNewPricing(this.newPricing)
+      if(success) {
+        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+        addedNewPricing()
+      } else {
+        failedToAddPricing()
+      }
     },
     getTodayDate() {
       let timeStamp = Date.now()
