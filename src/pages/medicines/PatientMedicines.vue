@@ -99,6 +99,8 @@ import {
 export default {
   components: { ReservedMedicineCard, EPrescriptionMedicinesCard },
   async mounted() {
+    this.patientId = this.$store.getters.getId
+
     let response = await MedicineService.getAllPatientsReservedMedicines(
       this.patientId
     );
@@ -115,7 +117,7 @@ export default {
 
   data() {
     return {
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
       reservedMedicines: [],
       eprescriptions: [],
       cancellingReservedMedicine: false,

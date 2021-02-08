@@ -101,6 +101,9 @@ import MarkService from "./../services/MarkService";
 
 export default {
   components: { MarkEntity },
+  mounted(){
+    this.patientId = this.$store.getters.getId
+  },
   data() {
     return {
       step: 1,
@@ -109,7 +112,7 @@ export default {
       entitiesToMark: [],
       selectedEntity: null,
       givenMark: 5,
-      patientId: "dd4c7e5f-f2c4-42dc-a809-fd7f588b3acb",
+      patientId: "",
     };
   },
   methods: {

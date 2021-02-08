@@ -63,10 +63,11 @@ export default {
   props: ["term", "scheduling", "cancelling"],
   data() {
     return {
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
     };
   },
   mounted() {
+    this.patientId = this.$store.getters.getId
     this.term.startTime = this.dateFormat(this.term.startTime);
     this.term.endTime = this.dateFormat(this.term.endTime);
   },

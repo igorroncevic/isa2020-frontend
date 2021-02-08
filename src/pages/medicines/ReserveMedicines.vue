@@ -111,6 +111,8 @@ import {
 export default {
   components: { MedicineFilterCard, DateInput },
   async mounted() {
+    this.patientId = this.$store.getters.getId
+
     let response = await MedicineService.getAllMedicinesForFiltering({
       name: "",
       patientId: this.patientId,
@@ -133,7 +135,7 @@ export default {
   data() {
     return {
       medicines: [],
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
       nameFilter: "",
       selectedMedicine: { id: 1 },
       selectedPharmacy: { id: 2 },

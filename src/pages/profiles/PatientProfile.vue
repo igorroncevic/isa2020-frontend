@@ -76,6 +76,8 @@ import {
 export default {
   components: { EditPatientDataDialog, PatientAllergiesTable, PatientLoyalty },
   async beforeMount() {
+    this.patientId = this.$store.getters.getId
+
     let response = await PatientService.getPatientsProfileInfo(this.patientId);
     if (response.status == 200) this.currentUser = { ...response.data };
 
@@ -93,7 +95,7 @@ export default {
       currentUser: {},
       editing: false,
       notAllergicMedicines: [],
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
     };
   },
   methods: {

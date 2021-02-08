@@ -88,6 +88,8 @@ import CheckupService from "./../services/CheckupService";
 export default {
   components: { TermCard },
   async beforeMount() {
+    this.patientId = this.$store.getters.getId
+
     let counselingResponse = await CounselingService.getAllPatientsPastCounselingsPaginated(
       {
         id: this.patientId,
@@ -120,7 +122,7 @@ export default {
   },
   data() {
     return {
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
       checkupSorting: "Date Desc.",
       counselingSorting: "Date Desc.",
       sortingOptions: [
