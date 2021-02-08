@@ -1,6 +1,6 @@
 <template>
 <q-page padding>
-<term-report termType="checkup"/>
+<term-report :derm="true" termType="checkup"/>
 </q-page>
 
 </template>

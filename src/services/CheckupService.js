@@ -89,6 +89,19 @@ class CheckupService {
       })
     return success
   }
+
+  async getFreeDoctorPharmacyTerms (doctor, pharmacy) {
+    const res = this.apiClient
+      .get('/freeCheckups/' + doctor + '/' + pharmacy)
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+    return res
+  }
 }
 
 const checkupService = new CheckupService()

@@ -248,7 +248,7 @@
                 </q-icon>
               </template>
           </q-input>
-          <q-input filled label="Start time"  readonly v-model="termEndTime" mask="time" :rules="['time']">
+          <q-input filled label="End time"  readonly v-model="termEndTime" mask="time" :rules="['time']">
               <template v-slot:append>
                 <q-icon name="access_time" class="cursor-pointer">
                   <q-popup-proxy transition-show="scale" transition-hide="scale">
@@ -262,8 +262,15 @@
               </template>
           </q-input>
             </div>
-            <q-btn color="primary"  @click="schedule">Schedule </q-btn>
+            <q-btn color="primary" v-bind:disabled="disabledSch"  @click="schedule">Schedule </q-btn>
+          <div v-if="derm" class="q-mt-md">
+              <div class="row q-gutter-md">
+                 <q-select filled v-model="freeCheckup" :options="termList" label="Select free term" style="width:500px"/>
+                 <q-btn color="primary" v-bind:disabled="disabledSch" @click="scheduleFree"> Schedule free </q-btn>
+            </div>
+          </div>
           </q-tab-panel>
+
           <q-tab-panel name="save">
             <div class="text-h4 q-mb-md">Finish {{termType}}?</div>
             <q-btn icon="save" @click="finishCheckup" color="primary"  size="xl">Finish</q-btn>
@@ -302,7 +309,7 @@ import pharmacyMedicinesService from './../services/PharmacyMedicinesService'
 import termService from './../services/TermService'
 import medicineService from './../services/MedicineService'
 export default {
-  props: ['termType'],
+  props: ['termType', 'derm'],
   data () {
     return {
       id: '',
@@ -331,7 +338,10 @@ export default {
       showReplacement: false,
       replacementMedicine: '',
       specification: {},
-      specificationDialog: false
+      specificationDialog: false,
+      termList: [],
+      freeCheckup: '',
+      disabledSch: false
     }
   },
   async mounted () {
@@ -346,8 +356,25 @@ export default {
       if (this.alergicMedicines.includes(element.name)) { option.disable = true }
       this.options.push(option)
     })
+    if (this.derm) {
+      var freeTerms = await checkupService.getFreeDoctorPharmacyTerms('a5ac174a-45b3-487f-91cb-3d3f727d6f1c', '25fff0b2-ad45-4310-ac7f-96bcc5e517c1')
+      freeTerms.forEach(el => {
+        var term = {
+          label: this.formatDate(el.startTime, el.endTime),
+          value: el.id
+        }
+        this.termList.push(term)
+      })
+    }
   },
   methods: {
+    formatDate (dateStart, dateEnd) {
+      var startDate = dateStart.split('T')[0]
+      var startTime = dateStart.split('T')[1].substring(0, 5)
+      var endDate = dateEnd.split('T')[0]
+      var endTime = dateEnd.split('T')[1].substring(0, 5)
+      return startDate + ' ' + startTime + ' - ' + endDate + ' ' + endTime
+    },
     async confirmAction () {
       if (this.model === 'start') {
       }
@@ -530,7 +557,37 @@ export default {
           message: this.termType + ' sucessfully scheduled!',
           type: 'positive'
         })
-        this.scheduled = true
+        this.disabledSch = true
+      } else {
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          timeout: 500,
+          icon: 'error',
+          position: 'center',
+          message: 'Error,try another date and time!'
+        })
+      }
+    },
+    scheduleFree () {
+      if (this.freeCheckup === '') {
+        return
+      }
+      var data = {
+        checkupId: this.freeCheckup.value,
+        patientId: this.res.patient.id
+      }
+      var res = checkupService.scheduleCheckup(data)
+      if (res) {
+        this.$q.notify({
+          color: 'positive',
+          timeout: 150,
+          textColor: 'white',
+          position: 'center',
+          message: this.termType + ' sucessfully scheduled!',
+          type: 'positive'
+        })
+        this.disabledSch = true
       } else {
         this.$q.notify({
           color: 'negative',
