@@ -5,22 +5,6 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       {
-        path: '/checkups/schedule',
-        component: () => import('pages/terms/ScheduleCheckup.vue')
-      },
-      {
-        path: '/checkups/patient/:patientId',
-        component: () => import('pages/terms/CancelCheckup.vue')
-      },
-      {
-        path: '/counselings/schedule',
-        component: () => import('pages/terms/ScheduleCounseling.vue')
-      },
-      {
-        path: '/counselings/patient/:patientId',
-        component: () => import('pages/terms/CancelCounseling.vue')
-      },
-      {
         path: '/phadmin/profile',
         component: () => import('pages/profiles/PharmacyAdminProfile.vue')
       },
@@ -33,27 +17,26 @@ const routes = [
         component: () => import('pages/DermatologistsList.vue')
       },
       {
-        path: '/pharmacies',
-        component: () => import('pages/PharmaciesList.vue')
-      },
-      {
         path: '/vacations',
         component: () => import('pages/VacationList.vue')
       },
-      {
-        path: '/mark',
-        component: () => import('pages/Mark.vue')
-      }
     ]
   },
   {
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') },  // Nova
+      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },  // Nova
+      { path: 'history', component: () => import('pages/PatientHistory.vue') }, // Nova
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
       { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
       { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
-      { path: 'medicines/cancel', component: () => import('pages/medicines/CancelMedicines.vue') }
+      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
+      { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
+      { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
+      { path: 'mark', component: () => import('pages/Mark.vue') },
+      { path: 'complaints', component: () => import('pages/WriteComplaint.vue') },
     ]
   },
   {

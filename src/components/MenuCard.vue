@@ -5,6 +5,7 @@
     tag="a"
     target="_blank"
     :active="active"
+    @click="clicked"
   >
     <q-item-section
       v-if="icon"
@@ -39,6 +40,11 @@ export default {
     active:{
       type: Boolean,
       default: false
+    }
+  },
+  methods: {
+    clicked(){
+      this.$emit("clicked", this.title)
     }
   }
 }

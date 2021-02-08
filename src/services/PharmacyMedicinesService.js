@@ -1,15 +1,28 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class PharmacyMedicinesService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/pharmacyMedicines'
     })
   }
 
-  async checkAvaliable (data) {
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
+  }
+
+  async checkAvaliable(data) {
+    let headers = this.setupHeaders()
     const res = this.apiClient
-      .post('/availability', data)
+      .post('/availability', data, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -20,8 +33,11 @@ class PharmacyMedicinesService {
     return res
   }
 
-  async getPharmacyMedicines (pharmacy) {
-    const res = await this.apiClient.get('http://localhost:8085/api/pharmacyMedicines/' + pharmacy)
+  async getPharmacyMedicines(pharmacy) {
+    let headers = this.setupHeaders()
+    const res = await this.apiClient.get('http://localhost:8085/api/pharmacyMedicines/' + pharmacy, {
+      headers
+    })
       .then(response => {
         return response.data
       })

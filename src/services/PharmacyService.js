@@ -1,15 +1,28 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class PharmacyService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/pharmacies'
     })
   }
 
-  async getAllFilteredPharmacies (filters) {
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
+  }
+
+  async getAllFilteredPharmacies(filters) {
+    let headers = this.setupHeaders()
     const pharmacies = await this.apiClient
-      .get(`/search${filters}`)
+      .get(`/search${filters}`, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -20,9 +33,12 @@ class PharmacyService {
     return pharmacies
   }
 
-  async registerNewPharmacy (pharmacyData) {
+  async registerNewPharmacy(pharmacyData) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .post('/register', pharmacyData)
+      .post('/register', pharmacyData, {
+        headers
+      })
       .then(response => {
         console.log(response)
         return true
@@ -34,10 +50,13 @@ class PharmacyService {
     return success
   }
 
-  async getAllPharmacies () {
+  async getAllPharmacies() {
+    let headers = this.setupHeaders()
     const pharms = []
     await this.apiClient
-      .get('/allpharms')
+      .get('/allpharms', {
+        headers
+      })
       .then(response => {
         response.data.forEach(p => {
           pharms.push(p.name)
@@ -50,9 +69,12 @@ class PharmacyService {
     return pharms
   }
 
-  async getAllPatientsPharmacies (id) {
+  async getAllPatientsPharmacies(id) {
+    let headers = this.setupHeaders()
     const pharmacies = await this.apiClient
-      .get(`/patient/${id}`)
+      .get(`/patient/${id}`, {
+        headers
+      })
       .then(response => {
         return response
       })

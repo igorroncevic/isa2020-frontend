@@ -1,15 +1,19 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class TermService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/terms'
     })
   }
 
-  async postTerm (data) {
+  async postTerm(data) {
+    let headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post('/', data)
+      .post('/', data, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -21,8 +25,26 @@ class TermService {
     return checkups
   }
 
-  async getDoctorTerms (doctor) {
-    const terms = await this.apiClient.get('/doctor/' + doctor)
+  async getAllPatientsUpcomingTerms(id) {
+    const headers = this.setupHeaders()
+    const terms = await this.apiClient
+      .get(`/upcoming/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return terms;
+  }
+
+  async getDoctorTerms(doctor) {
+    let headers = this.setupHeaders()
+    const terms = await this.apiClient.get('/doctor/' + doctor, {
+      headers
+    })
       .then(response => {
         return response.data
       })
@@ -33,8 +55,11 @@ class TermService {
     return terms
   }
 
-  async getDoctorTermsByPharmacy (doctor, pharmacy) {
-    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy)
+  async getDoctorTermsByPharmacy(doctor, pharmacy) {
+    let headers = this.setupHeaders()
+    const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy, {
+      headers
+    })
       .then(response => {
         return response.data
       })
@@ -43,6 +68,15 @@ class TermService {
         return []
       })
     return terms
+  }
+
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
   }
 }
 

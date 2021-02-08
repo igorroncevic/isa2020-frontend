@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from './../store/index'
 
 class CounselingService {
     constructor() {
@@ -8,8 +9,11 @@ class CounselingService {
     }
 
     async getAllAvailablePharmacies(data) {
+        let headers = this.setupHeaders()
         let pharmacies = await this.apiClient
-            .post("/available", data)
+            .post("/available", data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -21,8 +25,11 @@ class CounselingService {
     }
 
     async getAllAvailablePharmacistsInPharmacy(id, data) {
+        let headers = this.setupHeaders()
         let counselings = await this.apiClient
-            .post(`/available/${id}`, data)
+            .post(`/available/${id}`, data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -34,8 +41,11 @@ class CounselingService {
     }
 
     async scheduleCounseling(data) {
+        let headers = this.setupHeaders()
         let success = await this.apiClient
-            .post(`/schedule`, data)
+            .post(`/schedule`, data, {
+                headers
+            })
             .then(response => {
                 return response;
             })
@@ -47,22 +57,26 @@ class CounselingService {
     }
 
     async cancelCounseling(data) {
+        let headers = this.setupHeaders()
         let success = this.apiClient
-            .put("/cancel", data)
+            .put("/cancel", data, {
+                headers
+            })
             .then(response => {
-                console.log(response);
-                return true;
+                return response
             })
             .catch(err => {
-                console.log(err);
-                return false;
+                return err.response
             });
         return success;
     }
 
     async getAllPatientsCounselings(patientId) {
+        let headers = this.setupHeaders()
         let checkups = await this.apiClient
-            .get(`/patient/${patientId}`)
+            .get(`/patient/${patientId}`, {
+                headers
+            })
             .then(response => {
                 return response.data;
             })
@@ -74,6 +88,48 @@ class CounselingService {
         return checkups;
     }
 
+    async getAllPatientsPastCounselingsPaginated(data) {
+        let headers = this.setupHeaders()
+        let checkups = await this.apiClient
+            .post(`/past`, data, {
+                headers
+            })
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                console.log(err);
+                return [];
+            });
+
+        return checkups;
+    }
+
+    async getAllPatientsUpcomingCounselingsPaginated(data) {
+        let headers = this.setupHeaders()
+        let checkups = await this.apiClient
+            .post(`/upcoming`, data, {
+                headers
+            })
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                console.log(err);
+                return [];
+            });
+
+        return checkups;
+    }
+
+    setupHeaders() {
+        const jwt = store.getters.getJwt;
+        let headers = {
+            Accept: "application/json",
+            Authorization: "Bearer " + jwt,
+        };
+        return headers;
+    }
 }
 
 const counselingService = new CounselingService();
