@@ -190,8 +190,6 @@ export default {
         this.checkups = [...checkupResponse.data.terms];
         this.checkupPages = checkupResponse.data.totalPages;
       }
-
-      console.log(this.checkups);
     },
     async sortPaginateCounseling() {
       if (

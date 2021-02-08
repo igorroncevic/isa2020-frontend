@@ -100,6 +100,7 @@ export default {
 
       if (response.status == 200) {
         successfullyCancelled(this.term.type, this.term.doctor.surname);
+        setTimeout(() => this.$router.go(), 2000);
       } else {
         cancellingError(this.term.type);
       }
