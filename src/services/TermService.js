@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class TermService {
   constructor() {
@@ -22,14 +23,18 @@ class TermService {
   }
 
   async getAllPatientsUpcomingTerms(id) {
+    const headers = this.setupHeaders()
     const terms = await this.apiClient
-      .get(`/upcoming/${id}`)
+      .get(`/upcoming/${id}`, {
+        headers
+      })
       .then(response => {
         return response
       })
       .catch(err => {
         return err.response
       })
+      return terms;
     }
 
   async getDoctorTerms (doctor) {
@@ -54,6 +59,15 @@ class TermService {
         return []
       })
     return terms
+  }
+
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+        Accept: "application/json",
+        Authorization: "Bearer " + jwt,
+    };
+    return headers;
   }
 }
 

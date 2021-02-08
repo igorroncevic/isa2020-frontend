@@ -98,6 +98,8 @@ import PromotionCard from "./../../components/PromotionCard";
 export default {
   components: { TermCard, PromotionCard },
   async beforeMount() {
+    this.patientId = this.$store.getters.getId;
+
     let response = await TermService.getAllPatientsUpcomingTerms(
       this.patientId
     );
@@ -123,7 +125,7 @@ export default {
     return {
       terms: [],
       promotions: [],
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      patientId: "",
       penalties: 0,
     };
   },

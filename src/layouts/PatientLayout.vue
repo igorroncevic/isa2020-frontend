@@ -49,8 +49,8 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="./../../public/icons/avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">Patient Name</div>
-          <div>patientemail@gmail.com</div>
+          <div class="text-weight-bold">{{ name }} {{ surname }}</div>
+          <div>{{ email }}</div>
         </div>
       </q-img>
     </q-drawer>
@@ -63,11 +63,23 @@
 
 <script>
 import MenuCard from "components/MenuCard.vue";
+import { mapActions } from "vuex";
+import { successfullyLoggedOut } from "./../notifications/patients";
 
 export default {
   components: { MenuCard },
+  mounted() {
+    if (this.$store.getters.getJwt != "") {
+      this.email = this.$store.getters.getEmail;
+      this.name = this.$store.getters.getName;
+      this.surname = this.$store.getters.getSurname;
+    }
+  },
   data() {
     return {
+      email: "",
+      name: "",
+      surname: "",
       drawerOpen: false,
       anyOtherActive: false,
       menuItems: [
@@ -104,19 +116,37 @@ export default {
         {
           title: "Log out",
           icon: "logout",
-          link: "/patient/logout",
+          link: "/patient/",
         },
       ],
     };
   },
   methods: {
+    ...mapActions({
+      setJwt: "setJwt",
+      setEmail: "setEmail",
+      setName: "setName",
+      setSurname: "setSurname",
+      setId: "setId",
+      setRole: "setRole",
+    }),
     activeDrawerItem(link) {
-      if(link == "/patient/") return false;
+      if (link == "/patient/") return false;
       let rest = String(link).substr("/patient/".length);
       return this.$route.path.includes(rest);
     },
     menuCardClicked(title) {
-      if (title == "Log out") console.log("Log out");
+      if (title == "Log out") {
+        this.setJwt("");
+        this.setEmail("");
+        this.setName("");
+        this.setSurname("");
+        this.setId("");
+        this.setRole("");
+        sessionStorage.clear();
+        successfullyLoggedOut();
+        // setTimeout(() => this.$router.push({ path: "/patient" }), 2000);
+      }
     },
   },
 };

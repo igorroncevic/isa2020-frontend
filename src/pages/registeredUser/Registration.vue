@@ -263,6 +263,7 @@ import {
   successfullyLoggedIn,
   logInError,
 } from "./../../notifications/patients";
+import { mapActions } from "vuex";
 
 export default {
   data() {
@@ -285,18 +286,36 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      setJwt: "setJwt",
+      setEmail: "setEmail",
+      setName: "setName",
+      setSurname: "setSurname",
+      setId: "setId",
+      setRole: "setRole",
+    }),
     async onSubmitLogin() {
       const logInData = {
         email: this.emailLogin,
         password: this.passLogin,
       };
       const response = await AuthService.login(logInData);
+
       if (response.status == 200) {
         successfullyLoggedIn();
+        this.setJwt(response.data.accessToken);
+        this.setEmail(response.data.email);
+        this.setName(response.data.name);
+        this.setSurname(response.data.surname);
+        this.setId(response.data.userId);
+        this.setRole(response.data.userRole);
+
+        if (this.$store.getters.getRole == "patient") {
+          setTimeout(() => this.$router.push({ path: "/patient/" }), 2000);
+        }
       } else {
         logInError();
       }
-      console.log(response.data);
     },
     async onSubmit() {
       const patientData = {
