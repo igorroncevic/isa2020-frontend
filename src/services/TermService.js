@@ -1,13 +1,13 @@
 import axios from 'axios'
 
 class TermService {
-  constructor () {
+  constructor() {
     this.apiClient = axios.create({
       baseURL: 'http://localhost:8085/api/terms'
     })
   }
 
-  async postTerm (data) {
+  async postTerm(data) {
     const checkups = await this.apiClient
       .post('/', data)
       .then(response => {
@@ -19,6 +19,19 @@ class TermService {
       })
 
     return checkups
+  }
+
+  async getAllPatientsUpcomingTerms(id) {
+    const terms = await this.apiClient
+      .get(`/upcoming/${id}`)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return terms
   }
 }
 

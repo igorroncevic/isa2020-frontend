@@ -1,13 +1,217 @@
 <template>
-  
+  <q-page>
+    <div id="home-grid-wrapper">
+      <div id="home-grid-title">
+        <div class="text-h4 text-weight-regular text-primary">
+          Welcome Slobodanka
+        </div>
+      </div>
+      <div id="home-grid-content">
+        <div id="home-grid-content-terms">
+          <div id="home-grid-content-terms-title">
+            <div class="text-h5 text-primary">Upcoming Terms</div>
+          </div>
+
+          <div id="home-grid-content-terms-cards">
+            <term-card
+              v-for="term in terms"
+              :key="term.id"
+              :term="term"
+              :cancelling="false"
+            />
+            <div
+              v-if="terms.length == 0"
+              class="text-subtitle1 font-weight-medium"
+            >
+              You have no upcoming terms.
+            </div>
+          </div>
+
+          <div id="home-grid-content-terms-seemore">
+            <q-btn flat color="primary" label="See more" @click="navigateToCalendar" />
+          </div>
+        </div>
+
+        <div id="home-grid-content-promotions">
+          <div id="home-grid-content-promotions-title">
+            <div class="text-h5 text-primary">Ongoing Promotions</div>
+          </div>
+          <div id="home-grid-content-promotions-cards">Hello</div>
+        </div>
+
+        <div id="home-grid-side-actions">
+          <div id="home-grid-side-actions-penalties">
+            <div class="text-subtitle1">
+              <span class="text-primary">Your penalties:</span>
+              0
+            </div>
+          </div>
+          <div id="home-grid-side-actions-mark">
+            <div id="home-grid-side-actions-mark-title">
+              <div class="text-h6 text-weight-regular">
+                You are pleased with our service?
+              </div>
+            </div>
+            <div id="home-grid-side-actions-mark-btn">
+              <q-btn bordered color="primary" label="Rate us" />
+            </div>
+          </div>
+          <div id="home-grid-side-actions-complaint">
+            <div id="home-grid-side-actions-complaint-title">
+              <div class="text-h6 text-weight-regular">
+                Something that you disliked?
+              </div>
+            </div>
+            <div id="home-grid-side-actions-complaint-btn">
+              <q-btn bordered color="primary" label="Write a Complaint" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>
-export default {
+import TermService from "./../../services/TermService";
+import TermCard from "./../../components/TermCard";
 
-}
+export default {
+  components: { TermCard },
+  async beforeMount() {
+    let response = await TermService.getAllPatientsUpcomingTerms(
+      this.patientId
+    );
+
+    if (response) {
+      if (response.status == 200) this.terms = [...response.data];
+    }
+  },
+  data() {
+    return {
+      terms: [],
+      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+    };
+  },
+  methods: {
+      navigateToCalendar(){
+          this.$router.push({path: '/patient/calendar'})
+      }
+  }
+};
 </script>
 
-<style>
+<style scoped>
+#home-grid-wrapper {
+  display: grid;
+  grid-template-rows: 6rem auto;
+}
 
+#home-grid-title {
+  grid-row: 1;
+  width: 100%;
+  padding: 15px;
+}
+
+#home-grid-content {
+  grid-row: 2;
+  display: grid;
+  grid-template-rows: repeat(2, 0.5fr);
+  grid-template-columns: repeat(10, 1fr);
+  padding: 15px;
+  row-gap: 50px;
+}
+
+#home-grid-content-terms {
+  grid-row: 1;
+  grid-column: 1/8;
+  display: grid;
+  grid-template-rows: 3rem auto;
+  grid-template-columns: auto 10rem;
+  row-gap: 5px;
+  column-gap: 5px;
+}
+
+#home-grid-content-terms-title {
+  grid-row: 1;
+  grid-column: 1/2;
+}
+
+#home-grid-content-terms-cards {
+  grid-column: 1;
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  column-gap: 10px;
+}
+
+#home-grid-content-terms-seemore {
+  grid-column: 2;
+  grid-row: 2;
+  display:flex;
+  align-items: center;
+}
+
+#home-grid-content-promotions {
+  grid-row: 2;
+  grid-column: 1/7;
+  display: grid;
+  grid-template-rows: 3rem auto;
+  row-gap: 5px;
+}
+
+#home-grid-content-promotions-title {
+  grid-row: 1;
+}
+
+#home-grid-content-promotions-cards {
+  grid-row: 2;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  background-color: blue;
+}
+
+#home-grid-side-actions {
+  grid-row: 1/3;
+  grid-column: 8/10;
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  align-content: flex-start;
+}
+
+#home-grid-side-actions-penalties {
+  display: inline-block;
+}
+
+#home-grid-side-actions-mark {
+  display: grid;
+  grid-template-rows: 3rem 3rem;
+}
+
+#home-grid-side-actions-mark-title {
+  grid-row: 1;
+}
+
+#home-grid-side-actions-mark-btn {
+  grid-row: 2;
+  margin: 0 auto;
+}
+
+#home-grid-side-actions-complaint {
+  display: grid;
+  grid-template-rows: 3rem 3rem;
+}
+
+#home-grid-side-actions-complaint-title {
+  grid-row: 1;
+  margin: 0 auto;
+}
+
+#home-grid-side-actions-complaint-btn {
+  grid-row: 2;
+  margin: 0 auto;
+}
 </style>
