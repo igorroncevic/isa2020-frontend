@@ -99,6 +99,7 @@ export default {
   components: { TermCard, PromotionCard },
   async beforeMount() {
     this.patientId = this.$store.getters.getId;
+    this.patientName = this.$store.getters.getName
 
     let response = await TermService.getAllPatientsUpcomingTerms(
       this.patientId
@@ -126,6 +127,7 @@ export default {
       terms: [],
       promotions: [],
       patientId: "",
+      patientName: "",
       penalties: 0,
     };
   },
