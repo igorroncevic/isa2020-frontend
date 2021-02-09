@@ -178,16 +178,20 @@ export default {
         pickupDate: moment(this.pickupTime).format("DD/MM/yyyy"),
       });
 
-      if (response.status == 200)
+      if (response.status == 200) {
         successfullyReservedMedicine(
           this.selectedMedicine.name,
           this.selectedPharmacy.name
         );
-      else
+        setTimeout(() => {
+          this.$router.push({ path: "/patient/medicines" });
+        }, 2000);
+      } else {
         errorOccurredWhileReservingMedicine(
           this.selectedMedicine.name,
           this.selectedPharmacy.name
         );
+      }
     },
   },
 };

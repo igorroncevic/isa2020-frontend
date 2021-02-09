@@ -17,10 +17,10 @@
           <span class="text-primary text-weight-medium"> Pharmacy: </span>
           {{ pharmacy.name }} <br />
           <span class="text-primary text-weight-medium"> Location: </span>
-          {{ pharmacy.address.street }}, {{ pharmacy.address.city }},
-          {{ pharmacy.address.country }} <br />
+          {{ pharmacy.street }}, {{ pharmacy.city }},
+          {{ pharmacy.country }} <br />
           <span class="text-primary text-weight-medium"> Pickup Date: </span>
-          {{ dateFormat(pickupDate) }}
+          {{ pickupDate }}
         </div>
 
         <div class="q-ml-md q-mt-sm q-mb-md relative-position float-right">
@@ -59,7 +59,7 @@ export default {
       required: true,
     },
     pickupDate: {
-      type: String,
+      type: String || Number,
     },
   },
   methods: {

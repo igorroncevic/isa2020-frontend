@@ -65,6 +65,22 @@ class MedicineService {
         return medicines;
     }
 
+    async getAllMedicinesPatientsAllergicTo(patientId) {
+        let headers = this.setupHeaders()
+        let medicines = await this.apiClient
+            .get(`/allergic/${patientId}`, {
+                headers
+            })
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
     async getAllMedicinesForFiltering(data) {
         let headers = this.setupHeaders()
         let medicines = await this.apiClient

@@ -47,7 +47,7 @@ export default {
       required: true,
     },
     issueDate: {
-      type: String,
+      type: Number,
     },
     status: {
       type: String,

@@ -192,7 +192,7 @@ export default {
       let response = await MarkService.giveMark(markData);
       if (response.status == 201) {
         successfullyGivenMark(this.getResponseMessage());
-        setTimeout(() => this.$router.push({ path: "/" }), 2500);
+        setTimeout(() => this.$router.push({ path: "/patient/" }), 2500);
       } else if (response.status == 208) {
         alreadyGivenMark(
           this.selectedMarkChoice,
@@ -209,7 +209,7 @@ export default {
       let response = await MarkService.updateMark(markData);
       if (response.status == 200) {
         successfullyUpdatedMark(this.getResponseMessage());
-        setTimeout(() => this.$router.push({ path: "/" }), 2500);
+        setTimeout(() => this.$router.push({ path: "/patient/" }), 2500);
       } else if (response.status == 403) {
         notAllowed(this.getResponseMessage());
       } else {

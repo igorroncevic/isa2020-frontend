@@ -18,7 +18,7 @@ const router = new VueRouter({
 
 // Zastita za /patient rute, gdje korisnik mora imati rolu pacijenta
 router.beforeEach((to, from, next) => {
-  if (String(to.path).includes("/patient")) {
+  if (to.path.includes("patient")) {
     if (store.getters.getRole == "patient" && store.getters.getJwt != "") {
       next()
     } else {

@@ -81,7 +81,7 @@ export default {
 
       if (response.status == 200) {
         successfullyScheduled("checkup", this.term.doctor.surname);
-        setTimeout(() => this.$router.go(), 2000);
+        setTimeout(() => this.$router.go('/patient/calendar'), 2000);
       } else if (response.status == 409) {
         alreadyScheduled();
       } else {

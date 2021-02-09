@@ -31,7 +31,7 @@ export default {
     },
     link: {
       type: String,
-      default: '#'
+      default: '/'
     },
     icon: {
       type: String,
