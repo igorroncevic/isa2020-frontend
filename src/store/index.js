@@ -5,7 +5,7 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  plugins: [createPersistedState()],  // Plugin koji cuva state i nakon refresh-a.
+  plugins: [createPersistedState({ storage: window.sessionStorage })],  // Plugin koji cuva state i nakon refresh-a.
   state: {
     jwt: "",
     email: "",
@@ -15,7 +15,7 @@ const store = new Vuex.Store({
     role: ""
   },
   mutations: {
-    'SET_JWT'(state, jwt ) { state.jwt = jwt },
+    'SET_JWT'(state, jwt) { state.jwt = jwt },
     'SET_EMAIL'(state, email) { state.email = email },
     'SET_NAME'(state, name) { state.name = name },
     'SET_SURNAME'(state, surname) { state.surname = surname },
