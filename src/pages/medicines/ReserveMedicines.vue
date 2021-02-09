@@ -111,7 +111,7 @@ import {
 export default {
   components: { MedicineFilterCard, DateInput },
   async mounted() {
-    this.patientId = this.$store.getters.getId
+    this.patientId = this.$store.getters.getId;
 
     let response = await MedicineService.getAllMedicinesForFiltering({
       name: "",

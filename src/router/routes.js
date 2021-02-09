@@ -64,7 +64,7 @@ const routes = [
     ]
   },
   {
-    path: '/patients/register',
+    path: '/register',
     component: () => import('pages/registeredUser/Registration.vue')
   },
   {
