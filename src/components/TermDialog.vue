@@ -207,7 +207,7 @@ export default {
       var start = new Date(this.eventObject.start.dateTime).getTime()
       var end = new Date(this.eventObject.end.dateTime).getTime()
       if (now < start || now > end) {
-        return true
+        return false
       }
       return true
     },
