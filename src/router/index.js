@@ -17,13 +17,17 @@ const router = new VueRouter({
 })
 
 // Zastita za /patient rute, gdje korisnik mora imati rolu pacijenta
-router.beforeEach((to, from, next) => {
-  if (String(to.path).includes("patient") && store.getters.getRole == "patient" && store.getters.getJwt != "") {
-    next()
-  } else {
-    cantAccessPatientRoutes()
-    next(false)
-  }
-})
+//router.beforeEach((to, from, next) => {
+//  if (String(to.path).includes("patient")) {
+//    if(store.getters.getRole == "patient" && store.getters.getJwt != "") {
+//      next()
+//    } else {
+//      cantAccessPatientRoutes()
+//      next(false)
+//    }
+//  } else {
+//    next(false)
+//  }
+//})
 
 export default router;

@@ -20,6 +20,10 @@ const routes = [
         path: '/vacations',
         component: () => import('pages/VacationList.vue')
       },
+      {
+        path: '/promotions',
+        component: () => import('pages/Promotions.vue')
+      },
     ]
   },
   {
