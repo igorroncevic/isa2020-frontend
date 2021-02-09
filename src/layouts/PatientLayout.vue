@@ -116,7 +116,6 @@ export default {
         {
           title: "Log out",
           icon: "logout",
-          link: "/patient/",
         },
       ],
     };
