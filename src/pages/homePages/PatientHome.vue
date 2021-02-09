@@ -229,8 +229,9 @@ export default {
 }
 
 #home-grid-side-actions-mark {
-  display: grid;
-  grid-template-rows: 3rem 3rem;
+  display: table;
+  text-align: center;
+  row-gap: 20px;
 }
 
 #home-grid-side-actions-mark-title {
@@ -239,12 +240,14 @@ export default {
 
 #home-grid-side-actions-mark-btn {
   grid-row: 2;
-  margin: 0 auto;
+  margin-top: 10px;
 }
 
 #home-grid-side-actions-complaint {
-  display: grid;
-  grid-template-rows: 3rem 3rem;
+  display: table;
+  text-align: center;
+  row-gap: 20px;
+  border-spacing: 20px;
 }
 
 #home-grid-side-actions-complaint-title {
@@ -254,6 +257,6 @@ export default {
 
 #home-grid-side-actions-complaint-btn {
   grid-row: 2;
-  margin: 0 auto;
+  margin-top: 10px;
 }
 </style>
