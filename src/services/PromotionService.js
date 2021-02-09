@@ -48,6 +48,22 @@ class PromotionService {
 
         return promotions;
     }
+
+    async addNewPromotion(id, data) {
+        let headers = this.setupHeaders()
+        let success = await this.apiClient
+            .post(`/pharmacy/${id}`, data, {
+                headers
+            })
+            .then(response => {
+                return true;
+            })
+            .catch(err => {
+                return false;
+            });
+
+        return success;
+    }
 }
 
 const promotionService = new PromotionService();
