@@ -17,7 +17,7 @@
           {{
             pharmacist.averageMark == 0
               ? `${pharmacist.name} didn't receive any marks yet.`
-              : ` ${pharmacist.averageMark}`
+              : ` ${parseFloat(pharmacist.averageMark).toFixed(1)}`
           }}
         </div>
         <div class="q-ml-md q-mt-md q-mb-md relative-position float-right">

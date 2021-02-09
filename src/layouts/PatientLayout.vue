@@ -86,7 +86,7 @@ export default {
         {
           title: "Home",
           icon: "home",
-          link: "/patient/",
+          link: "/patient/home",
         },
         {
           title: "Upcoming Terms",
@@ -116,7 +116,6 @@ export default {
         {
           title: "Log out",
           icon: "logout",
-          link: "/logout"
         },
       ],
     };
@@ -145,7 +144,7 @@ export default {
         this.setRole("");
         sessionStorage.clear();
         successfullyLoggedOut();
-        // setTimeout(() => this.$router.push({ path: "/patient" }), 2000);
+        setTimeout(() => this.$router.push({ path: "/" }), 2000);
       }
     },
   },

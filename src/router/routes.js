@@ -71,8 +71,18 @@ const routes = [
     path: '/activate/:id',
     component: () => import('pages/registeredUser/AccountConfirmation.vue')
   },
-  // Always leave this as last one,
-  // but you can also remove it
+  {
+    path: '/noauth/',
+    component: () => import('layouts/NoAuthLayout.vue'),
+    children: [
+      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
+      { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
+    ]
+  },
+
+// Always leave this as last one,
+// but you can also remove it
+
   {
     path: '*',
     component: () => import('pages/Error404.vue')

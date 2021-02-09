@@ -17,12 +17,10 @@ class PharmacyService {
     return headers;
   }
 
+  // Koristi i neauth korisnik
   async getAllFilteredPharmacies(filters) {
-    let headers = this.setupHeaders()
     const pharmacies = await this.apiClient
-      .get(`/search${filters}`, {
-        headers
-      })
+      .get(`/search${filters}`)
       .then(response => {
         return response
       })

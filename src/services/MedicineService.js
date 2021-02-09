@@ -97,6 +97,20 @@ class MedicineService {
         return medicines;
     }
 
+    // Koristi se za noauth korisnika
+    async getAllMedicinesForNoAuthFiltering(data) {
+        let medicines = await this.apiClient
+            .post('/noauth/filter', data)
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
     async reserveMedicine(data) {
         let headers = this.setupHeaders()
         let success = await this.apiClient
