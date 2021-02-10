@@ -34,7 +34,6 @@
             :link="link.link"
             :title="link.title"
             :icon="link.icon"
-            @clicked="(title) => menuCardClicked(title)"
           />
         </q-list>
       </q-scroll-area>
@@ -48,7 +47,7 @@
           <q-avatar size="56px" class="q-mb-sm">
             <img src="./../../public/icons/avatar.png" />
           </q-avatar>
-          <div class="text-weight-bold">Sign up to continue</div>
+          <div class="text-weight-bold">Log in to continue</div>
         </div>
       </q-img>
     </q-drawer>
@@ -74,19 +73,22 @@ export default {
           link: "/noauth/",
         },
         {
+          title: "Search Medicines",
+          icon: "medication",
+          link: "/noauth/medicines",
+        },
+        {
+          title: "Search Pharmacies",
+          icon: "home_work",
+          link: "/noauth/pharmacies",
+        },
+        {
           title: "Login",
           icon: "login",
           link: "/register",
         },
       ],
     };
-  },
-  methods: {
-    menuCardClicked(title) {
-      if (title == "Log out") {
-        
-      }
-    },
   },
 };
 </script>

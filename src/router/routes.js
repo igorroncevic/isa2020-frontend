@@ -75,6 +75,7 @@ const routes = [
     path: '/noauth/',
     component: () => import('layouts/NoAuthLayout.vue'),
     children: [
+      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') },
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
     ]
