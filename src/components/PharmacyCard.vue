@@ -14,7 +14,7 @@
           {{ pharmacy.address.country }}
           <br />
           <span class="text-primary text-weight-medium"> Average mark: </span>
-          {{ pharmacy.averageMark }}
+          {{ parseFloat(pharmacy.averageMark).toFixed(1) }}
         </div>
       </q-card-section>
     </q-card-section>
@@ -44,7 +44,6 @@ export default {
 #pharmacy-card {
   width: 90%;
   max-width: 21rem;
-  height: 13.5rem !important;
-  max-height: 13.5rem !important;
+  display: table;
 }
 </style>

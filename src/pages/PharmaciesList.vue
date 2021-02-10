@@ -4,7 +4,7 @@
       style="margin: 0 0 1rem 0"
       class="row-xs-12 row-sm-4 row-md-3 row-lg-3"
     >
-      <div class="text-h4">Pharmacy search</div>
+      <div class="text-h4 text-primary">Pharmacy search</div>
     </div>
     <q-space />
     <div class="wrapper">
@@ -126,10 +126,13 @@ export default {
 }
 
 .pharmacy-card {
+  margin-top: 2rem !important;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   margin-top: -2rem;
+  column-gap: 25px;
+  row-gap: 25px;
 }
 
 .no-pharmacies{

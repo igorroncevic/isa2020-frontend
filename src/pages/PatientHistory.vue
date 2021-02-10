@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="patient-history-wrapper">
-      <div class="patient-history-title text-h4 q-mt-lg q-ml-lg">
+      <div class="patient-history-title text-h4 q-mt-lg q-ml-lg text-primary">
         Term History
       </div>
       <div class="past-checkups">

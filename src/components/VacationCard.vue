@@ -136,6 +136,6 @@ export default {
   width: 100%;
   max-width: 400px;
   width: 20rem;
-  height: 15rem;
+  display: table;
 }
 </style>
