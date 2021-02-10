@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class DoctorService {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/doctors'
+      baseURL: getBackendPath() + '/api/doctors'
     })
   }
 
@@ -127,9 +128,10 @@ class DoctorService {
 
   async getDoctorPatients(doctorId) {
     let headers = this.setupHeaders()
-    const data = this.apiClient.get('http://localhost:8085/api/doctors/patients/' + doctorId, {
-      headers
-    })
+    const data = this.apiClient
+      .get('/patients/' + doctorId, {
+        headers
+      })
       .then(resonse => {
         return resonse.data
       })
