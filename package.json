@@ -10,8 +10,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "start": "node server.js",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
+    "start": "node server.js"
   },
   "dependencies": {
     "@daykeep/calendar-quasar": "^1.0.0-beta.3",
