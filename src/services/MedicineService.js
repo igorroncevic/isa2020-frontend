@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class MedicineService {
   constructor () {
@@ -7,9 +8,21 @@ class MedicineService {
     })
   }
 
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
+  }
+
   async getAllPatientsMedicines (patientId) {
+    const headers = this.setupHeaders()
     const medicines = await this.apiClient
-      .get(`/patient/${patientId}`)
+      .get(`/patient/${patientId}`, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -21,8 +34,11 @@ class MedicineService {
   }
 
   async getAllPatientsReservedMedicines (patientId) {
+    const headers = this.setupHeaders()
     const medicines = await this.apiClient
-      .get(`/reserved/${patientId}`)
+      .get(`/reserved/${patientId}`, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -34,8 +50,27 @@ class MedicineService {
   }
 
   async getAllMedicinesPatientsNotAlergicTo (patientId) {
+    const headers = this.setupHeaders()
     const medicines = await this.apiClient
-      .get(`/notallergic/${patientId}`)
+      .get(`/notallergic/${patientId}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return medicines
+  }
+
+  async getAllMedicinesPatientsAllergicTo (patientId) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .get(`/allergic/${patientId}`, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -47,8 +82,25 @@ class MedicineService {
   }
 
   async getAllMedicinesForFiltering (data) {
+    const headers = this.setupHeaders()
     const medicines = await this.apiClient
-      .post('/filter', data)
+      .post('/filter', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return medicines
+  }
+
+  // Koristi se za noauth korisnika
+  async getAllMedicinesForNoAuthFiltering (data) {
+    const medicines = await this.apiClient
+      .post('/noauth/filter', data)
       .then(response => {
         return response
       })
@@ -60,8 +112,11 @@ class MedicineService {
   }
 
   async reserveMedicine (data) {
+    const headers = this.setupHeaders()
     const success = await this.apiClient
-      .post('/reserve', data)
+      .post('/reserve', data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -73,8 +128,11 @@ class MedicineService {
   }
 
   async cancelMedicine (data) {
+    const headers = this.setupHeaders()
     const success = await this.apiClient
-      .post('/cancel', data)
+      .post('/cancel', data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -86,8 +144,11 @@ class MedicineService {
   }
 
   async addNewAllergyForPatient (data) {
+    const headers = this.setupHeaders()
     const success = await this.apiClient
-      .post('/allergy', data)
+      .post('/allergy', data, {
+        headers
+      })
       .then(response => {
         return response
       })
@@ -98,9 +159,29 @@ class MedicineService {
     return success
   }
 
+  async saveNewMedicine (medicineData) {
+    const headers = this.setupHeaders()
+    const success = this.apiClient
+      .post('/save', medicineData, {
+        headers
+      })
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
   async getSpecification (medicine) {
+    const headers = this.setupHeaders()
     const res = await this.apiClient
-      .get('/specification/' + medicine)
+      .get('/specification/' + medicine, {
+        headers
+      })
       .then(response => {
         return response.data
       })

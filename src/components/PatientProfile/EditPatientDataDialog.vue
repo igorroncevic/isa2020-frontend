@@ -59,6 +59,7 @@
         v-model="newPassword"
         lazy-rules
         :disable="!updatingPassword"
+        :readonly="!editing"
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       >
         <template v-slot:append>
@@ -83,6 +84,7 @@
         v-model="confirmPassword"
         lazy-rules
         :disable="!updatingPassword"
+        :readonly="!editing"
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       >
         <template v-slot:append>

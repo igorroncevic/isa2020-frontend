@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     logIn () {
-      this.$router.push('/patients/register')
+      this.$router.push('/register')
     }
   }
 }

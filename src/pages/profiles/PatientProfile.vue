@@ -30,7 +30,7 @@
       <div class="displayed-data">
         <PatientAllergiesTable
           style="grid-column: 2/6"
-          :medicines="currentUser.alergicMedicines"
+          :medicines="allergicMedicines"
           :notAllergicMedicines="notAllergicMedicines"
           @addNewAllergyEvent="(allergy) => addNewAllergy(allergy)"
         />
@@ -76,6 +76,8 @@ import {
 export default {
   components: { EditPatientDataDialog, PatientAllergiesTable, PatientLoyalty },
   async beforeMount() {
+    this.patientId = this.$store.getters.getId
+
     let response = await PatientService.getPatientsProfileInfo(this.patientId);
     if (response.status == 200) this.currentUser = { ...response.data };
 
@@ -85,6 +87,13 @@ export default {
     if (response.status == 200)
       this.notAllergicMedicines = [...response.data]
 
+    response = await MedicineService.getAllMedicinesPatientsAllergicTo(
+      this.patientId
+    );
+
+    if (response.status == 200)
+      this.allergicMedicines = [...response.data]
+
     this.$nextTick(() => (this.loaded = true));
   },
   data() {
@@ -93,7 +102,8 @@ export default {
       currentUser: {},
       editing: false,
       notAllergicMedicines: [],
-      patientId: "cc6fd408-0084-420b-8078-687d8a72744b",
+      allergicMedicines: [],
+      patientId: "",
     };
   },
   methods: {
@@ -107,10 +117,10 @@ export default {
         medicineId: allergy.id,
       });
       if (response.status == 201) {
-        successfullyAddedAllergy(allergy.name);
+        successfullyAddedAllergy(allergy.label);
         setTimeout(() => this.$router.go(), 2500);
       } else {
-        errorOccurredWhileAddingAllergy(allergy.name);
+        errorOccurredWhileAddingAllergy(allergy.label);
       }
     },
     async updateData(user) {

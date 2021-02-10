@@ -38,6 +38,17 @@ export function successfullyRegistered () {
   Notify.create(config)
 }
 
+export function successfullyLoggedOut () {
+  const config = {
+    type: 'positive',
+    color: 'teal',
+    message: 'Log out successful!',
+    icon: 'check'
+  }
+
+  Notify.create(config)
+}
+
 export function registrationError () {
   const config = {
     type: 'negative',

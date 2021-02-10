@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class PatientService {
   constructor () {
@@ -8,6 +9,15 @@ class PatientService {
     this.apiClientAuth = axios.create({
       baseURL: 'http://localhost:8085/auth'
     })
+  }
+
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
   async registerNewPatient (patient) {
@@ -24,7 +34,7 @@ class PatientService {
     return success
   }
 
-  async login(patient) {
+  async login (patient) {
     const success = this.apiClient
       .post('/login', patient)
       .then(response => {
@@ -38,9 +48,12 @@ class PatientService {
     return success
   }
 
-  async addPenalty(patient) {
+  async addPenalty (patient) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
-      .put('/addPenalty/' + patient)
+      .put('/addPenalty/' + patient, {
+        headers
+      })
       .then(response => {
         console.log(response)
         return true
@@ -52,9 +65,12 @@ class PatientService {
     return success
   }
 
-  async getAlergicMedicines(patient) {
+  async getAlergicMedicines (patient) {
+    const headers = this.setupHeaders()
     var res = []
-    await this.apiClient.get('http://localhost:8085/api/patients/alergicMedicines/' + patient)
+    await this.apiClient.get('http://localhost:8085/api/patients/alergicMedicines/' + patient, {
+      headers
+    })
       .then(response => {
         response.data.forEach(el => {
           res.push(el.name)
@@ -64,30 +80,52 @@ class PatientService {
     return res
   }
 
-  async getPatientsProfileInfo(id) {
-    let patient = await this.apiClient
-      .get(`/profile/${id}`)
+  async getPatientsProfileInfo (id) {
+    const headers = this.setupHeaders()
+    const patient = await this.apiClient
+      .get(`/profile/${id}`, {
+        headers
+      })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return err.response;
-      });
+        return err.response
+      })
 
-    return patient;
+    return patient
   }
 
-  async updatePatientsInfo(data) {
-    let success = await this.apiClient
-      .put('/profile', data)
+  async updatePatientsInfo (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .put('/profile', data, {
+        headers
+      })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return err.response;
-      });
+        return err.response
+      })
 
-    return success;
+    return success
+  }
+
+  async getPatientPenalties (id) {
+    const headers = this.setupHeaders()
+    const penalties = await this.apiClient
+      .get(`/penalties/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return penalties
   }
 }
 
