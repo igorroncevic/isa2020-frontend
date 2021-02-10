@@ -8,10 +8,9 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "quasar dev",
-    "build": "quasar build",
-    "heroku-postbuild": "npm install --only=dev --no-shrinkwrap && npm run build",
-    "start": "node server.js"
+    "dev": "cross-env NODE_ENV=development quasar dev",
+    "build": "cross-env NODE_ENV=production quasar build",
+    "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@daykeep/calendar-quasar": "^1.0.0-beta.3",
@@ -19,6 +18,7 @@
     "axios": "^0.21.1",
     "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.5",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "moment": "^2.29.1",
     "quasar": "^1.0.0",
