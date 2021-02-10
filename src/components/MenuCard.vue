@@ -4,6 +4,8 @@
     clickable
     tag="a"
     target="_blank"
+    :active="active"
+    @click="clicked"
   >
     <q-item-section
       v-if="icon"
@@ -27,20 +29,22 @@ export default {
       type: String,
       required: true
     },
-
-    caption: {
-      type: String,
-      default: ''
-    },
-
     link: {
       type: String,
-      default: '#'
+      default: '/'
     },
-
     icon: {
       type: String,
       default: ''
+    },
+    active:{
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    clicked(){
+      this.$emit("clicked", this.title)
     }
   }
 }

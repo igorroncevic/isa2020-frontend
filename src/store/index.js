@@ -1,29 +1,43 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
-// import example from './module-example'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation;
- *
- * The function below can be async too; either use
- * async/await or return a Promise which resolves
- * with the Store instance.
- */
+const store = new Vuex.Store({
+  plugins: [createPersistedState({ storage: window.sessionStorage })],  // Plugin koji cuva state i nakon refresh-a.
+  state: {
+    jwt: "",
+    email: "",
+    name: "",
+    surname: "",
+    id: "",
+    role: ""
+  },
+  mutations: {
+    'SET_JWT'(state, jwt) { state.jwt = jwt },
+    'SET_EMAIL'(state, email) { state.email = email },
+    'SET_NAME'(state, name) { state.name = name },
+    'SET_SURNAME'(state, surname) { state.surname = surname },
+    'SET_ID'(state, id) { state.id = id },
+    'SET_ROLE'(state, role) { state.role = role },
+  },
+  actions: {
+    setJwt({ commit }, jwt) { commit("SET_JWT", jwt) },
+    setEmail({ commit }, email) { commit("SET_EMAIL", email) },
+    setName({ commit }, name) { commit("SET_NAME", name) },
+    setSurname({ commit }, surname) { commit("SET_SURNAME", surname) },
+    setId({ commit }, id) { commit("SET_ID", id) },
+    setRole({ commit }, role) { commit("SET_ROLE", role) },
+  },
+  getters: {
+    getJwt: (state) => state.jwt,
+    getEmail: (state) => state.email,
+    getName: (state) => state.name,
+    getSurname: (state) => state.surname,
+    getId: (state) => state.id,
+    getRole: (state) => state.role,
+  },
+})
 
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      // example
-    },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEBUGGING
-  })
-
-  return Store
-}
+export default store;

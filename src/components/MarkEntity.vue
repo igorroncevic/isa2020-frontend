@@ -79,5 +79,6 @@ export default {
 .mark-card {
   width: 40%;
   max-width: 40%;
+  display: table;
 }
 </style>

@@ -7,11 +7,28 @@ Notify.setDefaults({
   actions: [{ icon: 'close', color: 'white' }]
 })
 
-export function errorFetchingData(){
-   let config = {
-      type: 'negative',
-      message: `An error occurred while fetching data. Please reload the page and try again.`,
-   }
+export function errorFetchingData () {
+  const config = {
+    type: 'negative',
+    message: 'An error occurred while fetching data. Please reload the page and try again.'
+  }
+  Notify.create(config)
+}
 
-   Notify.create(config);
+export function passwordsDoNotMatch () {
+  const config = {
+    type: 'negative',
+    message: 'New password and confirm password do not match.'
+  }
+
+  Notify.create(config)
+}
+
+export function cantLeaveAnyFieldsEmpty () {
+  const config = {
+    type: 'negative',
+    message: 'You can\'t leave any fields empty.'
+  }
+
+  Notify.create(config)
 }

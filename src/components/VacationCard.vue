@@ -2,16 +2,32 @@
   <div class="q-pa-md">
     <q-card class="my-card">
       <q-card-section>
-        <div class="text-h6">{{ vacation.doctor.name }} {{ vacation.doctor.surname }}</div>
-        <div class="text-left">
-          {{ dateFormat(vacation.startDate) }} - {{ dateFormat(vacation.endDate) }}
+        <div class="text-h6">
+          {{ vacation.doctor.name }} {{ vacation.doctor.surname }}
         </div>
-        <div v-if="vacation.status == 'pending'" >
-          <q-btn class="q-mtr-sm" color="primary" label="Approve" @click="approveClick" />
-          <q-btn class="q-ma-sm" color="red" label="Refuse" @click="prompt = true" />
+        <div class="text-left">
+          {{ dateFormat(vacation.startDate) }} -
+          {{ dateFormat(vacation.endDate) }}
+        </div>
+        <div v-if="vacation.status == 'pending'">
+          <q-btn
+            class="q-mtr-sm"
+            color="primary"
+            label="Approve"
+            @click="approveClick"
+          />
+          <q-btn
+            class="q-ma-sm"
+            color="red"
+            label="Refuse"
+            @click="prompt = true"
+          />
         </div>
         <div class="q-ma-md">
-          <q-scroll-area v-if="vacation.status == 'refused'" style="height: 150px; max-width: 300px;">
+          <q-scroll-area
+            v-if="vacation.status == 'refused'"
+            style="height: 150px; max-width: 300px"
+          >
             <div class="text-left">
               {{ vacation.rejectionReason }}
             </div>
@@ -27,10 +43,16 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          <q-input v-model="refusal.rejectionReason" autofocus filled type="textarea" @keyup.enter="prompt = false"/>
+          <q-input
+            v-model="refusal.rejectionReason"
+            autofocus
+            filled
+            type="textarea"
+            @keyup.enter="prompt = false"
+          />
         </q-card-section>
 
-        <q-card-actions align="right" class="text-primary" >
+        <q-card-actions align="right" class="text-primary">
           <q-btn flat label="Cancel" v-close-popup />
           <q-btn flat label="Confirm" @click="refuseClick" />
         </q-card-actions>
@@ -40,13 +62,13 @@
 </template>
 
 <script>
-import moment from 'moment'
+import moment from "moment";
 import VacationService from "./../services/VacationService";
-import {successfulyAccepted} from './../notifications/vacations'
-import {failedToAccept} from './../notifications/vacations'
-import {successfulyRefused} from './../notifications/vacations'
-import {failedToRefuse} from './../notifications/vacations'
-import {badRejectionMessage} from './../notifications/vacations'
+import { successfulyAccepted } from "./../notifications/vacations";
+import { failedToAccept } from "./../notifications/vacations";
+import { successfulyRefused } from "./../notifications/vacations";
+import { failedToRefuse } from "./../notifications/vacations";
+import { badRejectionMessage } from "./../notifications/vacations";
 
 export default {
   props: {
@@ -55,8 +77,8 @@ export default {
       required: false,
       default: {
         doctor: {
-            name: "",
-            surname: ""
+          name: "",
+          surname: "",
         },
         startDate: null,
         endDate: null,
@@ -66,40 +88,46 @@ export default {
   data() {
     return {
       refusal: {
-        rejectionReason: ""
+        rejectionReason: "",
       },
       prompt: false,
-      pending: false
+      pending: false,
     };
   },
   methods: {
-    dateFormat (date) {
-      return moment(date).format('LL')
+    dateFormat(date) {
+      return moment(date).format("LL");
     },
     async approveClick() {
       let response = await VacationService.approveVacation(this.vacation.id);
-      if(response.status === 200){
+      if (response.status === 200) {
         successfulyAccepted(this.vacation.doctor.surname);
-        this.$emit('refresh_vacations');
-      }else{
+        this.$emit("refresh_vacations");
+      } else {
         failedToAccept();
       }
     },
     async refuseClick() {
-      if(this.refusal.rejectionReason.length < 10 || this.refusal.rejectionReason > 255) {
+      if (
+        this.refusal.rejectionReason.length < 10 ||
+        this.refusal.rejectionReason > 255
+      ) {
         badRejectionMessage();
-        return
+        return;
       }
-      let response = await VacationService.refuseVacation(this.vacation.id, this.refusal);
-      if(response.status === 200){
+      let response = await VacationService.refuseVacation(
+        this.vacation.id,
+        this.refusal
+      );
+      if (response.status === 200) {
         successfulyRefused(this.vacation.doctor.surname);
-        this.$emit('refresh_vacations');
+        this.$emit("refresh_vacations");
         this.prompt = false;
-      }else{
+      } else {
         failedToRefuse();
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -108,6 +136,6 @@ export default {
   width: 100%;
   max-width: 400px;
   width: 20rem;
-  height: 15rem;
+  display: table;
 }
 </style>
