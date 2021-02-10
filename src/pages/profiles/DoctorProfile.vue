@@ -57,7 +57,7 @@ export default {
     }
   },
   async mounted () {
-    this.doctor = await DoctorService.getMyData()
+    this.doctor = await DoctorService.getMyData(this.$store.getters.getId)
   },
   methods: {
     async onSubmit () {

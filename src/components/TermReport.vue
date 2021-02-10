@@ -341,13 +341,15 @@ export default {
       specificationDialog: false,
       termList: [],
       freeCheckup: '',
-      disabledSch: false
+      disabledSch: false,
+      doctorId: this.$store.getters.getId,
+      pharmacyId: this.$store.getters.getPharmacy
     }
   },
   async mounted () {
     this.res = await checkupService.getById(this.$route.params.id)
     this.alergicMedicines = await patientService.getAlergicMedicines(this.res.patient.id)
-    var pharmacyMedicines = await pharmacyMedicinesService.getPharmacyMedicines('25fff0b2-ad45-4310-ac7f-96bcc5e517c1') //  fixed for now
+    var pharmacyMedicines = await pharmacyMedicinesService.getPharmacyMedicines(this.pharmacyId)
     pharmacyMedicines.forEach(element => {
       var option = {}
       option.label = element.name
@@ -357,7 +359,7 @@ export default {
       this.options.push(option)
     })
     if (this.derm) {
-      var freeTerms = await checkupService.getFreeDoctorPharmacyTerms('a5ac174a-45b3-487f-91cb-3d3f727d6f1c', '25fff0b2-ad45-4310-ac7f-96bcc5e517c1')
+      var freeTerms = await checkupService.getFreeDoctorPharmacyTerms(this.doctorId, this.pharmacyId)
       freeTerms.forEach(el => {
         var term = {
           label: this.formatDate(el.startTime, el.endTime),
@@ -371,6 +373,7 @@ export default {
     formatDate (dateStart, dateEnd) {
       var startDate = dateStart.split('T')[0]
       var startTime = dateStart.split('T')[1].substring(0, 5)
+      startDate = parseInt(startDate)
       var endDate = dateEnd.split('T')[0]
       var endTime = dateEnd.split('T')[1].substring(0, 5)
       return startDate + ' ' + startTime + ' - ' + endDate + ' ' + endTime
@@ -415,7 +418,7 @@ export default {
     async checkMedicine () {
       var data = {
         medicineId: this.medicine.value,
-        pharmacyId: '25fff0b2-ad45-4310-ac7f-96bcc5e517c1',
+        pharmacyId: this.pharmacyId,
         medicineQuantity: this.quantity
       }
       var res = await pharmacyMedicinesService.checkAvaliable(data)
@@ -541,8 +544,8 @@ export default {
     async schedule () {
       var data = {
         patientId: this.res.patient.id,
-        doctorId: 'a5ac174a-45b3-487f-91cb-3d3f727d6f1c',
-        pharmacyId: 'e93cab4a-f007-412c-b631-7a9a5ee2c6ed',
+        doctorId: this.doctorId,
+        pharmacyId: this.pharmacyId,
         startTime: this.formatTime(this.termDate, this.termTime),
         endTime: this.formatTime(this.termDate, this.termEndTime),
         type: this.termType

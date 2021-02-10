@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class SupplierService {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/suppliers'
+      baseURL: getBackendPath() + '/api/suppliers'
     })
   }
 

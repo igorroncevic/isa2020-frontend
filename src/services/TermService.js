@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class TermService {
   constructor () {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/terms'
+      baseURL: getBackendPath() + '/api/terms'
     })
   }
 
@@ -51,7 +52,7 @@ class TermService {
 
   async getDoctorTerms (doctor) {
     const headers = this.setupHeaders()
-    const terms = await this.apiClient.get('/doctor/' + doctor, {
+    const terms = await this.apiClient.get('/doctorAll/' + doctor, {
       headers
     })
       .then(response => {
@@ -80,8 +81,11 @@ class TermService {
   }
 
   async checkIsCurrentTherm (doctor, patient) {
+    const headers = this.setupHeaders()
     const term = await this.apiClient
-      .get('nowTerm/' + patient + '/' + doctor)
+      .get('nowTerm/' + patient + '/' + doctor,{
+        headers
+      })
       .then(response => {
         return response.data
       })

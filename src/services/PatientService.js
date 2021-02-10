@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class PatientService {
   constructor () {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/patients'
+      baseURL: getBackendPath() + '/api/patients'
     })
     this.apiClientAuth = axios.create({
       baseURL: 'http://localhost:8085/auth'
@@ -68,9 +69,10 @@ class PatientService {
   async getAlergicMedicines (patient) {
     const headers = this.setupHeaders()
     var res = []
-    await this.apiClient.get('http://localhost:8085/api/patients/alergicMedicines/' + patient, {
-      headers
-    })
+    await this.apiClient
+      .get('/alergicMedicines/' + patient, {
+        headers
+      })
       .then(response => {
         response.data.forEach(el => {
           res.push(el.name)

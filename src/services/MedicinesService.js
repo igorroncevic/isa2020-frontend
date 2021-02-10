@@ -2,10 +2,10 @@ import axios from 'axios'
 import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
-class SysAdminService {
+class MedicinesService {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: getBackendPath() + '/api/sysadmins'
+      baseURL: getBackendPath() + '/api/medicines'
     })
   }
 
@@ -18,10 +18,10 @@ class SysAdminService {
     return headers;
   }
 
-  async registerNewSysAdmin(sysData) {
+  async saveNewMedicine(medicineData) {
     let headers = this.setupHeaders()
     const success = this.apiClient
-      .post('/register', sysData, {
+      .post('/save', medicineData, {
         headers
       })
       .then(response => {
@@ -36,6 +36,6 @@ class SysAdminService {
   }
 }
 
-const sysAdminService = new SysAdminService()
+const medicinesService = new MedicinesService()
 
-export default sysAdminService
+export default medicinesService

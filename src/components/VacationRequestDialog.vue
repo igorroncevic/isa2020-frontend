@@ -95,7 +95,7 @@ export default {
             message: 'Request sucessfully sent!',
             type: 'positive'
           })
-          this.vacation = false
+          //this.vacation = false
         })
         .catch(err => {
           console.log(err)

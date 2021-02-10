@@ -12,7 +12,8 @@ const store = new Vuex.Store({
     name: "",
     surname: "",
     id: "",
-    role: ""
+    role: "",
+    pharmacy: ''
   },
   mutations: {
     'SET_JWT'(state, jwt) { state.jwt = jwt },
@@ -21,6 +22,7 @@ const store = new Vuex.Store({
     'SET_SURNAME'(state, surname) { state.surname = surname },
     'SET_ID'(state, id) { state.id = id },
     'SET_ROLE'(state, role) { state.role = role },
+    'SET_PHARMACY'(state, pharmacy) { state.pharmacy = pharmacy },
   },
   actions: {
     setJwt({ commit }, jwt) { commit("SET_JWT", jwt) },
@@ -29,6 +31,7 @@ const store = new Vuex.Store({
     setSurname({ commit }, surname) { commit("SET_SURNAME", surname) },
     setId({ commit }, id) { commit("SET_ID", id) },
     setRole({ commit }, role) { commit("SET_ROLE", role) },
+    setPharmacy({ commit }, pharmacy) { commit("SET_PHARMACY", pharmacy) },
   },
   getters: {
     getJwt: (state) => state.jwt,
@@ -37,6 +40,7 @@ const store = new Vuex.Store({
     getSurname: (state) => state.surname,
     getId: (state) => state.id,
     getRole: (state) => state.role,
+    getPharmacy: (state) => state.pharmacy
   },
 })
 

@@ -86,7 +86,7 @@ export default {
         {
           title: "Home",
           icon: "home",
-          link: "/patient/home",
+          link: "/patient",
         },
         {
           title: "Upcoming Terms",

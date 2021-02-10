@@ -1,10 +1,22 @@
+
 import axios from 'axios'
+import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class VacationService {
   constructor () {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/vacation'
+      baseURL: getBackendPath() + '/api/vacation'
     })
+  }
+
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
   async getAllPendingVacations () {

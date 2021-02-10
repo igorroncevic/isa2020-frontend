@@ -41,7 +41,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-    <q-card-section @click="startDialog=true">
+    <q-card-section @click="vacationDialog=false;startDialog=true">
               <div class="row justify-center">
                 <div class="text-h4">Start counseling</div>
               </div>

@@ -82,7 +82,7 @@ export default {
     }
   },
   async mounted () {
-    this.patients = await DoctorService.getDoctorPatients('a5ac174a-45b3-487f-91cb-3d3f727d6f1c') // const for now
+    this.patients = await DoctorService.getDoctorPatients(this.$store.getters.getId) 
   },
   computed: {
     filteredPatients () {
@@ -95,7 +95,7 @@ export default {
   },
   methods: {
     async startTerm (patientId) {
-      var term = await TermService.checkIsCurrentTherm('a5ac174a-45b3-487f-91cb-3d3f727d6f1c', patientId)
+      var term = await TermService.checkIsCurrentTherm(this.$store.getters.getId, patientId)
       if (term) {
         this.$router.push('derm/startcheckup/' + term.id)
       } else {
