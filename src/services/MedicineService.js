@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class MedicineService {
     constructor() {
         this.apiClient = axios.create({
-            baseURL: 'http://localhost:8085/api/medicines'
+            baseURL: getBackendPath() + '/api/medicines'
         })
     }
 
@@ -65,12 +66,42 @@ class MedicineService {
         return medicines;
     }
 
+    async getAllMedicinesPatientsAllergicTo(patientId) {
+        let headers = this.setupHeaders()
+        let medicines = await this.apiClient
+            .get(`/allergic/${patientId}`, {
+                headers
+            })
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
     async getAllMedicinesForFiltering(data) {
         let headers = this.setupHeaders()
         let medicines = await this.apiClient
             .post('/filter', data, {
                 headers
             })
+            .then(response => {
+                return response;
+            })
+            .catch(err => {
+                return err.response;
+            });
+
+        return medicines;
+    }
+
+    // Koristi se za noauth korisnika
+    async getAllMedicinesForNoAuthFiltering(data) {
+        let medicines = await this.apiClient
+            .post('/noauth/filter', data)
             .then(response => {
                 return response;
             })

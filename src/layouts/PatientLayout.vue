@@ -86,7 +86,7 @@ export default {
         {
           title: "Home",
           icon: "home",
-          link: "/patient/",
+          link: "/patient",
         },
         {
           title: "Upcoming Terms",
@@ -116,7 +116,6 @@ export default {
         {
           title: "Log out",
           icon: "logout",
-          link: "/patient/",
         },
       ],
     };
@@ -131,8 +130,8 @@ export default {
       setRole: "setRole",
     }),
     activeDrawerItem(link) {
-      if (link == "/patient/") return false;
-      let rest = String(link).substr("/patient/".length);
+      if(link == "/logout") return false;
+      let rest = String(link).substr("/patient".length);
       return this.$route.path.includes(rest);
     },
     menuCardClicked(title) {
@@ -145,7 +144,7 @@ export default {
         this.setRole("");
         sessionStorage.clear();
         successfullyLoggedOut();
-        // setTimeout(() => this.$router.push({ path: "/patient" }), 2000);
+        setTimeout(() => this.$router.push({ path: "/" }), 2000);
       }
     },
   },

@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class PharmacyService {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/pharmacies'
+      baseURL: getBackendPath() + '/api/pharmacies'
     })
   }
 
@@ -17,12 +18,10 @@ class PharmacyService {
     return headers;
   }
 
+  // Koristi i neauth korisnik
   async getAllFilteredPharmacies(filters) {
-    let headers = this.setupHeaders()
     const pharmacies = await this.apiClient
-      .get(`/search${filters}`, {
-        headers
-      })
+      .get(`/search${filters}`)
       .then(response => {
         return response
       })

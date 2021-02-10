@@ -38,8 +38,7 @@ export default {
 #promotion-card {
   width: 90%;
   max-width: 21rem;
-  height: 13.5rem !important;
-  max-height: 13.5rem !important;
+  display: table;
 }
 
 .q-card__section--vert {

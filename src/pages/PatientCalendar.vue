@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <div class="patient-history-wrapper">
-      <div class="patient-history-title text-h4 q-mt-lg q-ml-lg">
+      <div class="patient-history-title text-h4 q-mt-lg q-ml-lg text-primary">
         Upcoming Terms
       </div>
       <div class="past-checkups">
@@ -13,12 +13,14 @@
             :options="sortingOptions"
             label="Sort by"
             @input="sortPaginateCheckup"
+            v-if="checkups.length != 0"
           />
           <q-btn
             flat
             color="red"
             label="Cancel"
             @click="cancelCheckups = !cancelCheckups"
+            v-if="checkups.length != 0"
           />
         </div>
         <div class="list">
@@ -70,12 +72,14 @@
             :options="sortingOptions"
             label="Sort by"
             @input="sortPaginateCounseling"
+            v-if="counselings.length != 0"
           />
           <q-btn
             flat
             color="red"
             label="Cancel"
             @click="cancelCounselings = !cancelCounselings"
+            v-if="counselings.length != 0"
           />
         </div>
         <div class="list">
@@ -126,8 +130,10 @@ export default {
         termType: "counseling",
       }
     );
+    
+      console.log(counselingResponse)
 
-    if (counselingResponse.status == 200) {
+    if (counselingResponse.status == 200 && counselingResponse.data.terms != null) {
       this.counselings = [...counselingResponse.data.terms];
       this.counselingPages = counselingResponse.data.totalPages;
     }
@@ -141,7 +147,7 @@ export default {
       }
     );
 
-    if (checkupResponse.status == 200) {
+    if (checkupResponse.status == 200 && checkupResponse.data.terms != null) {
       this.checkups = [...checkupResponse.data.terms];
       this.checkupPages = checkupResponse.data.totalPages;
     }
@@ -188,7 +194,7 @@ export default {
         }
       );
 
-      if (checkupResponse.status == 200) {
+      if (checkupResponse.status == 200 && checkupResponse.data.terms != null) {
         this.checkups = [...checkupResponse.data.terms];
         this.checkupPages = checkupResponse.data.totalPages;
       }
@@ -209,7 +215,7 @@ export default {
         }
       );
 
-      if (counselingResponse.status == 200) {
+      if (counselingResponse.status == 200 && counselingResponse.data.terms != null) {
         this.counselings = [...counselingResponse.data.terms];
         this.counselingPages = counselingResponse.data.totalPages;
       }

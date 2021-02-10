@@ -30,7 +30,7 @@
       <div class="displayed-data">
         <PatientAllergiesTable
           style="grid-column: 2/6"
-          :medicines="currentUser.alergicMedicines"
+          :medicines="allergicMedicines"
           :notAllergicMedicines="notAllergicMedicines"
           @addNewAllergyEvent="(allergy) => addNewAllergy(allergy)"
         />
@@ -87,6 +87,13 @@ export default {
     if (response.status == 200)
       this.notAllergicMedicines = [...response.data]
 
+    response = await MedicineService.getAllMedicinesPatientsAllergicTo(
+      this.patientId
+    );
+
+    if (response.status == 200)
+      this.allergicMedicines = [...response.data]
+
     this.$nextTick(() => (this.loaded = true));
   },
   data() {
@@ -95,6 +102,7 @@ export default {
       currentUser: {},
       editing: false,
       notAllergicMedicines: [],
+      allergicMedicines: [],
       patientId: "",
     };
   },

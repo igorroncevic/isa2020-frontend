@@ -10,18 +10,22 @@
       <q-separator></q-separator>
 
       <q-card-section>
-        <div class="text-body1"  v-if="!choosingPharmacy">
-          <span class="text-primary text-weight-medium"> ID: </span> {{ medicine.id }} <br />
-          <span class="text-primary text-weight-medium"> Loyalty points: </span> {{ medicine.loyaltyPoints }} <br />
-          </div>
+        <div class="text-body1" v-if="!choosingPharmacy">
+          <span class="text-primary text-weight-medium"> ID: </span>
+          {{ medicine.id }} <br />
+          <span class="text-primary text-weight-medium"> Loyalty points: </span>
+          {{ medicine.loyaltyPoints }} <br />
+        </div>
 
-          <div class="text-body1" v-if="choosingPharmacy">
-            <span class="text-primary text-weight-medium"> Pharmacy: </span> {{ pharmacy.name }} <br />
-            <span class="text-primary text-weight-medium"> Location: </span> {{ pharmacy.address.street }},
-            {{ pharmacy.address.city }}, {{ pharmacy.address.country }} <br />
-            <div class="" v-if="pharmacy.averageMark">
-              <span class="text-primary text-weight-medium"> Average mark: </span> {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
-            </div>
+        <div class="text-body1" v-if="choosingPharmacy">
+          <span class="text-primary text-weight-medium"> Pharmacy: </span>
+          {{ pharmacy.name }} <br />
+          <span class="text-primary text-weight-medium"> Location: </span>
+          {{ pharmacy.address.street }}, {{ pharmacy.address.city }},
+          {{ pharmacy.address.country }} <br />
+          <div class="" v-if="pharmacy.averageMark">
+            <span class="text-primary text-weight-medium"> Average mark: </span>
+            {{ Number(pharmacy.averageMark.toFixed(1)) }} <br />
           </div>
         </div>
 
@@ -92,8 +96,7 @@ export default {
 .my-card {
   width: 90%;
   max-width: 25rem;
-  height: 12rem !important;
-  max-height: 12rem !important;
+  display: table;
 }
 
 .q-card__section--vert {
