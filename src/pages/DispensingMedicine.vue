@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import {getBackendPath} from './../services/backendPath'
+
 export default {
   data () {
     return {
@@ -32,7 +34,7 @@ export default {
   },
   methods: {
     send () {
-      this.$axios.get('http://localhost:8085/api/medicines/reserved/' + this.id + '/e93cab4a-f007-412c-b631-7a9a5ee2c6ed') // fixed pharmacy id for now
+      this.$axios.get(getBackendPath() + '/api/medicines/reserved/' + this.id + '/e93cab4a-f007-412c-b631-7a9a5ee2c6ed') // fixed pharmacy id for now
         .then(response => {
           if (response.status === 204) {
             this.$q.notify({
@@ -71,7 +73,7 @@ export default {
         })
     },
     handle () {
-      this.$axios.put('http://localhost:8085/api/medicines/handleReservation', {
+      this.$axios.put(getBackendPath() + '/api/medicines/handleReservation', {
         id: this.res.id,
         email: this.res.email,
         medicine: this.res.medicineName

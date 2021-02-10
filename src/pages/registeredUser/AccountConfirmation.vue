@@ -29,10 +29,11 @@
 </template>
 
 <script>
+import {getBackendPath} from './../../services/backendPath'
 
 export default {
   mounted () {
-    this.$axios.put('http://localhost:8085/api/patients/activate/' + this.$route.params.id)
+    this.$axios.put(getBackendPath() + '/api/patients/activate/' + this.$route.params.id)
   },
   methods: {
     logIn () {

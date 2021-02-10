@@ -1,10 +1,11 @@
 import axios from 'axios'
 import store from './../store/index'
+import { getBackendPath } from './backendPath'
 
 class PharmacyMedicinesService {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: 'http://localhost:8085/api/pharmacyMedicines'
+      baseURL: getBackendPath() + '/api/pharmacyMedicines'
     })
   }
 
@@ -35,7 +36,7 @@ class PharmacyMedicinesService {
 
   async getPharmacyMedicines(pharmacy) {
     let headers = this.setupHeaders()
-    const res = await this.apiClient.get('http://localhost:8085/api/pharmacyMedicines/' + pharmacy, {
+    const res = await this.apiClient.get('/' + pharmacy, {
       headers
     })
       .then(response => {
