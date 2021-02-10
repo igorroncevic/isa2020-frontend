@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-  if (to.path.includes("/doctor/pharm/") || to.path == "/doctor/pharm") {
+  if (to.path.includes("/doctor/pharm") || to.path == "/doctor/pharm") {
     if (store.getters.getRole == "pharmacist" && store.getters.getJwt != "") {
       next()
     } else {

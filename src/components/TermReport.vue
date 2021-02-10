@@ -362,7 +362,7 @@ export default {
       var freeTerms = await checkupService.getFreeDoctorPharmacyTerms(this.doctorId, this.pharmacyId)
       freeTerms.forEach(el => {
         var term = {
-          label: this.formatDate(el.startTime, el.endTime),
+          label: this.formatDate2(el.startTime, el.endTime),
           value: el.id
         }
         this.termList.push(term)
@@ -377,6 +377,11 @@ export default {
       var endDate = dateEnd.split('T')[0]
       var endTime = dateEnd.split('T')[1].substring(0, 5)
       return startDate + ' ' + startTime + ' - ' + endDate + ' ' + endTime
+    },
+    formatDate2 (dateStart, dateEnd) {
+      var date1 = new Date(dateStart)
+      var date2 = new Date(dateEnd)
+      return date1.toLocaleString() + ' - ' + date2.toLocaleString()
     },
     async confirmAction () {
       if (this.model === 'start') {
@@ -551,7 +556,7 @@ export default {
         type: this.termType
       }
       var res = await termService.postTerm(data)
-      if (res != null && res !== '') {
+      if (res.status == 201) {
         this.$q.notify({
           color: 'positive',
           timeout: 150,

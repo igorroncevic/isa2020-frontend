@@ -25,7 +25,7 @@ class TermService {
         headers
       })
       .then(response => {
-        return response.data
+        return response
       })
       .catch(err => {
         console.log(err)
