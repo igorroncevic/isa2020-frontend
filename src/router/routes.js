@@ -1,6 +1,15 @@
 const routes = [
   {
     path: '/',
+    component: () => import('layouts/NoAuthLayout.vue'),
+    children: [
+      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
+      { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
+      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') }
+    ]
+  },
+  {
+    path: '/ostali',
     component: () => import('layouts/DoctorDermLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
@@ -38,16 +47,16 @@ const routes = [
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/homePages/PatientHome.vue') }, // Nova
-      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') }, // Nova
-      { path: 'history', component: () => import('pages/PatientHistory.vue') }, // Nova
+      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },
+      { path: 'history', component: () => import('pages/PatientHistory.vue') },
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
       { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
       { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
-      { path: 'mark', component: () => import('pages/Mark.vue') }
+      { path: 'mark', component: () => import('pages/Mark.vue') },
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') }
     ]
   },
   {
