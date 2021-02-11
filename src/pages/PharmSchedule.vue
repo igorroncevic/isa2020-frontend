@@ -22,7 +22,7 @@ export default {
       if (element.patient) {
         patient = {
           id: element.patient.id,
-          email: element.patient.email,
+          email: element.patient.mail,
           displayName: element.patient.name + ' ' + element.patient.surname
         }
       } else {
