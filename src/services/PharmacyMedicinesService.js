@@ -48,6 +48,34 @@ class PharmacyMedicinesService {
       })
     return res
   }
+
+  async addMedicineToPharmacy(data) {
+    let success = await this.apiClient
+        .post("", data)
+        .then(response => {
+            return true;
+        })
+        .catch(err => {
+            return false;
+        });
+
+    return success;
+  }
+
+  async deletePharmacyMedicine (pid, mid) {
+    const success = this.apiClient
+      .delete('/' + pid + '/medicine/' + mid)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
 }
 
 const pharmacyMedicinesService = new PharmacyMedicinesService()

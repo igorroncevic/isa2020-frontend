@@ -78,6 +78,7 @@ class VacationService {
             .catch(err => {
                 return err.response;
             });
+
         return success;
     }
 
