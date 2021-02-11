@@ -462,7 +462,7 @@ export default {
       } else {
         this.$q.notify({
           color: 'positive',
-          timeout: 150,
+          timeout: 350,
           textColor: 'white',
           position: 'center',
           message: 'Report successfully saved!',
@@ -476,7 +476,7 @@ export default {
         if (this.avaliable === false) {
           this.$q.notify({
             color: 'negative',
-            timeout: 150,
+            timeout: 350,
             textColor: 'white',
             position: 'center',
             message: 'First check availability!',
@@ -487,7 +487,7 @@ export default {
         if (this.endDate === '' || this.startDate === '') {
           this.$q.notify({
             color: 'negative',
-            timeout: 150,
+            timeout: 550,
             textColor: 'white',
             position: 'center',
             message: 'Set therapy start and end date!',
@@ -508,8 +508,18 @@ export default {
           }
         }
         reportService.postReportMedicine(reportMedicine)
+        if (this.derm) {
+          this.$router.push('/doctor/derm')
+        } else {
+          this.$router.push('/doctor/pharm')
+        }
       } else {
         await this.saveReport()
+        if (this.derm) {
+          this.$router.push('/doctor/derm')
+        } else {
+          this.$router.push('/doctor/pharm')
+        }
       }
     },
     optionsTimeFn (hr, min, sec) {

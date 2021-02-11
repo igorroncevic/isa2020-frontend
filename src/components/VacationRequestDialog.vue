@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import VacationService from './../services/VacationService'
 export default {
   props: ['vacation'],
   data: function () {
@@ -79,35 +80,34 @@ export default {
       var day = arr[2]
       return date > year + '/' + month + '/' + day
     },
-    createRequest () {
+    async createRequest () {
       var data = {
         startDate: this.formatTime(this.startDate),
         endDate: this.formatTime(this.endDate),
-        doctorId: 'a5ac174a-45b3-487f-91cb-3d3f727d6f1c'
+        doctorId: this.$store.getters.getId
       }
-      this.$axios.post('http://localhost:8085/api/vacation', data)
-        .then(response => {
-          this.$q.notify({
-            color: 'positive',
-            timeout: 650,
-            textColor: 'white',
-            position: 'center',
-            message: 'Request sucessfully sent!',
-            type: 'positive'
-          })
-          //this.vacation = false
+      var res = await VacationService.createRequest(data)
+      if (res.status == 201) {
+        this.$q.notify({
+          color: 'positive',
+          timeout: 650,
+          textColor: 'white',
+          position: 'center',
+          message: 'Request sucessfully sent!',
+          type: 'positive'
         })
-        .catch(err => {
-          console.log(err)
-          this.$q.notify({
-            color: 'negative',
-            textColor: 'white',
-            timeout: 500,
-            icon: 'error',
-            position: 'center',
-            message: 'Error!'
-          })
+        this.vacation = false
+      } else {
+        console.log(err)
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          timeout: 500,
+          icon: 'error',
+          position: 'center',
+          message: 'Error!'
         })
+      }
     }
   }
 }

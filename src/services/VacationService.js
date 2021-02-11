@@ -19,6 +19,22 @@ class VacationService {
     return headers
   }
 
+  async createRequest (data) {
+    const headers = this.setupHeaders()
+    const request = await this.apiClient
+      .post('', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return request
+  }
+
   async getAllPendingVacations () {
     const headers = this.setupHeaders()
     const vacations = await this.apiClient
