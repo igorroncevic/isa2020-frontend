@@ -3,16 +3,16 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class DoctorService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/doctors'
     })
   }
 
-  async getMyData() {
-    let headers = this.setupHeaders()
+  async getMyData (doctor) {
+    const headers = this.setupHeaders()
     const user = await this.apiClient
-      .get('/a5ac174a-45b3-487f-91cb-3d3f727d6f1c', {
+      .get('/' + doctor, {
         headers
       }) // const ,login not inplemented yet
       .then(response => {
@@ -26,8 +26,8 @@ class DoctorService {
     return user
   }
 
-  async getAllPharmacists() {
-    let headers = this.setupHeaders()
+  async getAllPharmacists () {
+    const headers = this.setupHeaders()
     const user = await this.apiClient
       .get('/pharmacists', {
         headers
@@ -43,8 +43,8 @@ class DoctorService {
     return user
   }
 
-  async getAllDermatologists() {
-    let headers = this.setupHeaders()
+  async getAllDermatologists () {
+    const headers = this.setupHeaders()
     const user = await this.apiClient
       .get('/dermatologists', {
         headers
@@ -60,8 +60,8 @@ class DoctorService {
     return user
   }
 
-  async getAllPatientsDoctors(data) {
-    let headers = this.setupHeaders()
+  async getAllPatientsDoctors (data) {
+    const headers = this.setupHeaders()
     const doctors = await this.apiClient
       .post('/patient', data, {
         headers
@@ -76,8 +76,8 @@ class DoctorService {
     return doctors
   }
 
-  async getDoctorPharmacyList(doctor) {
-    let headers = this.setupHeaders()
+  async getDoctorPharmacyList (doctor) {
+    const headers = this.setupHeaders()
     const pharmacyList = await this.apiClient
       .get('/pharmacyList/' + doctor, {
         headers
@@ -92,8 +92,42 @@ class DoctorService {
     return pharmacyList
   }
 
-  async updateUserData(data) {
-    let headers = this.setupHeaders()
+  async getCurrentPharmacy (doctor) {
+    const headers = this.setupHeaders()
+    const pharmacyList = await this.apiClient
+      .get('/currentPharmacy/' + doctor, {
+        headers
+      })
+      .then(response => {
+        if (response.data !== '') { return response.data.id }
+        return null
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return pharmacyList
+  }
+
+  async getPharmPharmacy (doctor) {
+    const headers = this.setupHeaders()
+    const pharmacyList = await this.apiClient
+      .get('/pharmPharmacy/' + doctor, {
+        headers
+      })
+      .then(response => {
+        if (response.data !== '') { return response.data.id }
+        return null
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return pharmacyList
+  }
+
+  async updateUserData (data) {
+    const headers = this.setupHeaders()
     const responseData = this.apiClient
       .put('', data, {
         headers
@@ -109,8 +143,8 @@ class DoctorService {
     return responseData
   }
 
-  async registerNewDermatologist(dermData) {
-    let headers = this.setupHeaders()
+  async registerNewDermatologist (dermData) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .post('/register', dermData, {
         headers
@@ -126,8 +160,8 @@ class DoctorService {
     return success
   }
 
-  async getDoctorPatients(doctorId) {
-    let headers = this.setupHeaders()
+  async getDoctorPatients (doctorId) {
+    const headers = this.setupHeaders()
     const data = this.apiClient
       .get('/patients/' + doctorId, {
         headers
@@ -141,13 +175,13 @@ class DoctorService {
     return data
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 }
 

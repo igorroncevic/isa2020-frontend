@@ -1,7 +1,7 @@
 const routes = [
   {
     path: '/',
-    component: () => import('layouts/DoctorLayout.vue'),
+    component: () => import('layouts/DoctorDermLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       {
@@ -52,18 +52,26 @@ const routes = [
     ]
   },
   {
-    path: '/doctor',
-    component: () => import('layouts/DoctorLayout.vue'),
+    path: '/doctor/derm',
+    component: () => import('layouts/DoctorDermLayout.vue'),
     children: [
-      { path: 'derm', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
-      { path: 'pharm', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
+      { path: '', component: () => import('pages/homePages/DoctorDermHomepage.vue') },
+      { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
+      { path: 'startcheckup/:id', component: () => import('pages/termReports/Checkup.vue') },
+      { path: 'patients', component: () => import('pages/DoctorPatients.vue') },
+      { path: 'schedule', component: () => import('pages/DermSchedule.vue') }
+    ]
+  },
+  {
+    path: '/doctor/pharm',
+    component: () => import('layouts/DoctorPharmLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },
       { path: 'dispenseMedicine', component: () => import('pages/DispensingMedicine.vue') },
-      { path: 'derm/startcheckup/:id', component: () => import('pages/termReports/Checkup.vue') },
-      { path: 'pharm/startcounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
+      { path: 'startcounseling/:id', component: () => import('pages/termReports/Counseling.vue') },
       { path: 'patients', component: () => import('pages/DoctorPatients.vue') },
-      { path: 'pharm/schedule', component: () => import('pages/PharmSchedule.vue') },
-      { path: 'derm/schedule', component: () => import('pages/DermSchedule.vue') }
+      { path: 'schedule', component: () => import('pages/PharmSchedule.vue') }
     ]
   },
   {

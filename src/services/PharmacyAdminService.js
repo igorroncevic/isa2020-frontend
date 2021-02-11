@@ -3,23 +3,23 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PharmacyAdminService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/phadmin'
     })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
-  async getMyData() {
-    let headers = this.setupHeaders()
+  async getMyData () {
+    const headers = this.setupHeaders()
     const user = await this.apiClient
       .get('/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa', {
         headers
@@ -36,8 +36,8 @@ class PharmacyAdminService {
     return user
   }
 
-  async updateUserData(data) {
-    let headers = this.setupHeaders()
+  async updateUserData (data) {
+    const headers = this.setupHeaders()
     const responseData = this.apiClient
       .put('', data, {
         headers
@@ -53,8 +53,8 @@ class PharmacyAdminService {
     return responseData
   }
 
-  async registerNewPharmacyAdmin(adminData) {
-    let headers = this.setupHeaders()
+  async registerNewPharmacyAdmin (adminData) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .post('/register', adminData, {
         headers

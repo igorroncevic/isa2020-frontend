@@ -1,6 +1,6 @@
 <template>
-<q-page padding class="q-gutter-y-xl column items-center ">
-<term-report termType="checkup"/>
+<q-page padding>
+<term-report :derm="true" termType="checkup"/>
 </q-page>
 
 </template>

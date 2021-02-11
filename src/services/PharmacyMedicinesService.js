@@ -3,23 +3,23 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PharmacyMedicinesService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/pharmacyMedicines'
     })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
-  async checkAvaliable(data) {
-    let headers = this.setupHeaders()
+  async checkAvaliable (data) {
+    const headers = this.setupHeaders()
     const res = this.apiClient
       .post('/availability', data, {
         headers
@@ -34,8 +34,8 @@ class PharmacyMedicinesService {
     return res
   }
 
-  async getPharmacyMedicines(pharmacy) {
-    let headers = this.setupHeaders()
+  async getPharmacyMedicines (pharmacy) {
+    const headers = this.setupHeaders()
     const res = await this.apiClient.get('/' + pharmacy, {
       headers
     })

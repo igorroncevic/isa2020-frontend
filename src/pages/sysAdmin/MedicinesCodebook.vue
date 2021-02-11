@@ -151,7 +151,7 @@
 </template>
 
 <script>
-import MedicinesService from './../../services/MedicinesService'
+import MedicineService from './../../services/MedicineService'
 import {
   successfullyAddedMedicine,
   registrationError
@@ -194,7 +194,7 @@ export default {
         drugComposition: this.drugComposition,
         additionalNotes: this.additionalNotes
       }
-      const success = await MedicinesService.saveNewMedicine(medicineData)
+      const success = await MedicineService.saveNewMedicine(medicineData)
 
       if (success) {
         successfullyAddedMedicine()

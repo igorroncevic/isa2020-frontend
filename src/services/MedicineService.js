@@ -3,177 +3,209 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class MedicineService {
-    constructor() {
-        this.apiClient = axios.create({
-            baseURL: getBackendPath() + '/api/medicines'
-        })
+  constructor () {
+    this.apiClient = axios.create({
+      baseURL: getBackendPath() + '/api/medicines'
+    })
+  }
+
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
     }
+    return headers
+  }
 
-    setupHeaders() {
-        const jwt = store.getters.getJwt;
-        let headers = {
-            Accept: "application/json",
-            Authorization: "Bearer " + jwt,
-        };
-        return headers;
-    }
+  async getAllPatientsMedicines (patientId) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .get(`/patient/${patientId}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async getAllPatientsMedicines(patientId) {
-        let headers = this.setupHeaders()
-        let medicines = await this.apiClient
-            .get(`/patient/${patientId}`, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  async getAllPatientsReservedMedicines (patientId) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .get(`/reserved/${patientId}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async getAllPatientsReservedMedicines(patientId) {
-        let headers = this.setupHeaders()
-        let medicines = await this.apiClient
-            .get(`/reserved/${patientId}`, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  async getAllMedicinesPatientsNotAlergicTo (patientId) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .get(`/notallergic/${patientId}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async getAllMedicinesPatientsNotAlergicTo(patientId) {
-        let headers = this.setupHeaders()
-        let medicines = await this.apiClient
-            .get(`/notallergic/${patientId}`, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  async getAllMedicinesPatientsAllergicTo (patientId) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .get(`/allergic/${patientId}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async getAllMedicinesPatientsAllergicTo(patientId) {
-        let headers = this.setupHeaders()
-        let medicines = await this.apiClient
-            .get(`/allergic/${patientId}`, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  async getAllMedicinesForFiltering (data) {
+    const headers = this.setupHeaders()
+    const medicines = await this.apiClient
+      .post('/filter', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async getAllMedicinesForFiltering(data) {
-        let headers = this.setupHeaders()
-        let medicines = await this.apiClient
-            .post('/filter', data, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  // Koristi se za noauth korisnika
+  async getAllMedicinesForNoAuthFiltering (data) {
+    const medicines = await this.apiClient
+      .post('/noauth/filter', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    // Koristi se za noauth korisnika
-    async getAllMedicinesForNoAuthFiltering(data) {
-        let medicines = await this.apiClient
-            .post('/noauth/filter', data)
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return medicines
+  }
 
-        return medicines;
-    }
+  async reserveMedicine (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .post('/reserve', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async reserveMedicine(data) {
-        let headers = this.setupHeaders()
-        let success = await this.apiClient
-            .post('/reserve', data, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return success
+  }
 
-        return success;
-    }
+  async cancelMedicine (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .post('/cancel', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async cancelMedicine(data) {
-        let headers = this.setupHeaders()
-        let success = await this.apiClient
-            .post('/cancel', data, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return success
+  }
 
-        return success;
-    }
+  async addNewAllergyForPatient (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .post('/allergy', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
 
-    async addNewAllergyForPatient(data) {
-        let headers = this.setupHeaders()
-        let success = await this.apiClient
-            .post('/allergy', data, {
-                headers
-            })
-            .then(response => {
-                return response;
-            })
-            .catch(err => {
-                return err.response;
-            });
+    return success
+  }
 
-        return success;
-    }
+  async saveNewMedicine (medicineData) {
+    const headers = this.setupHeaders()
+    const success = this.apiClient
+      .post('/save', medicineData, {
+        headers
+      })
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
 
-    async getAllMedicines() {
-        let medicines = await this.apiClient
-            .get(`/all`)
-            .then(response => {
-                return response.data;
-            })
-            .catch(err => {
-                console.log(err.response)
-                return [];
-            });
+  async getSpecification (medicine) {
+    const headers = this.setupHeaders()
+    const res = await this.apiClient
+      .get('/specification/' + medicine, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return res
+  }
 
-        return medicines;
-    }
+  async getAllMedicines () {
+    const medicines = await this.apiClient
+      .get('/all')
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err.response)
+        return []
+      })
 
+    return medicines
+  }
 }
 
 const medicineService = new MedicineService()

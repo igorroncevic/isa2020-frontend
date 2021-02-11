@@ -158,7 +158,7 @@
               icon="cancel"
               label="Cancel"
               flat
-              @click="__close()"
+              @click="this.dialog=false"
             />
           </div>
           <div>
@@ -207,7 +207,7 @@ export default {
       var start = new Date(this.eventObject.start.dateTime).getTime()
       var end = new Date(this.eventObject.end.dateTime).getTime()
       if (now < start || now > end) {
-        return false
+        return true //fixed for testing
       }
       return true
     },

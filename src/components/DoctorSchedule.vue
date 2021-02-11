@@ -8,7 +8,7 @@
 import { DaykeepCalendar } from '@daykeep/calendar-quasar'
 import TermDialog from './../components/TermDialog.vue'
 export default {
-  props: ['terms'],
+  props: ['terms', 'dialog'],
   components: {
     DaykeepCalendar,
     TermDialog
@@ -16,8 +16,7 @@ export default {
   data () {
     return {
       eventObject: {},
-      clicks: 0,
-      dialog: false
+      clicks: 0
     }
   },
   async mounted () {
