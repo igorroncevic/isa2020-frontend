@@ -161,8 +161,11 @@ class MedicineService {
     }
 
     async getAllMedicines() {
+        let headers = this.setupHeaders()
         let medicines = await this.apiClient
-            .get(`/all`)
+            .get(`/all`, {
+                headers
+            })
             .then(response => {
                 return response.data;
             })

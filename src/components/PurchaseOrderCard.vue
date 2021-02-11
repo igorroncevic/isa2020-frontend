@@ -1,5 +1,5 @@
 <template>
-  <q-card id="purchase-order-card" flat bordered>
+  <q-card id="purchase-order-card" flat bordered class="q-ma-sm">
     <q-card-section vertical>
       <q-card-section>
         <div class="text-body1">

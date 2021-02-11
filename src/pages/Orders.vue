@@ -19,7 +19,11 @@
     <div class="row-xs-12 row-sm-4 row-md-3 row-lg-3">
       <div class="order-card">
         <div class="text-h6 no-vacations">
-          {{ this.purchaseOrders.length == 0 ? "There are no purchase orders" : "" }}
+          {{
+            this.purchaseOrders.length == 0
+              ? "There are no purchase orders"
+              : ""
+          }}
         </div>
         <purchase-order-card
           v-for="purchaseOrder in purchaseOrders"
@@ -29,32 +33,69 @@
       </div>
     </div>
     <q-dialog v-model="addPurchaseOrderDialog">
-      <q-card class="q-pa-lg">
+      <q-card class="q-pa-lg" style="min-width: 400px">
         <q-input
-          class="q-ma-sm"
-          v-model="newPromotion.startDate"
-          filled
-          type="date"
-          hint="Start date"
-        />
-        <q-input
-          class="q-ma-sm"
-          v-model="newPromotion.endDate"
+          v-model="endDate"
           filled
           type="date"
           hint="End date"
+          style="max-width: 200px"
+        />
+        <q-separator class="q-my-sm"></q-separator>
+        <q-select
+          class="q-ma-sm"
+          filled
+          v-model="newPurchaseOrderMedicine"
+          :options="allMedicines"
+          label="Select medicine"
+          hint="Medicine"
+          style="max-width: 200px"
+          map-options
+          emit-value
+          option-label="name"
         />
         <q-input
           class="q-ma-sm"
-          v-model="newPromotion.text"
+          v-model.number="newPurchaseOrderMedicineQuantity"
           filled
-          type="textarea"
-          hint="Text"
+          style="max-width: 200px"
+          type="number"
+          hint="Quantity"
         />
         <q-btn
+          :disable="
+            newPurchaseOrderMedicine == null ||
+            newPurchaseOrderMedicineQuantity <= 0
+          "
           flat
           style="color: red"
-          label="Add new promotion"
+          label="Add new medicine"
+          @click="addNewMedicineToPurchaseOrder()"
+        />
+        <q-virtual-scroll
+          class="q-ma-sm"
+          type="table"
+          style="max-height: 16vh"
+          :virtual-scroll-item-size="48"
+          :virtual-scroll-sticky-size-start="48"
+          :virtual-scroll-sticky-size-end="32"
+          :items="newPurchaseOrderMedicines"
+        >
+          <template v-slot="{ item: row, index }">
+            <tr :key="row.medicineId">
+              <td>#{{ index + 1 }}</td>
+              <td v-for="col in columns" :key="index + '-' + col">
+                {{ row[col] }}
+              </td>
+            </tr>
+          </template>
+        </q-virtual-scroll>
+        <q-separator class="q-my-sm"></q-separator>
+        <q-btn
+          :disable="newPurchaseOrderMedicines.length == 0 || endDate == null"
+          flat
+          style="color: primary"
+          label="Save purchase order"
           @click="addNewPurchaseOrder()"
         />
       </q-card>
@@ -65,9 +106,11 @@
 <script>
 import PurchaseOrderCard from "./../components/PurchaseOrderCard";
 import PhramacyService from "./../services/PharmacyService";
+import PurchaseOrderService from "./../services/PurchaseOrderService";
+import MedicineService from "./../services/MedicineService";
 import { errorFetchingData } from "./../notifications/globalErrors";
-import { successfulyAddedPromotion } from "./../notifications/promotions";
-import { failedToAddPromotion } from "./../notifications/promotions";
+import { successfulyAddedOrder } from "./../notifications/orders";
+import { failedToAddOrder } from "./../notifications/orders";
 
 export default {
   components: { PurchaseOrderCard },
@@ -79,39 +122,55 @@ export default {
     } else {
       errorFetchingData();
     }
+    this.allMedicines = await MedicineService.getAllMedicines();
   },
   data() {
     return {
       purchaseOrders: [],
       addPurchaseOrderDialog: false,
-      newPromotion: {
-        startDate: "",
-        endDate: "",
-        text: "",
-      },
+      allMedicines: [],
+      newPurchaseOrderMedicine: null,
+      newPurchaseOrderMedicineQuantity: 0,
+      newPurchaseOrderMedicines: [],
+      columns: ["medicineName", "orderQuantity"],
+      endDate: null,
     };
   },
   methods: {
     async addNewPurchaseOrder() {
-    //   let success = await PromotionService.addNewPromotion(
-    //     "e93cab4a-f007-412c-b631-7a9a5ee2c6ed",
-    //     this.newPromotion
-    //   );
-    //   if (success) {
-    //     let response = await PromotionService.getAllPharmacyPromotions(
-    //       "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
-    //     );
+      let data = {
+        pharmacyAdminId: "40c88a70-d8cd-4d8f-b56f-eb158f7c27fa",
+        endDate: this.endDate,
+        medicines: this.newPurchaseOrderMedicines,
+      };
+      let success = await PurchaseOrderService.addNewPurchaseOrder(data);
+      if (success) {
+        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
 
-    //     if (response) {
-    //       if (response.status == 200) this.promotions = [...response.data];
-    //     } else {
-    //       errorFetchingData();
-    //     }
-    //     this.addPromotionDialog = false;
-    //     successfulyAddedPromotion();
-    //   } else {
-    //     failedToAddPromotion();
-    //   }
+        if (response) {
+          if (response.status == 200) this.purchaseOrders = [...response.data];
+        } else {
+          errorFetchingData();
+        }
+        this.newPurchaseOrderMedicine = null
+        this.endDate = null
+        this.newPurchaseOrderMedicineQuantity = 0
+        this.newPurchaseOrderMedicines = []
+        this.addPurchaseOrderDialog = false
+        successfulyAddedOrder();
+      } else {
+        failedToAddOrder();
+      }
+    },
+    addNewMedicineToPurchaseOrder() {
+      let purchaseOrderMedicine = {
+        medicineId: this.newPurchaseOrderMedicine.id,
+        medicineName: this.newPurchaseOrderMedicine.name,
+        orderQuantity: this.newPurchaseOrderMedicineQuantity,
+      };
+      this.newPurchaseOrderMedicines.push(purchaseOrderMedicine);
+      this.newPurchaseOrderMedicine = null;
+      this.newPurchaseOrderMedicineQuantity = 0;
     },
   },
 };
