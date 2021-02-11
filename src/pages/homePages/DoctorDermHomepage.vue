@@ -10,7 +10,7 @@
         <q-card-section>
           <div class="row items-center justify-around">
           <q-btn color="primary" > <router-link  style="text-decoration:none;color:white" to="derm/schedule"> My calendar </router-link> </q-btn>
-          <q-btn color="primary"> <router-link  style="text-decoration:none;color:white" to="patients">patient search </router-link> </q-btn>
+          <q-btn color="primary"> <router-link  style="text-decoration:none;color:white" to="derm/patients">patient search </router-link> </q-btn>
           </div>
         </q-card-section>
       </q-card>
@@ -22,7 +22,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="patients" style="text-decoration:none;color:white">
+          <router-link to="derm/patients" style="text-decoration:none;color:white">
     <q-card-section>
               <div class="row justify-center">
                 <div class="text-h4">My patients</div>
@@ -96,7 +96,7 @@
             class="my-card text-white"
             style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%);max-width:400px"
           >
-          <router-link to="acc" style="text-decoration:none;color:white">
+          <router-link to="derm/acc" style="text-decoration:none;color:white">
       <q-card-section >
               <div class="row justify-center">
                 <div class="text-h4">My profile</div>

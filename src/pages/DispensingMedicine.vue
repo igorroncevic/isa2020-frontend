@@ -35,7 +35,7 @@ export default {
   methods: {
     send () {
       var headers = this.setupHeaders()
-      this.$axios.get(getBackendPath() + '/api/medicines/reserved/' + this.id + '/e93cab4a-f007-412c-b631-7a9a5ee2c6ed',{
+      this.$axios.get(getBackendPath() + '/api/medicines/reserved/' + this.id + '/' + this.$store.getters.getPharmacy ,{
         headers
       }) // fixed pharmacy id for now
         .then(response => {
