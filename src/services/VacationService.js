@@ -79,7 +79,6 @@ class VacationService {
       .catch(err => {
         return err.response
       })
-
     return vacations
   }
 
@@ -95,6 +94,7 @@ class VacationService {
       .catch(err => {
         return err.response
       })
+
     return success
   }
 

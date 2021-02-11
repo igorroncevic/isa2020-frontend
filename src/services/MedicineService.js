@@ -192,6 +192,20 @@ class MedicineService {
       })
     return res
   }
+
+  async getAllMedicines () {
+    const medicines = await this.apiClient
+      .get('/all')
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err.response)
+        return []
+      })
+
+    return medicines
+  }
 }
 
 const medicineService = new MedicineService()

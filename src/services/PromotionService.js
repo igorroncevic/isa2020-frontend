@@ -33,6 +33,38 @@ class PromotionService {
 
     return promotions
   }
+
+  async getAllPharmacyPromotions (id) {
+    const headers = this.setupHeaders()
+    const promotions = await this.apiClient
+      .get(`/pharmacy/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return promotions
+  }
+
+  async addNewPromotion (id, data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .post(`/pharmacy/${id}`, data, {
+        headers
+      })
+      .then(response => {
+        return true
+      })
+      .catch(err => {
+        return false
+      })
+
+    return success
+  }
 }
 
 const promotionService = new PromotionService()
