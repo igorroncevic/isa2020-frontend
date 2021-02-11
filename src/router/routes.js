@@ -1,6 +1,15 @@
 const routes = [
   {
     path: '/',
+    component: () => import('layouts/NoAuthLayout.vue'),
+    children: [
+      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
+      { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
+      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') },
+    ]
+  },
+  {
+    path: '/ostali',
     component: () => import('layouts/DoctorDermLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
@@ -38,9 +47,8 @@ const routes = [
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/homePages/PatientHome.vue') },  // Nova
-      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },  // Nova
-      { path: 'history', component: () => import('pages/PatientHistory.vue') }, // Nova
+      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },
+      { path: 'history', component: () => import('pages/PatientHistory.vue') },
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
       { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
       { path: 'medicines/reserve', component: () => import('pages/medicines/ReserveMedicines.vue') },
@@ -49,6 +57,7 @@ const routes = [
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
       { path: 'mark', component: () => import('pages/Mark.vue') },
       { path: 'complaints', component: () => import('pages/WriteComplaint.vue') },
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') },
     ]
   },
   {
@@ -91,18 +100,9 @@ const routes = [
     path: '/activate/:id',
     component: () => import('pages/registeredUser/AccountConfirmation.vue')
   },
-  {
-    path: '/noauth/',
-    component: () => import('layouts/NoAuthLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') },
-      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
-      { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
-    ]
-  },
 
-// Always leave this as last one,
-// but you can also remove it
+  // Always leave this as last one,
+  // but you can also remove it
 
   {
     path: '*',
