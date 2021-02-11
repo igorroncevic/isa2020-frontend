@@ -3,23 +3,54 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PatientService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/patients'
     })
+    this.apiClientAuth = axios.create({
+      baseURL: 'http://localhost:8085/auth'
+    })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
-  async addPenalty(patient) {
-    let headers = this.setupHeaders()
+  async registerNewPatient (patient) {
+    const success = this.apiClientAuth
+      .post('/signup/patient', patient)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async login (patient) {
+    const success = this.apiClient
+      .post('/login', patient)
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
+  async addPenalty (patient) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .put('/addPenalty/' + patient, {
         headers
@@ -35,8 +66,8 @@ class PatientService {
     return success
   }
 
-  async getAlergicMedicines(patient) {
-    let headers = this.setupHeaders()
+  async getAlergicMedicines (patient) {
+    const headers = this.setupHeaders()
     var res = []
     await this.apiClient
       .get('/alergicMedicines/' + patient, {
@@ -51,52 +82,52 @@ class PatientService {
     return res
   }
 
-  async getPatientsProfileInfo(id) {
-    let headers = this.setupHeaders()
-    let patient = await this.apiClient
+  async getPatientsProfileInfo (id) {
+    const headers = this.setupHeaders()
+    const patient = await this.apiClient
       .get(`/profile/${id}`, {
         headers
       })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return err.response;
-      });
+        return err.response
+      })
 
-    return patient;
+    return patient
   }
 
-  async updatePatientsInfo(data) {
-    let headers = this.setupHeaders()
-    let success = await this.apiClient
+  async updatePatientsInfo (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
       .put('/profile', data, {
         headers
       })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return err.response;
-      });
+        return err.response
+      })
 
-    return success;
+    return success
   }
 
-  async getPatientPenalties(id) {
-    let headers = this.setupHeaders()
-    let penalties = await this.apiClient
+  async getPatientPenalties (id) {
+    const headers = this.setupHeaders()
+    const penalties = await this.apiClient
       .get(`/penalties/${id}`, {
         headers
       })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return err.response;
-      });
+        return err.response
+      })
 
-    return penalties;
+    return penalties
   }
 }
 

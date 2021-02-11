@@ -177,6 +177,22 @@ class MedicineService {
     return success
   }
 
+  async getSpecification (medicine) {
+    const headers = this.setupHeaders()
+    const res = await this.apiClient
+      .get('/specification/' + medicine, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return res
+  }
+
   async getAllSupplierMedicines (id) {
     const headers = this.setupHeaders()
     var res = await this.apiClient
@@ -207,6 +223,20 @@ class MedicineService {
         return false
       })
     return success
+  }
+
+  async getAllMedicines () {
+    const medicines = await this.apiClient
+      .get('/all')
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err.response)
+        return []
+      })
+
+    return medicines
   }
 }
 

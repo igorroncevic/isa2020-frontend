@@ -164,7 +164,7 @@ export default {
           timeout: 500,
           textColor: 'white',
           position: 'top',
-          message: ' You can not give your offer for this purchase order!',
+          message: ' You can not give your offer for this purchase order bicause it is up to date!',
           type: 'negative'
         })
       }

@@ -31,12 +31,12 @@
                             v-model="supplier.phoneNumber"
                             :disable="!edit"
                             />
-                            <!-- <q-input
+                            <q-input
                                 filled
                                 style="width:450px"
                                 label="Address"
                                 class="q-pa-md"
-                                v-model="supplier.address.street"
+                                v-model="supplier.street"
                                 :disable="!edit"
                             />
 
@@ -46,7 +46,7 @@
                                 label="City"
                                 class="q-pa-md"
                                 :disable="!edit"
-                                v-model="supplier.address.city"
+                                v-model="supplier.city"
                             />
                             <q-input
                                 filled
@@ -54,8 +54,8 @@
                                 label="Country"
                                 class="q-pa-md"
                                 :disable="!edit"
-                                v-model="supplier.address.country"
-                            /> -->
+                                v-model="supplier.country"
+                            />
 
     <div class="q-ml-md">
                             <q-btn label="Save"  v-bind:disable="!edit" icon="save" type="submit" color="primary"/>
@@ -82,13 +82,13 @@ export default {
   methods: {
     async onSubmit () {
       const data = {
-        id: this.supplier.id,
+        id: this.supplierId,
         name: this.supplier.name,
         surname: this.supplier.surname,
         phoneNumber: this.supplier.phoneNumber,
-        country: this.supplier.address.country,
-        city: this.supplier.address.city,
-        street: this.supplier.address.street
+        country: this.supplier.country,
+        city: this.supplier.city,
+        street: this.supplier.street
       }
       var res = await SupplierService.updateUserData(data)
       if (res === 'err') {
@@ -96,7 +96,7 @@ export default {
           color: 'red-4',
           textColor: 'white',
           icon: 'cloud_done',
-          message: 'Submitted'
+          message: 'Error'
         })
       } else {
         this.$q.notify({

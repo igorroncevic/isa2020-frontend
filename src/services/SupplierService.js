@@ -21,7 +21,7 @@ class SupplierService {
   async getMyData (id) {
     const headers = this.setupHeaders()
     const user = await this.apiClient
-      .get(`/${id}`, {
+      .get('/profile/' + id, {
         headers
       })
       .then(response => {

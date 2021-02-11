@@ -81,6 +81,18 @@ class AuthService {
     return success
   }
 
+  async changePass (data) {
+    const res = this.apiClient
+      .put('/firstLoginPass', data)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return res
+  }
+
   setupHeaders () {
     const jwt = store.getters.getJwt
     const headers = {

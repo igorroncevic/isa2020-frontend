@@ -1,5 +1,71 @@
 <template>
   <div class="q-pa-xl q-mt-xl row justify-center">
+    <q-dialog v-model="changePassDialog">
+      <q-card style="height:300px">
+        <q-card-section class="row items-center q-pb-none bg-primary text-white">
+          <div class="text-h6">First login,please change your pass then login again:</div>
+          <q-space />
+          <q-btn icon="close" flat round dense v-close-popup />
+        </q-card-section>
+        <q-card-section class="row items-center justify-center q-pb-none">
+         <q-form
+      @submit="changePass"
+      class="q-gutter-md"
+    >
+       <q-input
+                        v-model="changePass1"
+                        filled
+                        :type="isPass1 ? 'changePass1' : 'password'"
+                        label="Password *"
+                        hint="Input your password"
+                        lazy-rules
+                        :rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Please input your password',
+                        ]"
+                      >
+                        <template v-slot:append>
+                          <q-icon
+                            :name="isPass1 ? 'visibility' : 'visibility_off'"
+                            class="cursor-pointer"
+                            @click="isPass1 = !isPass1"
+                          ></q-icon>
+                        </template>
+                      </q-input>
+
+                      <q-input
+                        v-model="changePass2"
+                        filled
+                        :type="isPass2 ? 'changePass2' : 'password'"
+                        label="Password *"
+                        hint="Confirm your password"
+                        lazy-rules
+                        v-bind:rules="[
+                          (val) =>
+                            (val && val.length > 0) ||
+                            'Please confirm your password',
+                          (val) =>
+                            (val && val == changePass1) || 'Passwords do not match!',
+                        ]"
+                      >
+                        <template v-slot:append>
+                          <q-icon
+                            :name="isPass2 ? 'visibility' : 'visibility_off'"
+                            class="cursor-pointer"
+                            @click="isPass2 = !isPass2"
+                          ></q-icon>
+                        </template>
+                      </q-input>
+
+      <div>
+        <q-btn label="Change password" type="submit" color="primary"/>
+      </div>
+    </q-form>
+
+        </q-card-section>
+      </q-card>
+    </q-dialog>
     <div class="q-gutter-y-md" style="max-width: 700px">
       <q-card square class="shadow-10">
         <q-tabs
@@ -257,14 +323,16 @@
 
 <script>
 import AuthService from './../../services/AuthService'
+import DoctorService from './../../services/DoctorService'
 import {
   successfullyRegistered,
   registrationError,
   successfullyLoggedIn,
-  logInError
+  logInError,
+  successfullyChangedPassword,
+  changePasswordError
 } from './../../notifications/patients'
 import { mapActions } from 'vuex'
-
 export default {
   data () {
     return {
@@ -282,7 +350,10 @@ export default {
       pPhoneNum: '',
       pEmail: '',
       pPass1: '',
-      pPass2: ''
+      pPass2: '',
+      changePass1: '',
+      changePass2: '',
+      changePassDialog: false
     }
   },
   methods: {
@@ -292,15 +363,28 @@ export default {
       setName: 'setName',
       setSurname: 'setSurname',
       setId: 'setId',
-      setRole: 'setRole'
+      setRole: 'setRole',
+      setPharmacy: 'setPharmacy'
     }),
+    async changePass () {
+      var data = {
+        email: this.emailLogin,
+        oldPass: this.passLogin,
+        newPass: this.changePass1
+      }
+      var res = await AuthService.changePass(data)
+      if (res.status == 200) { successfullyChangedPassword() } else { changePasswordError() }
+      this.changePassDialog = false
+    },
     async onSubmitLogin () {
       const logInData = {
         email: this.emailLogin,
         password: this.passLogin
       }
       const response = await AuthService.login(logInData)
-
+      if (response.status == 423) {
+        this.changePassDialog = true
+      }
       if (response.status == 200) {
         successfullyLoggedIn()
         this.setJwt(response.data.accessToken)
@@ -309,9 +393,24 @@ export default {
         this.setSurname(response.data.surname)
         this.setId(response.data.userId)
         this.setRole(response.data.userRole)
-
         if (this.$store.getters.getRole == 'patient') {
           setTimeout(() => this.$router.push({ path: '/patient/' }), 2000)
+        }
+        if (this.$store.getters.getRole === 'dermatologist') {
+          var pharmacy = await DoctorService.getCurrentPharmacy(response.data.userId)
+          this.setPharmacy(pharmacy)
+          setTimeout(() => this.$router.push({ path: '/doctor/derm' }), 2000)
+        }
+        if (this.$store.getters.getRole === 'pharmacist') {
+          setTimeout(() => this.$router.push({ path: '/doctor/pharm' }), 2000)
+          var pharmacyP = await DoctorService.getPharmPharmacy(response.data.userId)
+          this.setPharmacy(pharmacyP)
+        }
+        if (this.$store.getters.getRole === 'sysAdmin') {
+          setTimeout(() => this.$router.push({ path: '/sysadmin' }), 2000)
+        }
+        if (this.$store.getters.getRole === 'supplier') {
+          setTimeout(() => this.$router.push({ path: '/supplier' }), 2000)
         }
       } else {
         logInError()
@@ -329,8 +428,7 @@ export default {
         street: this.pAddress
       }
       const response = await AuthService.registerNewPatient(patientData)
-
-      if (response.status == 201) {
+      if (response.status == 200) {
         successfullyRegistered()
       } else {
         registrationError()

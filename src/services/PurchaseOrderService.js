@@ -18,7 +18,7 @@ class PurchaseOrderService {
     return headers
   }
 
-  async getAllPurchaseOrders () {
+  async getAllPurchaseOrders (id) {
     const headers = this.setupHeaders()
     var res = await this.apiClient
       .get('', {
@@ -36,7 +36,7 @@ class PurchaseOrderService {
   async getMyPurchaseOrders (id) {
     const headers = this.setupHeaders()
     var res = await this.apiClient
-      .get('/supplier/' + id, {
+      .get('/bla/supplier/' + id, {
         headers
       })
       .then(response => {
@@ -54,6 +54,20 @@ class PurchaseOrderService {
       .post('/offer', data, {
         headers
       })
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err.response)
+        return false
+      })
+    return success
+  }
+
+  async updateMyPurchaseOrder (data) {
+    const success = await this.apiClient
+      .put('', data)
       .then(response => {
         console.log(response)
         return true

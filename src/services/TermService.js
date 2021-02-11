@@ -3,20 +3,29 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class TermService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/terms'
     })
   }
 
-  async postTerm(data) {
-    let headers = this.setupHeaders()
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
+  }
+
+  async postTerm (data) {
+    const headers = this.setupHeaders()
     const checkups = await this.apiClient
       .post('/', data, {
         headers
       })
       .then(response => {
-        return response.data
+        return response
       })
       .catch(err => {
         console.log(err)
@@ -26,7 +35,7 @@ class TermService {
     return checkups
   }
 
-  async getAllPatientsUpcomingTerms(id) {
+  async getAllPatientsUpcomingTerms (id) {
     const headers = this.setupHeaders()
     const terms = await this.apiClient
       .get(`/upcoming/${id}`, {
@@ -38,12 +47,12 @@ class TermService {
       .catch(err => {
         return err.response
       })
-    return terms;
+    return terms
   }
 
-  async getDoctorTerms(doctor) {
-    let headers = this.setupHeaders()
-    const terms = await this.apiClient.get('/doctor/' + doctor, {
+  async getDoctorTerms (doctor) {
+    const headers = this.setupHeaders()
+    const terms = await this.apiClient.get('/doctorAll/' + doctor, {
       headers
     })
       .then(response => {
@@ -56,8 +65,8 @@ class TermService {
     return terms
   }
 
-  async getDoctorTermsByPharmacy(doctor, pharmacy) {
-    let headers = this.setupHeaders()
+  async getDoctorTermsByPharmacy (doctor, pharmacy) {
+    const headers = this.setupHeaders()
     const terms = await this.apiClient.get('/doctor/' + doctor + '/' + pharmacy, {
       headers
     })
@@ -71,13 +80,20 @@ class TermService {
     return terms
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  async checkIsCurrentTherm (doctor, patient) {
+    const headers = this.setupHeaders()
+    const term = await this.apiClient
+      .get('nowTerm/' + patient + '/' + doctor,{
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return null
+      })
+    return term
   }
 }
 

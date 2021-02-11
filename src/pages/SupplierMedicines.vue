@@ -74,7 +74,7 @@ import MedicineService from './../services/MedicineService'
 
 export default {
   async beforeMount () {
-    this.data = await MedicineService.getAllSupplierMedicines('6dbd78ec-c0c7-403a-b1d0-bea63b5a1981')
+    this.data = await MedicineService.getAllSupplierMedicines(this.supplierId)
   },
   data () {
     return {
