@@ -21,6 +21,14 @@ const routes = [
         component: () => import('pages/VacationList.vue')
       },
       {
+        path: '/pricings',
+        component: () => import('pages/Pricings.vue')
+      },
+      {
+        path: '/pharmacyMedicines',
+        component: () => import('pages/PharmacyMedicines.vue')
+      },
+      {
         path: '/promotions',
         component: () => import('pages/Promotions.vue')
       },
