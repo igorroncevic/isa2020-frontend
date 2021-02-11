@@ -32,6 +32,10 @@ const routes = [
         path: '/promotions',
         component: () => import('pages/Promotions.vue')
       },
+      {
+        path: '/orders',
+        component: () => import('pages/Orders.vue')
+      },
     ]
   },
   {

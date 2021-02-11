@@ -83,6 +83,24 @@ class PharmacyService {
 
     return pharmacies
   }
+
+  async getAllPharmacyPurchaseOrders() {
+    let headers = this.setupHeaders()
+    let id = "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
+    let purchaseOrders = await this.apiClient
+      .get(`/${id}/orders`, {
+        headers
+      })
+      .then(response => {
+        return response;
+      })
+      .catch(err => {
+        return err.response;
+      });
+
+    return purchaseOrders;
+  }
+
 }
 
 const pharmacyService = new PharmacyService()
