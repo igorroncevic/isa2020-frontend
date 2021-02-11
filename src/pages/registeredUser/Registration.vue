@@ -256,68 +256,68 @@
 </template>
 
 <script>
-import AuthService from "./../../services/AuthService";
+import AuthService from './../../services/AuthService'
 import {
   successfullyRegistered,
   registrationError,
   successfullyLoggedIn,
-  logInError,
-} from "./../../notifications/patients";
-import { mapActions } from "vuex";
+  logInError
+} from './../../notifications/patients'
+import { mapActions } from 'vuex'
 
 export default {
-  data() {
+  data () {
     return {
-      tab: "login",
+      tab: 'login',
       isPass: false,
       isPass1: false,
       isPass2: false,
-      emailLogin: "",
-      passLogin: "",
-      pName: "",
-      pSurname: "",
-      pAddress: "",
-      pCity: "",
-      pState: "",
-      pPhoneNum: "",
-      pEmail: "",
-      pPass1: "",
-      pPass2: "",
-    };
+      emailLogin: '',
+      passLogin: '',
+      pName: '',
+      pSurname: '',
+      pAddress: '',
+      pCity: '',
+      pState: '',
+      pPhoneNum: '',
+      pEmail: '',
+      pPass1: '',
+      pPass2: ''
+    }
   },
   methods: {
     ...mapActions({
-      setJwt: "setJwt",
-      setEmail: "setEmail",
-      setName: "setName",
-      setSurname: "setSurname",
-      setId: "setId",
-      setRole: "setRole",
+      setJwt: 'setJwt',
+      setEmail: 'setEmail',
+      setName: 'setName',
+      setSurname: 'setSurname',
+      setId: 'setId',
+      setRole: 'setRole'
     }),
-    async onSubmitLogin() {
+    async onSubmitLogin () {
       const logInData = {
         email: this.emailLogin,
-        password: this.passLogin,
-      };
-      const response = await AuthService.login(logInData);
+        password: this.passLogin
+      }
+      const response = await AuthService.login(logInData)
 
       if (response.status == 200) {
-        successfullyLoggedIn();
-        this.setJwt(response.data.accessToken);
-        this.setEmail(response.data.email);
-        this.setName(response.data.name);
-        this.setSurname(response.data.surname);
-        this.setId(response.data.userId);
-        this.setRole(response.data.userRole);
+        successfullyLoggedIn()
+        this.setJwt(response.data.accessToken)
+        this.setEmail(response.data.email)
+        this.setName(response.data.name)
+        this.setSurname(response.data.surname)
+        this.setId(response.data.userId)
+        this.setRole(response.data.userRole)
 
-        if (this.$store.getters.getRole == "patient") {
-          setTimeout(() => this.$router.push({ path: "/patient/" }), 2000);
+        if (this.$store.getters.getRole == 'patient') {
+          setTimeout(() => this.$router.push({ path: '/patient/' }), 2000)
         }
       } else {
-        logInError();
+        logInError()
       }
     },
-    async onSubmit() {
+    async onSubmit () {
       const patientData = {
         name: this.pName,
         surname: this.pSurname,
@@ -326,16 +326,16 @@ export default {
         phoneNumber: this.pPhoneNum,
         country: this.pState,
         city: this.pCity,
-        street: this.pAddress,
-      };
-      const response = await AuthService.registerNewPatient(patientData);
-
-      if (response.status == 200) {
-        successfullyRegistered();
-      } else {
-        registrationError();
+        street: this.pAddress
       }
-    },
-  },
-};
+      const response = await AuthService.registerNewPatient(patientData)
+
+      if (response.status == 201) {
+        successfullyRegistered()
+      } else {
+        registrationError()
+      }
+    }
+  }
+}
 </script>

@@ -3,36 +3,53 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class SupplierService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/suppliers'
     })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
-  async registerNewSupplier(suppData) {
-    let headers = this.setupHeaders()
-    const success = this.apiClient
-      .post('/register', suppData, {
+  async getMyData (id) {
+    const headers = this.setupHeaders()
+    const user = await this.apiClient
+      .get(`/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return {}
+      })
+
+    return user
+  }
+
+  async updateUserData (data) {
+    const headers = this.setupHeaders()
+    const responseData = this.apiClient
+      .put('', data, {
         headers
       })
       .then(response => {
         console.log(response)
-        return true
+        return response.data
       })
       .catch(err => {
         console.log(err)
-        return false
+        return {}
       })
-    return success
+    return responseData
   }
 }
 

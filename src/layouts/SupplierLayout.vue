@@ -15,7 +15,7 @@
         </q-toolbar-title>
 
         <q-icon name="account_circle" size="md"/>
-        <div>Sys Admin</div>
+        <div>Supplier</div>
       </q-toolbar>
     </q-header>
 
@@ -53,28 +53,28 @@ import MenuCard from 'components/MenuCard.vue'
 
 const menuData = [
   {
-    title: 'Register users',
+    title: 'My profile',
     caption: 'quasar.dev',
-    icon: 'group_add',
-    link: '/sysadmin/'
+    icon: 'account_circle',
+    link: '/supplier/acc'
   },
   {
-    title: 'Users complaints',
+    title: 'My medicines',
     caption: 'quasar.dev',
-    icon: 'thumb_down_off_alt',
-    link: '/sysadmin/complaints'
+    icon: 'medical_services',
+    link: '/supplier/meds'
   },
   {
-    title: 'Medicines codebook',
+    title: 'Create new purchase offer',
+    caption: 'quasar.dev',
+    icon: 'post_add',
+    link: '/supplier/allpurchaseorders'
+  },
+  {
+    title: 'My purchase offers',
     caption: 'quasar.dev',
     icon: 'list_alt',
-    link: '/sysadmin/codebook'
-  },
-  {
-    title: 'Loyalty programme',
-    caption: 'quasar.dev',
-    icon: 'star_border',
-    link: '/sysadmin/loyalty'
+    link: '/supplier/purchaseorders'
   },
   {
     title: 'Log out',

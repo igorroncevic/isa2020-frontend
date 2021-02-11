@@ -19,15 +19,15 @@ const routes = [
       {
         path: '/vacations',
         component: () => import('pages/VacationList.vue')
-      },
+      }
     ]
   },
   {
     path: '/patient',
     component: () => import('layouts/PatientLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/homePages/PatientHome.vue') },  // Nova
-      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') },  // Nova
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') }, // Nova
+      { path: 'calendar', component: () => import('pages/PatientCalendar.vue') }, // Nova
       { path: 'history', component: () => import('pages/PatientHistory.vue') }, // Nova
       { path: 'profile', component: () => import('pages/profiles/PatientProfile.vue') },
       { path: 'medicines', component: () => import('pages/medicines/PatientMedicines.vue') },
@@ -35,8 +35,7 @@ const routes = [
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
-      { path: 'mark', component: () => import('pages/Mark.vue') },
-      { path: 'complaints', component: () => import('pages/WriteComplaint.vue') },
+      { path: 'mark', component: () => import('pages/Mark.vue') }
     ]
   },
   {
@@ -60,7 +59,18 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/sysAdmin/SysAdminUserRegistration.vue') },
       { path: 'loyalty', component: () => import('pages/sysAdmin/LoyaltyProgramme.vue') },
-      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') }
+      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') },
+      { path: 'complaints', component: () => import('pages/sysAdmin/UsersComplaints.vue') }
+    ]
+  },
+  {
+    path: '/supplier',
+    component: () => import('layouts/SupplierLayout.vue'),
+    children: [
+      { path: 'acc', component: () => import('pages/profiles/SupplierProfile.vue') },
+      { path: 'meds', component: () => import('pages/SupplierMedicines.vue') },
+      { path: 'purchaseorders', component: () => import('pages/SupplierPurchaseOrders.vue') },
+      { path: 'allpurchaseorders', component: () => import('pages/PurchaseOrders.vue') }
     ]
   },
   {
@@ -71,19 +81,8 @@ const routes = [
     path: '/activate/:id',
     component: () => import('pages/registeredUser/AccountConfirmation.vue')
   },
-  {
-    path: '/noauth/',
-    component: () => import('layouts/NoAuthLayout.vue'),
-    children: [
-      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') },
-      { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
-      { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
-    ]
-  },
-
-// Always leave this as last one,
-// but you can also remove it
-
+  // Always leave this as last one,
+  // but you can also remove it
   {
     path: '*',
     component: () => import('pages/Error404.vue')

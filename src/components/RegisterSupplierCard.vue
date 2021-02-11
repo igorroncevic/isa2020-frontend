@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import SupplierService from './../services/SupplierService'
+import AuthService from './../services/AuthService'
 import {
   successfullyRegisteredSupplier,
   registrationError
@@ -132,9 +132,9 @@ export default {
         city: this.sCity,
         street: this.sAddress
       }
-      const success = await SupplierService.registerNewSupplier(suppData)
+      const response = await AuthService.registerNewSupplier(suppData)
 
-      if (success) {
+      if (response.status == 201) {
         successfullyRegisteredSupplier()
       } else {
         registrationError()
