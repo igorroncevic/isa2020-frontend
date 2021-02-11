@@ -328,7 +328,9 @@ import {
   successfullyRegistered,
   registrationError,
   successfullyLoggedIn,
-  logInError
+  logInError,
+  successfullyChangedPassword,
+  changePasswordError
 } from './../../notifications/patients'
 import { mapActions } from 'vuex'
 
@@ -371,8 +373,9 @@ export default {
         oldPass: this.passLogin,
         newPass: this.changePass1
       }
-      var res = AuthService.changePass(data)
-      this.changePassDialog=false
+      var res = await AuthService.changePass(data)
+      if (res.status == 200) { successfullyChangedPassword() } else { changePasswordError() }
+      this.changePassDialog = false
     },
     async onSubmitLogin () {
       const logInData = {
@@ -392,19 +395,19 @@ export default {
         this.setSurname(response.data.surname)
         this.setId(response.data.userId)
         this.setRole(response.data.userRole)
-        if (response.data.userRole === 'dermatologist' || response.data.userRole === 'pharmacist') {
-          var pharmacy = await DoctorService.getCurrentPharmacy(response.data.userId)
-          this.setPharmacy(pharmacy)
-        }
 
         if (this.$store.getters.getRole == 'patient') {
           setTimeout(() => this.$router.push({ path: '/patient/' }), 2000)
         }
         if (this.$store.getters.getRole === 'dermatologist') {
+          var pharmacy = await DoctorService.getCurrentPharmacy(response.data.userId)
+          this.setPharmacy(pharmacy)
           setTimeout(() => this.$router.push({ path: '/doctor/derm' }), 2000)
         }
         if (this.$store.getters.getRole === 'pharmacist') {
           setTimeout(() => this.$router.push({ path: '/doctor/pharm' }), 2000)
+          var pharmacyP = await DoctorService.getPharmPharmacy(response.data.userId)
+          this.setPharmacy(pharmacyP)
         }
       } else {
         logInError()

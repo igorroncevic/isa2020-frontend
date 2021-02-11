@@ -117,7 +117,8 @@ export default {
       setName: 'setName',
       setSurname: 'setSurname',
       setId: 'setId',
-      setRole: 'setRole'
+      setRole: 'setRole',
+      setPharmacy: 'setPharmacy'
     }),
     activeDrawerItem (link) {
       if (link == '/logout') return false
@@ -132,6 +133,7 @@ export default {
         this.setSurname('')
         this.setId('')
         this.setRole('')
+        this.setPharmacy('')
         sessionStorage.clear()
         successfullyLoggedOut()
         setTimeout(() => this.$router.push({ path: '/' }), 2000)

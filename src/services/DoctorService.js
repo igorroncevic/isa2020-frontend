@@ -109,6 +109,23 @@ class DoctorService {
     return pharmacyList
   }
 
+  async getPharmPharmacy (doctor) {
+    const headers = this.setupHeaders()
+    const pharmacyList = await this.apiClient
+      .get('/pharmPharmacy/' + doctor, {
+        headers
+      })
+      .then(response => {
+        if (response.data !== '') { return response.data.id }
+        return null
+      })
+      .catch(err => {
+        return err.response
+      })
+
+    return pharmacyList
+  }
+
   async updateUserData (data) {
     const headers = this.setupHeaders()
     const responseData = this.apiClient

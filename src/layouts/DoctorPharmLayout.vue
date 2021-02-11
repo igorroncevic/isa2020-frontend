@@ -137,6 +137,7 @@ export default {
         this.setSurname('')
         this.setId('')
         this.setRole('')
+        this.setPharmacy('')
         sessionStorage.clear()
         successfullyLoggedOut()
         setTimeout(() => this.$router.push({ path: '/' }), 2000)
