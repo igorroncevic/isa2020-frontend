@@ -52,7 +52,7 @@ const routes = [
   },
   {
     path: '/doctor/pharm',
-    component: () => import('layouts/DoctorDermLayout.vue'),
+    component: () => import('layouts/DoctorPharmLayout.vue'),
     children: [
       { path: '', component: () => import('pages/homePages/DoctorPharmHomepage.vue') },
       { path: 'acc', component: () => import('pages/profiles/DoctorProfile.vue') },

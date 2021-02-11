@@ -86,22 +86,27 @@ export default {
         {
           title: 'Home',
           icon: 'home',
-          link: '/doctor/derm'
+          link: '/doctor/pharm'
         },
         {
           title: 'My Schedule',
           icon: 'event',
-          link: '/doctor/derm/schedule'
+          link: '/doctor/pharm/schedule'
         },
         {
           title: 'My patients',
           icon: 'supervised_user_circle',
-          link: '/doctor/derm/patients'
+          link: '/doctor/pharm/patients'
+        },
+        {
+          title: 'Dispensing medicines',
+          icon: 'medication',
+          link: '/doctor/pharm/dispenseMedicine'
         },
         {
           title: 'My profile',
           icon: 'account_circle',
-          link: '/doctor/derm/acc'
+          link: '/doctor/pharm/acc'
         },
         {
           title: 'Log out',
