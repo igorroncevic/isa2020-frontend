@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from './../store/index'
 
 class PricingsService {
   constructor () {
@@ -7,9 +8,21 @@ class PricingsService {
     })
   }
 
+  setupHeaders() {
+    const jwt = store.getters.getJwt;
+    let headers = {
+      Accept: "application/json",
+      Authorization: "Bearer " + jwt,
+    };
+    return headers;
+  }
+
   async getCurrentPricingsForPharmacy () {
+    let headers = this.setupHeaders()
     const pricings = await this.apiClient
-      .get('/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed') // const ,login not inplemented yet
+      .get('/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed', {
+        headers
+      }) // const ,login not inplemented yet
       .then(response => {
         return response.data
       })
@@ -22,8 +35,11 @@ class PricingsService {
   }
 
   async getAllMedicinePricings (medicineId) {
+    let headers = this.setupHeaders()
     const pricings = await this.apiClient
-      .get(`/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed/medicine/${medicineId}`) // const ,login not inplemented yet
+      .get(`/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed/medicine/${medicineId}`, {
+        headers
+      }) // const ,login not inplemented yet
       .then(response => {
         return response.data
       })
@@ -36,8 +52,11 @@ class PricingsService {
   }
 
   async deletePricing (id) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .delete('/' + id)
+      .delete('/' + id, {
+        headers
+      })
       .then(response => {
         console.log(response)
         return true
@@ -50,8 +69,11 @@ class PricingsService {
   }
 
   async addNewPricing (data) {
+    let headers = this.setupHeaders()
     const success = this.apiClient
-      .post('', data)
+      .post('', data, {
+        headers
+      })
       .then(response => {
         console.log(response.body)
         return true
@@ -64,8 +86,11 @@ class PricingsService {
   }
 
   async updatePricing (id, data) {
+    let headers = this.setupHeaders()
     const response = this.apiClient
-      .put('/' + id, data)
+      .put('/' + id, data, {
+        headers
+      })
       .then(response => {
         return response
       })
