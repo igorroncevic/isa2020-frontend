@@ -26,3 +26,13 @@ export function successfulyAddedOrder(){
  
     Notify.create(config);
  }
+
+ export function failedToAcceptOffer(errMessage){
+   let config = {
+      type: 'negative',
+      message: errMessage
+   }
+
+   Notify.create(config);
+}
+

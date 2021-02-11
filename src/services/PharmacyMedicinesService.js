@@ -36,9 +36,10 @@ class PharmacyMedicinesService {
 
   async getPharmacyMedicines(pharmacy) {
     let headers = this.setupHeaders()
-    const res = await this.apiClient.get('/' + pharmacy, {
-      headers
-    })
+    const res = await this.apiClient
+      .get('/' + pharmacy, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -51,18 +52,18 @@ class PharmacyMedicinesService {
 
   async addMedicineToPharmacy(data) {
     let success = await this.apiClient
-        .post("", data)
-        .then(response => {
-            return true;
-        })
-        .catch(err => {
-            return false;
-        });
+      .post("", data)
+      .then(response => {
+        return true;
+      })
+      .catch(err => {
+        return false;
+      });
 
     return success;
   }
 
-  async deletePharmacyMedicine (pid, mid) {
+  async deletePharmacyMedicine(pid, mid) {
     const success = this.apiClient
       .delete('/' + pid + '/medicine/' + mid)
       .then(response => {

@@ -114,7 +114,7 @@
               :props="props"
               v-if="purchaseOrderOffersShow.endDate <= getTodayDate()"
             >
-              <q-btn color="green" label="Accept" flat dense />
+              <q-btn color="green" label="Accept" flat dense @click="acceptOffer(props.row.supplier.id)"/>
             </q-td>
           </template>
         </q-table>
@@ -131,7 +131,7 @@ import MedicineService from "./../services/MedicineService";
 import { errorFetchingData } from "./../notifications/globalErrors";
 import { successfulyAddedOrder } from "./../notifications/orders";
 import { failedToAddOrder } from "./../notifications/orders";
-import { failedToAccept } from "src/notifications/vacations";
+import { failedToAcceptOffer } from "./../notifications/orders";
 import { date } from 'quasar'
 
 export default {
@@ -201,8 +201,8 @@ export default {
       if (success) {
         let response = await PhramacyService.getAllPharmacyPurchaseOrders();
 
-        if (response) {
-          if (response.status == 200) this.purchaseOrders = [...response.data];
+        if (response.status == 200) {
+           this.purchaseOrders = [...response.data];
         } else {
           errorFetchingData();
         }
@@ -243,6 +243,14 @@ export default {
       let timeStamp = Date.now();
       return date.formatDate(timeStamp, "YYYY-MM-DD");
     },
+    async acceptOffer(supplierId) {
+      let response = await PurchaseOrderService.acceptOffer(this.purchaseOrderOffersShow.id, supplierId);
+      if (response.status == 200) {
+        //this.offers = [...response.data];
+      } else {
+        failedToAcceptOffer(response.data)
+      }
+    }
   },
 };
 </script>

@@ -53,6 +53,22 @@ class PurchaseOrderService {
         return response;
     }
 
+    async acceptOffer(orderId, supplierId) {
+        let headers = this.setupHeaders()
+        let response = await this.apiClient
+            .put(`/${orderId}/offers/${supplierId}/accept`, null, {
+                headers
+            })
+            .then(response => {
+                return response
+            })
+            .catch(err => {
+                return err.response
+            });
+
+        return response;
+    }
+
 }
 
 const purchaseOrderService = new PurchaseOrderService();
