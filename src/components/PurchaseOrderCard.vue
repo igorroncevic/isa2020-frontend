@@ -1,5 +1,5 @@
 <template>
-  <q-card id="purchase-order-card" flat bordered class="q-ma-sm">
+  <q-card id="purchase-order-card" bordered class="q-ma-sm">
     <q-card-section vertical>
       <q-card-section>
         <div class="text-body1">
@@ -12,6 +12,13 @@
           <br />
           <span class="text-primary text-weight-medium"> End time: </span>
           {{ dateFormat(purchaseOrder.endDate) }} <br />
+          <q-separator class="q-my-sm"></q-separator>
+          <q-btn
+            flat
+            style="color: red"
+            label="See offers"
+            @click="$emit('show_offers', purchaseOrder)"
+          />
           <q-separator class="q-my-sm"></q-separator>
           <span class="text-primary text-weight-medium"> Medicines: </span>
           <br />
@@ -61,8 +68,8 @@ export default {
 #purchase-order-card {
   width: 90%;
   max-width: 21rem;
-  height: 18rem !important;
-  max-height: 21rem !important;
+  height: 22rem !important;
+  max-height: 22rem !important;
 }
 
 .q-card__section--vert {

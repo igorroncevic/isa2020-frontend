@@ -27,6 +27,7 @@
         </div>
         <purchase-order-card
           v-for="purchaseOrder in purchaseOrders"
+          @show_offers="showOffers"
           :key="purchaseOrder.id"
           :purchaseOrder="purchaseOrder"
         />
@@ -100,6 +101,25 @@
         />
       </q-card>
     </q-dialog>
+    <q-dialog v-model="offersDialog">
+      <q-card class="q-pa-lg">
+        <q-table
+          class="q-pa-sm"
+          :data="offers"
+          :columns="offersColumns"
+          hide-bottom
+        >
+          <template v-slot:body-cell-action="props">
+            <q-td
+              :props="props"
+              v-if="purchaseOrderOffersShow.endDate <= getTodayDate()"
+            >
+              <q-btn color="green" label="Accept" flat dense />
+            </q-td>
+          </template>
+        </q-table>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -111,6 +131,8 @@ import MedicineService from "./../services/MedicineService";
 import { errorFetchingData } from "./../notifications/globalErrors";
 import { successfulyAddedOrder } from "./../notifications/orders";
 import { failedToAddOrder } from "./../notifications/orders";
+import { failedToAccept } from "src/notifications/vacations";
+import { date } from 'quasar'
 
 export default {
   components: { PurchaseOrderCard },
@@ -134,6 +156,38 @@ export default {
       newPurchaseOrderMedicines: [],
       columns: ["medicineName", "orderQuantity"],
       endDate: null,
+      offersDialog: false,
+      offers: [],
+      offersColumns: [
+        {
+          name: "supplierName",
+          align: "center",
+          label: "Name",
+          field: (row) => row.supplier.name,
+        },
+        {
+          name: "supplierSurname",
+          align: "center",
+          label: "Surname",
+          field: (row) => row.supplier.surname,
+        },
+        {
+          name: "deliveryDate",
+          align: "center",
+          label: "Delivery date",
+          field: "deliveryDate",
+          sortable: true,
+        },
+        {
+          name: "price",
+          align: "center",
+          label: "Price",
+          field: "price",
+          sortable: true,
+        },
+        { name: "action", label: "", field: "action" },
+      ],
+      purchaseOrderOffersShow: null,
     };
   },
   methods: {
@@ -152,11 +206,11 @@ export default {
         } else {
           errorFetchingData();
         }
-        this.newPurchaseOrderMedicine = null
-        this.endDate = null
-        this.newPurchaseOrderMedicineQuantity = 0
-        this.newPurchaseOrderMedicines = []
-        this.addPurchaseOrderDialog = false
+        this.newPurchaseOrderMedicine = null;
+        this.endDate = null;
+        this.newPurchaseOrderMedicineQuantity = 0;
+        this.newPurchaseOrderMedicines = [];
+        this.addPurchaseOrderDialog = false;
         successfulyAddedOrder();
       } else {
         failedToAddOrder();
@@ -171,6 +225,23 @@ export default {
       this.newPurchaseOrderMedicines.push(purchaseOrderMedicine);
       this.newPurchaseOrderMedicine = null;
       this.newPurchaseOrderMedicineQuantity = 0;
+    },
+    async showOffers(value) {
+      this.purchaseOrderOffersShow = value;
+      let response = await PurchaseOrderService.getAllOffersForOrder(
+        this.purchaseOrderOffersShow.id
+      );
+
+      if (response) {
+        if (response.status == 200) this.offers = [...response.data];
+        this.offersDialog = true;
+      } else {
+        errorFetchingData();
+      }
+    },
+    getTodayDate() {
+      let timeStamp = Date.now();
+      return date.formatDate(timeStamp, "YYYY-MM-DD");
     },
   },
 };
