@@ -83,18 +83,19 @@
           </q-tab-panels>
 
           <q-card-actions align="center">
-                <q-btn color="primary" class="full-width text-white" label="Submit complaint" />
+                <q-btn color="primary" class="full-width text-white" label="Submit complaint" @click="postComplaint" />
           </q-card-actions>
         </q-card>
 </template>
 
 <script>
-import DoctorService from './../services/DoctorService'
 import PharmacyService from './../services/PharmacyService'
+import PatientService from './../services/PatientService'
+import ComplaintService from './../services/ComplaintService'
 
 export default {
-  async beforeMount () {
-    var dermatologists = await DoctorService.getAllDermatologists()
+  async mounted () {
+    var dermatologists = await PatientService.getPatientDoctors(this.patient, 'dermatologist')
     dermatologists.forEach(el => {
       var derm = {
         label: el.name + ' ' + el.surname,
@@ -103,7 +104,7 @@ export default {
       this.dermsOptions.push(derm)
     })
 
-    var pharmacists = await DoctorService.getAllPharmacists()
+    var pharmacists = await PatientService.getPatientDoctors(this.patient, 'pharmacist')
     pharmacists.forEach(el => {
       var pharm = {
         label: el.name + ' ' + el.surname,
@@ -112,10 +113,10 @@ export default {
       this.pharmsOptions.push(pharm)
     })
 
-    var pharmacy = await PharmacyService.getAllPharmacies()
+    var pharmacy = await PharmacyService.getAllPharmacies2()
     pharmacy.forEach(el => {
       var ph = {
-        label: el,
+        label: el.name,
         value: el.id
       }
       this.phsOptions.push(ph)
@@ -132,7 +133,38 @@ export default {
       pharmsModel: null,
       pharmsOptions: [],
       phsModel: null,
-      phsOptions: []
+      phsOptions: [],
+      patient: this.$store.getters.getId
+    }
+  },
+  methods: {
+    postComplaint () {
+      if (this.tab === 'dermatologist') {
+        const data = {
+          patientId: this.patient,
+          complaintText: this.dermText,
+          doctorId: this.dermsModel.value
+        }
+        ComplaintService.postComplaint(data, 'doctor')
+        return
+      }
+      if (this.tab === 'pharmacist') {
+        const data = {
+          patientId: this.patient,
+          complaintText: this.pharmacistText,
+          doctorId: this.pharmsModel.value
+        }
+        ComplaintService.postComplaint(data, 'doctor')
+        return
+      }
+      if (this.tab === 'pharmacy') {
+        const data = {
+          patientId: this.patient,
+          complaintText: this.pharmacyText,
+          pharmacyId: this.phsModel.value
+        }
+        ComplaintService.postComplaint(data, 'pharmacy')
+      }
     }
   }
 }

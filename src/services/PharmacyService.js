@@ -68,6 +68,22 @@ class PharmacyService {
     return pharms
   }
 
+  async getAllPharmacies2 () {
+    const headers = this.setupHeaders()
+    const pharms = await this.apiClient
+      .get('/allpharms', {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+    return pharms
+  }
+
   async getAllPatientsPharmacies (id) {
     const headers = this.setupHeaders()
     const pharmacies = await this.apiClient
