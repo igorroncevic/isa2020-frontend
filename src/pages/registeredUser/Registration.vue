@@ -257,6 +257,7 @@
 
 <script>
 import AuthService from "./../../services/AuthService";
+import PharmacyAdminService from "./../../services/PharmacyAdminService";
 import {
   successfullyRegistered,
   registrationError,
@@ -293,6 +294,7 @@ export default {
       setSurname: "setSurname",
       setId: "setId",
       setRole: "setRole",
+      setPharmacyid: "setPharmacyid"
     }),
     async onSubmitLogin() {
       const logInData = {
@@ -312,6 +314,12 @@ export default {
 
         if (this.$store.getters.getRole == "patient") {
           setTimeout(() => this.$router.push({ path: "/patient/" }), 2000);
+        } else if(this.$store.getters.getRole == "pharmacyAdmin") {
+          let responsePhadmin = await PharmacyAdminService.getPharmacyAdminsPharmacy(response.data.userId)
+          if (responsePhadmin.status == 200) {
+            console.log(responsePhadmin.data.id)
+            this.setPharmacyid(responsePhadmin.data.id);
+          }
         }
       } else {
         logInError();

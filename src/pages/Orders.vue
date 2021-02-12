@@ -231,7 +231,7 @@ export default {
   },
   methods: {
     async getPurchaseOrders() {
-      let response = await PhramacyService.getAllPharmacyPurchaseOrders();
+      let response = await PhramacyService.getAllPharmacyPurchaseOrders(this.$store.getters.getPharmacyid);
 
       if (response) {
         if (response.status == 200) this.purchaseOrders = [...response.data];
@@ -241,7 +241,7 @@ export default {
     },
     async addNewPurchaseOrder() {
       let data = {
-        pharmacyAdminId: "40c88a70-d8cd-4d8f-b56f-eb158f7c27fa",
+        pharmacyAdminId: this.$store.getters.getId,
         endDate: this.endDate,
         medicines: this.newPurchaseOrderMedicines,
       };
@@ -299,13 +299,7 @@ export default {
         supplierId
       );
       if (response.status == 200) {
-        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
-
-        if (response) {
-          if (response.status == 200) this.purchaseOrders = [...response.data];
-        } else {
-          errorFetchingData();
-        }
+        getPurchaseOrders()
         this.offersDialog = false;
         successfulyAcceptedOffer();
       } else {

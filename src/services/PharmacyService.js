@@ -84,9 +84,8 @@ class PharmacyService {
     return pharmacies
   }
 
-  async getAllPharmacyPurchaseOrders() {
+  async getAllPharmacyPurchaseOrders(id) {
     let headers = this.setupHeaders()
-    let id = "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
     let purchaseOrders = await this.apiClient
       .get(`/${id}/orders`, {
         headers
