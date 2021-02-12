@@ -73,24 +73,27 @@
           label="Add new medicine"
           @click="addNewMedicineToPurchaseOrder()"
         />
-        <q-virtual-scroll
-          class="q-ma-sm"
-          type="table"
-          style="max-height: 16vh"
-          :virtual-scroll-item-size="48"
-          :virtual-scroll-sticky-size-start="48"
-          :virtual-scroll-sticky-size-end="32"
-          :items="newPurchaseOrderMedicines"
+        <q-table
+          class="q-pa-sm"
+          :data="newPurchaseOrderMedicines"
+          :columns="columns"
+          row-key="medicineId"
+          hide-header
+          hide-bottom
         >
-          <template v-slot="{ item: row, index }">
-            <tr :key="row.medicineId">
-              <td>#{{ index + 1 }}</td>
-              <td v-for="col in columns" :key="index + '-' + col">
-                {{ row[col] }}
-              </td>
-            </tr>
+          <template v-slot:body-cell-action="props">
+            <q-td :props="props">
+              <q-btn
+                color="negative"
+                icon-right="delete"
+                no-caps
+                flat
+                dense
+                @click="deletePurchaseOrderMedicine(newPurchaseOrderMedicines.indexOf(props.row))"
+              />
+            </q-td>
           </template>
-        </q-virtual-scroll>
+        </q-table>
         <q-separator class="q-my-sm"></q-separator>
         <q-btn
           :disable="newPurchaseOrderMedicines.length == 0 || endDate == null"
@@ -114,7 +117,13 @@
               :props="props"
               v-if="purchaseOrderOffersShow.endDate <= getTodayDate()"
             >
-              <q-btn color="green" label="Accept" flat dense @click="acceptOffer(props.row.supplier.id)"/>
+              <q-btn
+                color="green"
+                label="Accept"
+                flat
+                dense
+                @click="acceptOffer(props.row.supplier.id)"
+              />
             </q-td>
           </template>
         </q-table>
@@ -132,7 +141,8 @@ import { errorFetchingData } from "./../notifications/globalErrors";
 import { successfulyAddedOrder } from "./../notifications/orders";
 import { failedToAddOrder } from "./../notifications/orders";
 import { failedToAcceptOffer } from "./../notifications/orders";
-import { date } from 'quasar'
+import { successfulyAcceptedOffer } from "./../notifications/orders";
+import { date } from "quasar";
 
 export default {
   components: { PurchaseOrderCard },
@@ -154,7 +164,21 @@ export default {
       newPurchaseOrderMedicine: null,
       newPurchaseOrderMedicineQuantity: 0,
       newPurchaseOrderMedicines: [],
-      columns: ["medicineName", "orderQuantity"],
+      columns: [
+        {
+          name: "medicineName",
+          align: "center",
+          label: "Medicine name",
+          field: "medicineName",
+        },
+        {
+          name: "orderQuantity",
+          align: "center",
+          label: "Quantity",
+          field: "orderQuantity",
+        },
+        { name: "action", label: "", field: "action" },
+      ],
       endDate: null,
       offersDialog: false,
       offers: [],
@@ -202,7 +226,7 @@ export default {
         let response = await PhramacyService.getAllPharmacyPurchaseOrders();
 
         if (response.status == 200) {
-           this.purchaseOrders = [...response.data];
+          this.purchaseOrders = [...response.data];
         } else {
           errorFetchingData();
         }
@@ -244,12 +268,19 @@ export default {
       return date.formatDate(timeStamp, "YYYY-MM-DD");
     },
     async acceptOffer(supplierId) {
-      let response = await PurchaseOrderService.acceptOffer(this.purchaseOrderOffersShow.id, supplierId);
+      let response = await PurchaseOrderService.acceptOffer(
+        this.purchaseOrderOffersShow.id,
+        supplierId
+      );
       if (response.status == 200) {
-        //this.offers = [...response.data];
+        this.offersDialog = false;
+        successfulyAcceptedOffer();
       } else {
-        failedToAcceptOffer(response.data)
+        failedToAcceptOffer(response.data);
       }
+    },
+    deletePurchaseOrderMedicine(index) {
+      this.newPurchaseOrderMedicines.splice(index, 1)
     }
   },
 };
