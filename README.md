@@ -4,26 +4,23 @@
 
 Student project pharmacy app frontend
 
-## Install the dependencies
+### Installing Quasar CLI
 ```bash
-yarn
 npm install -g @quasar/cli
+```
+
+### Install neccessary dependencies
+Position yourself where the package.json is and run
+```bash
+npm install
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar dev
-```
-
-### Lint the files
-```bash
-yarn run lint
+npm run dev
 ```
 
 ### Build the app for production
 ```bash
 quasar build
 ```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
