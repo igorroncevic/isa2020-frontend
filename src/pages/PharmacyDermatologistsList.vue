@@ -160,7 +160,6 @@
           :data="dermatologistsCheckups"
           :columns="columnsCheckups"
           row-key="medicineId"
-          hide-bottom
         >
         </q-table>
       </q-card>
@@ -171,6 +170,8 @@
 <script>
 import DoctorService from "./../services/DoctorService";
 import CheckupService from "./../services/CheckupService";
+import { addingNewCheckupError } from "./../notifications/terms";
+import { successfulyAddedNewCheckup } from "./../notifications/terms";
 import moment from "moment";
 
 export default {
@@ -293,15 +294,21 @@ export default {
     },
     async addNewCheckup() {
       this.newCheckup.doctorId = this.selectedDermatologist.id;
-      let success = await CheckupService.addNewCheckup(this.newCheckup);
-      if (success) {
+      this.newCheckup.startTime = moment(this.newCheckup.startTime).format()
+      this.newCheckup.endTime = moment(this.newCheckup.endTime).format()
+      let response = await CheckupService.addNewCheckup(this.newCheckup);
+      if (response.status == 201) {
         let checkups = await CheckupService.findAllAvailableDermatologistsCheckups(
           this.selectedDermatologist.id
         );
+        successfulyAddedNewCheckup()
         this.dermatologistsCheckups = checkups;
       } else {
-        
+        addingNewCheckupError(response.data)
       }
+      this.newCheckup.startTime = ""
+      this.newCheckup.endTime = ""
+      this.price = 0
     },
     myFilter() {
       this.filtersActive = false;

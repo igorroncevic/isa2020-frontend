@@ -173,17 +173,17 @@ class CheckupService {
 
   async addNewCheckup(data) {
     const headers = this.setupHeaders()
-    const success = this.apiClient
+    const resonse = this.apiClient
       .post('', data, {
         headers
       })
       .then(response => {
-        return true
+        return response
       })
       .catch(err => {
-        return false
+        return err.response
       })
-    return success
+    return resonse
   }
 
   setupHeaders () {
