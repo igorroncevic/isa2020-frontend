@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="text-h4 text-bold text-primary text-center">Medicine specification</div>
-            <div class="row justify-center">
+            <div class="row  q-mt-md justify-center">
                 <div class="col-xs-12 col-sm-12 col-md-6 q-pa-md">
                     <q-input
                         filled
@@ -121,7 +121,7 @@
                         filled
                         clearable
                         type="textarea"
-                        label="Drug composition"
+                        label="Medicne composition"
 
                     />
                 </div>

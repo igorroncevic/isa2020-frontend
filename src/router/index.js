@@ -39,6 +39,20 @@ router.beforeEach((to, from, next) => {
       cantAccessPatientRoutes()
       next(false)
     }
+  } else if (to.path.includes("/supplier") || to.path == "/supplier") {
+    if (store.getters.getRole == "supplier") {
+      next()
+    } else {
+      cantAccessPatientRoutes()
+      next(false)
+    }
+  } else if (to.path.includes("/sysadmin") || to.path == "/sysadmin") {
+    if (store.getters.getRole == "sysAdmin") {
+      next()
+    } else {
+      cantAccessPatientRoutes()
+      next(false)
+    }
   } else {
     next();
   }

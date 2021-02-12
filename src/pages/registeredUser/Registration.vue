@@ -333,7 +333,6 @@ import {
   changePasswordError
 } from './../../notifications/patients'
 import { mapActions } from 'vuex'
-
 export default {
   data () {
     return {
@@ -386,7 +385,6 @@ export default {
       if (response.status == 423) {
         this.changePassDialog = true
       }
-
       if (response.status == 200) {
         successfullyLoggedIn()
         this.setJwt(response.data.accessToken)
@@ -395,7 +393,6 @@ export default {
         this.setSurname(response.data.surname)
         this.setId(response.data.userId)
         this.setRole(response.data.userRole)
-
         if (this.$store.getters.getRole == 'patient') {
           setTimeout(() => this.$router.push({ path: '/patient/' }), 2000)
         }
@@ -408,6 +405,12 @@ export default {
           setTimeout(() => this.$router.push({ path: '/doctor/pharm' }), 2000)
           var pharmacyP = await DoctorService.getPharmPharmacy(response.data.userId)
           this.setPharmacy(pharmacyP)
+        }
+        if (this.$store.getters.getRole === 'sysAdmin') {
+          setTimeout(() => this.$router.push({ path: '/sysadmin' }), 2000)
+        }
+        if (this.$store.getters.getRole === 'supplier') {
+          setTimeout(() => this.$router.push({ path: '/supplier' }), 2000)
         }
       } else {
         logInError()
@@ -425,7 +428,6 @@ export default {
         street: this.pAddress
       }
       const response = await AuthService.registerNewPatient(patientData)
-
       if (response.status == 200) {
         successfullyRegistered()
       } else {

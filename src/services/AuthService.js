@@ -11,7 +11,55 @@ class AuthService {
 
   async registerNewPatient (patient) {
     const success = this.apiClient
-      .post('/register', patient)
+      .post('/signup/patient', patient)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return success
+  }
+
+  async registerNewSysAdmin (sysAdmin) {
+    const success = this.apiClient
+      .post('/signup/sysadmin', sysAdmin)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return success
+  }
+
+  async registerNewDermatologist (derm) {
+    const success = this.apiClient
+      .post('/signup/derm', derm)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return success
+  }
+
+  async registerNewPhAdmin (pharmadmin) {
+    const success = this.apiClient
+      .post('/signup/pharmadmin', pharmadmin)
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return success
+  }
+
+  async registerNewSupplier (supplier) {
+    const success = this.apiClient
+      .post('/signup/supplier', supplier)
       .then(response => {
         return response
       })

@@ -5,7 +5,7 @@ import { getBackendPath } from './backendPath'
 class CheckupService {
   constructor () {
     this.apiClient = axios.create({
-      baseURL: getBackendPath() + "/api/checkups"
+      baseURL: getBackendPath() + '/api/checkups'
     })
   }
 

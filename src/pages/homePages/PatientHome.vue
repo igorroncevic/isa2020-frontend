@@ -79,7 +79,10 @@
               </div>
             </div>
             <div id="home-grid-side-actions-complaint-btn">
-              <q-btn bordered color="primary" label="Write a Complaint" />
+              <q-btn bordered @click="complaint = true" color="primary" label="Write a Complaint" />
+              <q-dialog  v-model="complaint">
+                <writing-complaint-card></writing-complaint-card>
+              </q-dialog>
             </div>
           </div>
         </div>
@@ -89,57 +92,58 @@
 </template>
 
 <script>
-import TermService from "./../../services/TermService";
-import PromotionService from "./../../services/PromotionService";
-import PatientService from "./../../services/PatientService";
-import TermCard from "./../../components/TermCard";
-import PromotionCard from "./../../components/PromotionCard";
+import TermService from './../../services/TermService'
+import PromotionService from './../../services/PromotionService'
+import PatientService from './../../services/PatientService'
+import TermCard from './../../components/TermCard'
+import PromotionCard from './../../components/PromotionCard'
+import WritingComplaintCard from './../../components/WritingComplaintCard'
 
 export default {
-  components: { TermCard, PromotionCard },
-  async beforeMount() {
-    this.patientId = this.$store.getters.getId;
+  components: { TermCard, PromotionCard, WritingComplaintCard },
+  async beforeMount () {
+    this.patientId = this.$store.getters.getId
     this.patientName = this.$store.getters.getName
 
     let response = await TermService.getAllPatientsUpcomingTerms(
       this.patientId
-    );
+    )
 
     if (response) {
-      if (response.status == 200) this.terms = [...response.data];
+      if (response.status == 200) this.terms = [...response.data]
     }
 
-    response = await PromotionService.getAllPatientsPromotions(this.patientId);
+    response = await PromotionService.getAllPatientsPromotions(this.patientId)
 
     if (response) {
-      if (response.status == 200) this.promotions = [...response.data];
+      if (response.status == 200) this.promotions = [...response.data]
     }
 
-    response = await PatientService.getPatientPenalties(this.patientId);
+    response = await PatientService.getPatientPenalties(this.patientId)
 
     if (response) {
-      if (response.status == 200) this.penalties = response.data;
+      if (response.status == 200) this.penalties = response.data
     }
-    
   },
-  data() {
+  data () {
     return {
       terms: [],
       promotions: [],
-      patientId: "",
-      patientName: "",
+      patientId: '',
+      patientName: '',
       penalties: 0,
-    };
+      complaint: false
+    }
   },
   methods: {
-    navigateToCalendar() {
-      this.$router.push({ path: "/patient/calendar" });
+    navigateToCalendar () {
+      this.$router.push({ path: '/patient/calendar' })
     },
-    navigateToMark() {
-      this.$router.push({ path: "/patient/mark" });
-    },
-  },
-};
+    navigateToMark () {
+      this.$router.push({ path: '/patient/mark' })
+    }
+  }
+}
 </script>
 
 <style scoped>

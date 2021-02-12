@@ -100,9 +100,9 @@
 </template>
 
 <script>
-import SysAdminService from './../services/SysAdminService'
+import AuthService from './../services/AuthService'
 import {
-  successfullyRegisteredDerm,
+  successfullyRegisteredSysAdmin,
   registrationError
 } from './../notifications/sysAdmin'
 
@@ -132,10 +132,10 @@ export default {
         city: this.city,
         street: this.address
       }
-      const success = await SysAdminService.registerNewSysAdmin(sysAdminData)
+      const response = await AuthService.registerNewSysAdmin(sysAdminData)
 
-      if (success) {
-        successfullyRegisteredDerm()
+      if (response.status == 201) {
+        successfullyRegisteredSysAdmin()
       } else {
         registrationError()
       }

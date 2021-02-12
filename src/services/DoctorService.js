@@ -143,23 +143,6 @@ class DoctorService {
     return responseData
   }
 
-  async registerNewDermatologist (dermData) {
-    const headers = this.setupHeaders()
-    const success = this.apiClient
-      .post('/register', dermData, {
-        headers
-      })
-      .then(response => {
-        console.log(response)
-        return true
-      })
-      .catch(err => {
-        console.log(err)
-        return false
-      })
-    return success
-  }
-
   async getDoctorPatients (doctorId) {
     const headers = this.setupHeaders()
     const data = this.apiClient

@@ -52,23 +52,6 @@ class PharmacyAdminService {
       })
     return responseData
   }
-
-  async registerNewPharmacyAdmin (adminData) {
-    const headers = this.setupHeaders()
-    const success = this.apiClient
-      .post('/register', adminData, {
-        headers
-      })
-      .then(response => {
-        console.log(response)
-        return true
-      })
-      .catch(err => {
-        console.log(err)
-        return false
-      })
-    return success
-  }
 }
 
 const pharmacyAdminService = new PharmacyAdminService()

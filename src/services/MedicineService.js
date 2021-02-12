@@ -193,6 +193,38 @@ class MedicineService {
     return res
   }
 
+  async getAllSupplierMedicines (id) {
+    const headers = this.setupHeaders()
+    var res = await this.apiClient
+      .get('/suppliermeds/' + id, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        return err.response
+      })
+    return res
+  }
+
+  async addNewSupplierMedicine (data) {
+    const headers = this.setupHeaders()
+    const success = await this.apiClient
+      .post('/add', data, {
+        headers
+      })
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
   async getAllMedicines () {
     const medicines = await this.apiClient
       .get('/all')

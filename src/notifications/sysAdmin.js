@@ -40,6 +40,17 @@ export function successfullyRegisteredDerm () {
   Notify.create(config)
 }
 
+export function successfullyRegisteredSysAdmin () {
+  const config = {
+    type: 'positive',
+    color: 'teal',
+    message: 'You have registered new system admin successfully!',
+    icon: 'check'
+  }
+
+  Notify.create(config)
+}
+
 export function successfullyRegisteredSupplier () {
   const config = {
     type: 'positive',
@@ -73,10 +84,21 @@ export function successfullyAddedLoyalty () {
   Notify.create(config)
 }
 
+export function successfullyEditedLoyalty () {
+  const config = {
+    type: 'positive',
+    color: 'teal',
+    message: 'You have successfully edited loyalty!',
+    icon: 'check'
+  }
+
+  Notify.create(config)
+}
+
 export function registrationError () {
   const config = {
     type: 'negative',
-    message: 'An error occured. Please try to save object again.'
+    message: 'An error occured. Please try again.'
   }
 
   Notify.create(config)

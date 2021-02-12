@@ -5,7 +5,7 @@ const routes = [
     children: [
       { path: 'pharmacies', component: () => import('pages/PharmaciesList.vue') },
       { path: 'medicines', component: () => import('pages/medicines/SearchMedicines.vue') },
-      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') },
+      { path: '', component: () => import('pages/homePages/NoAuthHome.vue') }
     ]
   },
   {
@@ -40,7 +40,7 @@ const routes = [
       {
         path: '/promotions',
         component: () => import('pages/Promotions.vue')
-      },
+      }
     ]
   },
   {
@@ -56,8 +56,7 @@ const routes = [
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
       { path: 'mark', component: () => import('pages/Mark.vue') },
-      { path: 'complaints', component: () => import('pages/WriteComplaint.vue') },
-      { path: '', component: () => import('pages/homePages/PatientHome.vue') },
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') }
     ]
   },
   {
@@ -89,7 +88,19 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/sysAdmin/SysAdminUserRegistration.vue') },
       { path: 'loyalty', component: () => import('pages/sysAdmin/LoyaltyProgramme.vue') },
-      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') }
+      { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') },
+      { path: 'complaints', component: () => import('pages/sysAdmin/UsersComplaints.vue') }
+    ]
+  },
+  {
+    path: '/supplier',
+    component: () => import('layouts/SupplierLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/PurchaseOrders.vue') },
+      { path: 'acc', component: () => import('pages/profiles/SupplierProfile.vue') },
+      { path: 'meds', component: () => import('pages/SupplierMedicines.vue') },
+      { path: 'purchaseorders', component: () => import('pages/SupplierPurchaseOrders.vue') },
+      { path: 'allpurchaseorders', component: () => import('pages/PurchaseOrders.vue') }
     ]
   },
   {
@@ -100,10 +111,8 @@ const routes = [
     path: '/activate/:id',
     component: () => import('pages/registeredUser/AccountConfirmation.vue')
   },
-
   // Always leave this as last one,
   // but you can also remove it
-
   {
     path: '*',
     component: () => import('pages/Error404.vue')
