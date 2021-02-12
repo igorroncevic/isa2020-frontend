@@ -177,13 +177,13 @@ export default {
   },
   methods: {
     async onSubmit() {
-      var res = await PharmacyAdminService.updateUserData(this.doctor);
+      var res = await PharmacyAdminService.updateUserData(this.phadmin);
       if (res === "err") {
         this.$q.notify({
           color: "red-4",
           textColor: "white",
           icon: "error",
-          message: "Submitted",
+          message: "Failed",
         });
       } else {
         this.$q.notify({

@@ -26,6 +26,23 @@ class CheckupService {
     return checkups
   }
 
+  async findAllAvailableDermatologistsCheckups (id) {
+    const headers = this.setupHeaders()
+    const checkups = await this.apiClient
+      .get(`/dermatologists/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+
+    return checkups
+  }
+
   async getAllPatientsPastCheckupsPaginated (data) {
     const headers = this.setupHeaders()
     const checkups = await this.apiClient
@@ -152,6 +169,21 @@ class CheckupService {
         return []
       })
     return res
+  }
+
+  async addNewCheckup(data) {
+    const headers = this.setupHeaders()
+    const success = this.apiClient
+      .post('', data, {
+        headers
+      })
+      .then(response => {
+        return true
+      })
+      .catch(err => {
+        return false
+      })
+    return success
   }
 
   setupHeaders () {

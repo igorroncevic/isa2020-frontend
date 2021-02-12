@@ -26,6 +26,23 @@ class DoctorService {
     return user
   }
 
+  async getDoctorWorkScheduleInPharmacy (doctorId, pharmacyId) {
+    const headers = this.setupHeaders()
+    const user = await this.apiClient
+      .get(`/${doctorId}/pharmacy/${pharmacyId}`, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return {}
+      })
+
+    return user
+  }
+
   async getAllPharmacists () {
     const headers = this.setupHeaders()
     const user = await this.apiClient
@@ -47,6 +64,40 @@ class DoctorService {
     const headers = this.setupHeaders()
     const user = await this.apiClient
       .get('/dermatologists', {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return {}
+      })
+
+    return user
+  }
+
+  async getAllPharmacyPharmacists (id) {
+    const headers = this.setupHeaders()
+    const user = await this.apiClient
+      .get(`/pharmacy/${id}/pharmacists`, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return {}
+      })
+
+    return user
+  }
+
+  async getAllPharmacyDermatologists (id) {
+    const headers = this.setupHeaders()
+    const user = await this.apiClient
+      .get(`/pharmacy/${id}/dermatologists`, {
         headers
       })
       .then(response => {

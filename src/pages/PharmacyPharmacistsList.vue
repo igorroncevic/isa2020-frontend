@@ -39,7 +39,7 @@ import DoctorService from './../services/DoctorService'
 
 export default {
   async beforeMount () {
-    this.data = await DoctorService.getAllPharmacists()
+    this.data = await DoctorService.getAllPharmacyPharmacists(this.$store.getters.getPharmacy)
     this.original = JSON.parse(JSON.stringify(this.data))
 
     //Moze da se promeni da se povlaci sa backend-a
