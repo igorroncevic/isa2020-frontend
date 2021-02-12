@@ -116,6 +116,7 @@ export default {
         {
           title: "Log out",
           icon: "logout",
+          link: "/",
         },
       ],
     };
@@ -130,9 +131,10 @@ export default {
       setRole: "setRole",
     }),
     activeDrawerItem(link) {
-      if(link == "/logout") return false;
-      let rest = String(link).substr("/patient".length);
-      return this.$route.path.includes(rest);
+      if (link == "/") return false;
+      let rest = String(this.$route.path).substr("/patient/".length);
+      if(rest == "") return false;
+      return link.includes(rest);
     },
     menuCardClicked(title) {
       if (title == "Log out") {
