@@ -18,6 +18,26 @@ export function successfullyLoggedIn () {
   Notify.create(config)
 }
 
+export function successfullyChangedPassword () {
+  const config = {
+    type: 'positive',
+    color: 'teal',
+    message: 'You have changed password successfully!',
+    icon: 'check'
+  }
+
+  Notify.create(config)
+}
+
+export function changePasswordError () {
+  const config = {
+    type: 'negative',
+    message: 'An error occured'
+  }
+
+  Notify.create(config)
+}
+
 export function logInError () {
   const config = {
     type: 'negative',

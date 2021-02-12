@@ -72,3 +72,22 @@ export function noPharmaciesAreAvailable () {
 
   Notify.create(config)
 }
+
+
+export function addingNewCheckupError (messageError) {
+  const config = {
+    type: 'negative',
+    message: messageError
+  }
+
+  Notify.create(config)
+}
+
+export function successfulyAddedNewCheckup () {
+  const config = {
+    type: 'positive',
+    message: 'Successfuly added new checkup!'
+  }
+
+  Notify.create(config)
+}

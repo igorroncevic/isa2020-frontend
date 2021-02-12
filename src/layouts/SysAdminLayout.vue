@@ -61,7 +61,8 @@ const menuData = [
   {
     title: 'Users complaints',
     caption: 'quasar.dev',
-    icon: 'thumb_down_off_alt'
+    icon: 'thumb_down_off_alt',
+    link: '/sysadmin/complaints'
   },
   {
     title: 'Medicines codebook',
@@ -74,6 +75,12 @@ const menuData = [
     caption: 'quasar.dev',
     icon: 'star_border',
     link: '/sysadmin/loyalty'
+  },
+  {
+    title: 'Vacation requests',
+    caption: 'quasar.dev',
+    icon: 'flight_takeoff',
+    link: '/sysadmin/vacations'
   },
   {
     title: 'Log out',

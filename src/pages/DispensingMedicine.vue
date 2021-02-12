@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import {getBackendPath} from './../services/backendPath'
+import { getBackendPath } from './../services/backendPath'
 
 export default {
   data () {
@@ -34,7 +34,10 @@ export default {
   },
   methods: {
     send () {
-      this.$axios.get(getBackendPath() + '/api/medicines/reserved/' + this.id + '/e93cab4a-f007-412c-b631-7a9a5ee2c6ed') // fixed pharmacy id for now
+      var headers = this.setupHeaders()
+      this.$axios.get(getBackendPath() + '/api/medicines/reserved/' + this.id + '/' + this.$store.getters.getPharmacy ,{
+        headers
+      }) // fixed pharmacy id for now
         .then(response => {
           if (response.status === 204) {
             this.$q.notify({
@@ -73,11 +76,13 @@ export default {
         })
     },
     handle () {
+      var headers = this.setupHeaders()
       this.$axios.put(getBackendPath() + '/api/medicines/handleReservation', {
         id: this.res.id,
         email: this.res.email,
         medicine: this.res.medicineName
-      })
+      },
+      { headers })
         .then(response => {
           this.$q.notify({
             color: 'positive',
@@ -89,6 +94,14 @@ export default {
           })
           this.show2 = true
         })
+    },
+    setupHeaders () {
+      const jwt = this.$store.getters.getJwt
+      const headers = {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + jwt
+      }
+      return headers
     }
   }
 }

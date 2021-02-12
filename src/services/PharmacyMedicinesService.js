@@ -3,23 +3,23 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PharmacyMedicinesService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/pharmacyMedicines'
     })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
-  async checkAvaliable(data) {
-    let headers = this.setupHeaders()
+  async checkAvaliable (data) {
+    const headers = this.setupHeaders()
     const res = this.apiClient
       .post('/availability', data, {
         headers
@@ -36,9 +36,10 @@ class PharmacyMedicinesService {
 
   async getPharmacyMedicines(pharmacy) {
     let headers = this.setupHeaders()
-    const res = await this.apiClient.get('/' + pharmacy, {
-      headers
-    })
+    const res = await this.apiClient
+      .get('/' + pharmacy, {
+        headers
+      })
       .then(response => {
         return response.data
       })
@@ -48,6 +49,40 @@ class PharmacyMedicinesService {
       })
     return res
   }
+
+  async addMedicineToPharmacy(data) {
+    let headers = this.setupHeaders()
+    let success = await this.apiClient
+      .post("", data, {
+        headers
+      })
+      .then(response => {
+        return true;
+      })
+      .catch(err => {
+        return false;
+      });
+
+    return success;
+  }
+
+  async deletePharmacyMedicine(pid, mid) {
+    let headers = this.setupHeaders()
+    const success = this.apiClient
+      .delete('/' + pid + '/medicine/' + mid, {
+        headers
+      })
+      .then(response => {
+        console.log(response)
+        return true
+      })
+      .catch(err => {
+        console.log(err)
+        return false
+      })
+    return success
+  }
+
 }
 
 const pharmacyMedicinesService = new PharmacyMedicinesService()

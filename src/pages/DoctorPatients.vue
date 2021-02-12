@@ -1,12 +1,11 @@
 <template>
-<q-page-container>
 <q-page padding class="q-gutter-y-xl column items-center ">
   <div class="row text-h3 text-primary">
     My patients  &nbsp;
-   <q-input outlined bottom-slots v-model="search" label="Search"   :dense="dense">
+   <q-input outlined bottom-slots v-model="search" label="Search"  >
 
         <template v-slot:append>
-          <q-icon v-if="text !== ''" name="close" @click="search = ''" class="cursor-pointer" />
+          <q-icon v-if="search !== ''" name="close" @click="search = ''" class="cursor-pointer" />
           <q-icon name="search" />
         </template>
 
@@ -43,14 +42,13 @@
             </q-badge>
           </q-td>
           <q-td key="button" :props="props" >
-            <q-btn color="primary">Start checkup </q-btn>
+            <q-btn @click="startTerm(props.row.id)" color="primary">Start checkup</q-btn>
           </q-td>
         </q-tr>
       </template>
     </q-table>
   </div>
 </q-page>
-</q-page-container>
 </template>
 
 <style lang="sass" scoped>
@@ -60,6 +58,7 @@ table.q-table tbody td
 </style>
 <script>
 import DoctorService from './../services/DoctorService'
+import TermService from './../services/TermService'
 export default {
   data () {
     return {
@@ -83,7 +82,7 @@ export default {
     }
   },
   async mounted () {
-    this.patients = await DoctorService.getDoctorPatients('a5ac174a-45b3-487f-91cb-3d3f727d6f1c') // const for now
+    this.patients = await DoctorService.getDoctorPatients(this.$store.getters.getId) 
   },
   computed: {
     filteredPatients () {
@@ -92,6 +91,23 @@ export default {
         var rfullname = p.surname.toLowerCase() + ' ' + p.name.toLowerCase()
         if (fullname.includes(this.search) || rfullname.includes(this.search)) { return p }
       })
+    }
+  },
+  methods: {
+    async startTerm (patientId) {
+      var term = await TermService.checkIsCurrentTherm(this.$store.getters.getId, patientId)
+      if (term) {
+        this.$router.push('derm/startcheckup/' + term.id)
+      } else {
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          timeout: 500,
+          icon: 'error',
+          position: 'center',
+          message: 'Patient does not have scheduled term now!'
+        })
+      }
     }
   }
 }

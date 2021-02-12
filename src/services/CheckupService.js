@@ -3,14 +3,14 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class CheckupService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
-      baseURL: getBackendPath() + "/api/checkups"
+      baseURL: getBackendPath() + '/api/checkups'
     })
   }
 
-  async getAllCheckups() {
-    let headers = this.setupHeaders()
+  async getAllCheckups () {
+    const headers = this.setupHeaders()
     const checkups = await this.apiClient
       .get('/', {
         headers
@@ -26,10 +26,27 @@ class CheckupService {
     return checkups
   }
 
-  async getAllPatientsPastCheckupsPaginated(data) {
-    let headers = this.setupHeaders()
+  async findAllAvailableDermatologistsCheckups (id) {
+    const headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post(`/past`, data, {
+      .get(`/dermatologists/${id}`, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+
+    return checkups
+  }
+
+  async getAllPatientsPastCheckupsPaginated (data) {
+    const headers = this.setupHeaders()
+    const checkups = await this.apiClient
+      .post('/past', data, {
         headers
       })
       .then(response => {
@@ -43,10 +60,10 @@ class CheckupService {
     return checkups
   }
 
-  async getAllPatientsUpcomingCheckupsPaginated(data) {
-    let headers = this.setupHeaders()
+  async getAllPatientsUpcomingCheckupsPaginated (data) {
+    const headers = this.setupHeaders()
     const checkups = await this.apiClient
-      .post(`/upcoming`, data, {
+      .post('/upcoming', data, {
         headers
       })
       .then(response => {
@@ -60,8 +77,8 @@ class CheckupService {
     return checkups
   }
 
-  async getAllPatientsCheckups(patientId) {
-    let headers = this.setupHeaders()
+  async getAllPatientsCheckups (patientId) {
+    const headers = this.setupHeaders()
     const checkups = await this.apiClient
       .get(`/patient/${patientId}`, {
         headers
@@ -77,8 +94,8 @@ class CheckupService {
     return checkups
   }
 
-  async getById(id) {
-    let headers = this.setupHeaders()
+  async getById (id) {
+    const headers = this.setupHeaders()
     const term = this.apiClient
       .get('/patientCheckup/' + id, {
         headers
@@ -93,8 +110,8 @@ class CheckupService {
     return term
   }
 
-  async scheduleCheckup(data) {
-    let headers = this.setupHeaders()
+  async scheduleCheckup (data) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .put('/schedule', data, {
         headers
@@ -108,21 +125,21 @@ class CheckupService {
     return success
   }
 
-  async cancelCheckup(data) {
-    let headers = this.setupHeaders()
+  async cancelCheckup (data) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .put('/cancel', data, { headers })
       .then(response => {
-        return response;
+        return response
       })
       .catch(err => {
-        return response.data
+        return err.data
       })
     return success
   }
 
-  async deleteCheckup(id) {
-    let headers = this.setupHeaders()
+  async deleteCheckup (id) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .delete('/' + id, {
         headers
@@ -138,13 +155,44 @@ class CheckupService {
     return success
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  async getFreeDoctorPharmacyTerms (doctor, pharmacy) {
+    const headers = this.setupHeaders()
+    const res = this.apiClient
+      .get('/freeCheckups/' + doctor + '/' + pharmacy, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(err => {
+        console.log(err)
+        return []
+      })
+    return res
+  }
+
+  async addNewCheckup(data) {
+    const headers = this.setupHeaders()
+    const resonse = this.apiClient
+      .post('', data, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        return err.response
+      })
+    return resonse
+  }
+
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 }
 

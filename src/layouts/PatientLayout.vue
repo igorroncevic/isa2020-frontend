@@ -109,13 +109,25 @@ export default {
           link: "/patient/pharmacies",
         },
         {
+          title: "Pharmacists",
+          icon: "face",
+          link: "/patient/pharmacists",
+        },
+        {
+          title: "Dermatologists",
+          icon: "face",
+          link: "/patient/dermatologists",
+        },
+        {
           title: "My profile",
           icon: "account_circle",
           link: "/patient/profile",
         },
+
         {
           title: "Log out",
           icon: "logout",
+          link: "/",
         },
       ],
     };
@@ -130,9 +142,10 @@ export default {
       setRole: "setRole",
     }),
     activeDrawerItem(link) {
-      if(link == "/logout") return false;
-      let rest = String(link).substr("/patient".length);
-      return this.$route.path.includes(rest);
+      if (link == "/") return false;
+      let rest = String(this.$route.path).substr("/patient/".length);
+      if(rest == "") return false;
+      return link.includes(rest);
     },
     menuCardClicked(title) {
       if (title == "Log out") {

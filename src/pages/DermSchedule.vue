@@ -2,10 +2,10 @@
 <q-page padding>
 <div>
     <div class="row q-gutter-md">
-    <q-select filled v-model="pharmacy" :options="pharmacyList" label="Select pharmacy" style="width:500px"/>
+    <q-select filled v-model="pharmacy"  :options="pharmacyList" label="Select pharmacy" style="width:500px"/>
     <q-btn color="primary" @click="selectPharmacy"> confirm </q-btn>
     </div>
-    <DoctorSchedule :terms="terms"></DoctorSchedule>
+    <DoctorSchedule  :terms="terms"></DoctorSchedule>
 </div>
 </q-page>
 </template>
@@ -23,7 +23,7 @@ export default {
     }
   },
   async mounted () {
-    var pList = await DoctorService.getDoctorPharmacyList('a5ac174a-45b3-487f-91cb-3d3f727d6f1c')
+    var pList = await DoctorService.getDoctorPharmacyList(this.$store.getters.getId)
     pList.forEach(p => {
       var pharmacy = {
         label: p.name,
@@ -49,13 +49,13 @@ export default {
     },
     async getTerms () {
       this.terms = []
-      var res = await TermService.getDoctorTermsByPharmacy('a5ac174a-45b3-487f-91cb-3d3f727d6f1c', this.pharmacy.id)
+      var res = await TermService.getDoctorTermsByPharmacy(this.$store.getters.getId, this.pharmacy.id)
       res.forEach(element => {
         var patient = {}
         if (element.patient) {
           patient = {
             id: element.patient.id,
-            email: element.patient.email,
+            email: element.patient.mail,
             displayName: element.patient.name + ' ' + element.patient.surname
           }
         } else {
@@ -69,7 +69,7 @@ export default {
           id: element.id,
           summary: element.type,
           description: '',
-          location: 'Neka apoteka',
+          location: this.pharmacy.label,
           start: {
             dateTime: element.startTime // ISO 8601 formatted // Timezone listed as a separate IANA code
           },

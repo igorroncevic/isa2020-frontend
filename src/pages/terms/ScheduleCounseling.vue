@@ -35,12 +35,32 @@
         :done="step > 2"
         :header-nav="step > 2"
       >
-        <counseling-pharmacy-card
-          v-for="pharmacy in availablePharmacies"
-          :key="pharmacy.id"
-          :pharmacy="pharmacy"
-          @chosenPharmacy="(value) => choosePharmacy(value)"
+        <q-select
+          borderless
+          v-model="pharmacySorting"
+          :options="pharmacySortingOptions"
+          label="Sort by"
+          class="q-mb-lg"
+          style="max-width: 150px"
+          @input="sortPharmacies"
+          v-if="availablePharmacies.length != 0"
         />
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 15px;
+            column-gap: 15px;
+          "
+        >
+          <counseling-pharmacy-card
+            v-for="pharmacy in availablePharmacies"
+            :key="pharmacy.id"
+            :pharmacy="pharmacy"
+            @chosenPharmacy="(value) => choosePharmacy(value)"
+          />
+        </div>
       </q-step>
 
       <q-step
@@ -49,12 +69,32 @@
         icon="emoji_people"
         :header-nav="step > 3"
       >
-        <counseling-pharmacist-card
-          v-for="pharmacist in availablePharmacists"
-          :key="pharmacist.id"
-          :pharmacist="pharmacist"
-          @chosenPharmacist="(value) => choosePharmacist(value)"
+        <q-select
+          borderless
+          v-model="pharmacistSorting"
+          :options="pharmacistSortingOptions"
+          label="Sort by"
+          class="q-mb-lg"
+          style="max-width: 150px"
+          @input="sortPharmacists"
+          v-if="availablePharmacists.length != 0"
         />
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            row-gap: 15px;
+            column-gap: 15px;
+          "
+        >
+          <counseling-pharmacist-card
+            v-for="pharmacist in availablePharmacists"
+            :key="pharmacist.id"
+            :pharmacist="pharmacist"
+            @chosenPharmacist="(value) => choosePharmacist(value)"
+          />
+        </div>
       </q-step>
     </q-stepper>
   </div>
@@ -123,9 +163,74 @@ export default {
       availablePharmacies: [],
       availablePharmacists: [],
       patientId: "",
+      pharmacySorting: "Mark Desc.",
+      pharmacySortingOptions: [
+        "Mark Desc.",
+        "Mark Asc.",
+        "Price Desc.",
+        "Price Asc.",
+      ],
+      pharmacistSorting: "Mark Desc.",
+      pharmacistSortingOptions: ["Mark Desc.", "Mark Asc."],
     };
   },
   methods: {
+    sortPharmacies() {
+      let sorting = this.pharmacySorting.split(" ");
+
+      if (sorting[0] == "Mark") {
+        if (sorting[1] == "Desc.") {
+          this.availablePharmacies.sort(function (a, b) {
+            if (a.mark > b.mark) return -1;
+            if (a.mark < b.mark) return 1;
+
+            return 0;
+          });
+        } else {
+          this.availablePharmacies.sort(function (a, b) {
+            if (a.mark > b.mark) return 1;
+            if (a.mark < b.mark) return -1;
+
+            return 0;
+          });
+        }
+      } else {
+        if (sorting[1] == "Desc.") {
+          this.availablePharmacies.sort(function (a, b) {
+            if (a.maxPrice > b.maxPrice) return -1;
+            if (a.maxPrice < b.maxPrice) return 1;
+
+            return 0;
+          });
+        } else {
+          this.availablePharmacies.sort(function (a, b) {
+            if (a.maxPrice > b.maxPrice) return 1;
+            if (a.maxPrice < b.maxPrice) return -1;
+
+            return 0;
+          });
+        }
+      }
+    },
+    sortPharmacists() {
+      let sorting = this.pharmacistSorting.split(" ");
+
+      if (sorting[1] == "Desc.") {
+        this.availablePharmacists.sort(function (a, b) {
+          if (a.averageMark > b.averageMark) return -1;
+          if (a.averageMark < b.averageMark) return 1;
+
+          return 0;
+        });
+      } else {
+        this.availablePharmacists.sort(function (a, b) {
+          if (a.averageMark > b.averageMark) return 1;
+          if (a.averageMark < b.averageMark) return -1;
+
+          return 0;
+        });
+      }
+    },
     async enteredTimes() {
       if (moment(this.endTime) < moment(this.startTime))
         startTimeBeforeEndTime();
@@ -149,7 +254,10 @@ export default {
       if (response.status == 200) {
         this.availablePharmacies = response.data;
         if (this.availablePharmacies.length == 0) noPharmaciesAreAvailable();
-        else this.step = 2;
+        else {
+          this.sortPharmacies();
+          this.step = 2;
+        }
       }
     },
 
@@ -171,6 +279,7 @@ export default {
 
       if (response.status == 200) {
         this.availablePharmacists = response.data;
+        this.sortPharmacists();
         this.step = 3;
       }
     },

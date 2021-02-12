@@ -17,12 +17,26 @@
           label="Filter"
         />
       </div>
+      <div class="q-pa-md q-ml-xl">
+        <q-select
+        v-model="modelMark"
+        :options="optionsMark"
+        label="Filter by medicine mark"
+        style="width: 15rem"/>
+      </div>
+      <div class="q-pa-md q-ml-xl">
+        <q-select
+        v-model="modelType"
+        :options="optionsType"
+        label="Filter by medicine type"
+        style="width: 15rem"/>
+      </div>
     </div>
     <q-space />
 
     <div class="row-xs-12 row-sm-4 row-md-3 row-lg-3">
       <div class="medicine-card">
-        <medicine-filter-card
+        <search-medicine-details-card
           v-for="med in medicines"
           :key="med.medicine.id"
           :medicine="med.medicine"
@@ -40,36 +54,40 @@
 </template>
 
 <script>
-import MedicineFilterCard from "./../../components/MedicineFilterCard";
-import MedicineService from "./../../services/MedicineService";
+import MedicineService from './../../services/MedicineService'
+import SearchMedicineDetailsCard from 'src/components/SearchMedicineDetailsCard.vue'
 
 export default {
-  components: { MedicineFilterCard },
-  async mounted() {
-    let response = await MedicineService.getAllMedicinesForNoAuthFiltering({
-      name: "",
-      patientId: "",
-    });
+  components: { SearchMedicineDetailsCard },
+  async mounted () {
+    const response = await MedicineService.getAllMedicinesForNoAuthFiltering({
+      name: '',
+      patientId: ''
+    })
 
-    if (response.status == 200) this.medicines = [...response.data];
+    if (response.status == 200) this.medicines = [...response.data]
   },
-  data() {
+  data () {
     return {
       medicines: [],
-      nameFilter: "",
-    };
+      nameFilter: '',
+      modelMark: '',
+      optionsMark: [],
+      modelType: '',
+      optionsType: ['herbal_medicine', 'biological_medicine', 'homeopathic_medicine', 'human_medicine', 'traditional_herbal_medicine', 'vaccine']
+    }
   },
   methods: {
-    async filterMedicines() {
-      let response = await MedicineService.getAllMedicinesForNoAuthFiltering({
+    async filterMedicines () {
+      const response = await MedicineService.getAllMedicinesForNoAuthFiltering({
         name: this.nameFilter,
-        patientId: "",
-      });
+        patientId: ''
+      })
 
-      if (response.status == 200) this.medicines = [...response.data];
-    },
-  },
-};
+      if (response.status == 200) this.medicines = [...response.data]
+    }
+  }
+}
 </script>
 
 <style scoped>
