@@ -20,9 +20,26 @@ class PurchaseOrderService {
 
     async addNewPurchaseOrder(data) {
         let headers = this.setupHeaders()
-        let id = "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
         let success = await this.apiClient
             .post(``, data, {
+                headers
+            })
+            .then(response => {
+                console.log(response.data)
+                return true;
+            })
+            .catch(err => {
+                console.log(err.response)
+                return false;
+            });
+
+        return success;
+    }
+
+    async updatePurchaseOrder(id, data) {
+        let headers = this.setupHeaders()
+        let success = await this.apiClient
+            .put(`/${id}`, data, {
                 headers
             })
             .then(response => {

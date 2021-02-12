@@ -11,7 +11,7 @@
           round
           color="red"
           icon="add"
-          @click="addPurchaseOrderDialog = true"
+          @click="addNewOrderDialog"
         />
       </div>
     </div>
@@ -28,6 +28,8 @@
         <purchase-order-card
           v-for="purchaseOrder in purchaseOrders"
           @show_offers="showOffers"
+          @delete_order="deleteOrder"
+          @update_order="updateOrderDialog"
           :key="purchaseOrder.id"
           :purchaseOrder="purchaseOrder"
         />
@@ -89,18 +91,31 @@
                 no-caps
                 flat
                 dense
-                @click="deletePurchaseOrderMedicine(newPurchaseOrderMedicines.indexOf(props.row))"
+                @click="
+                  deletePurchaseOrderMedicine(
+                    newPurchaseOrderMedicines.indexOf(props.row)
+                  )
+                "
               />
             </q-td>
           </template>
         </q-table>
         <q-separator class="q-my-sm"></q-separator>
         <q-btn
+          v-if="!modeUpdate"
           :disable="newPurchaseOrderMedicines.length == 0 || endDate == null"
           flat
           style="color: primary"
-          label="Save purchase order"
+          label="Add new purchase order"
           @click="addNewPurchaseOrder()"
+        />
+        <q-btn
+          v-if="modeUpdate"
+          :disable="newPurchaseOrderMedicines.length == 0 || endDate == null"
+          flat
+          style="color: primary"
+          label="Update purchase order"
+          @click="updatePurchaseOrder()"
         />
       </q-card>
     </q-dialog>
@@ -140,6 +155,8 @@ import MedicineService from "./../services/MedicineService";
 import { errorFetchingData } from "./../notifications/globalErrors";
 import { successfulyAddedOrder } from "./../notifications/orders";
 import { failedToAddOrder } from "./../notifications/orders";
+import { successfulyUpdatedOrder } from "./../notifications/orders";
+import { failedToUpdateOrder } from "./../notifications/orders";
 import { failedToAcceptOffer } from "./../notifications/orders";
 import { successfulyAcceptedOffer } from "./../notifications/orders";
 import { date } from "quasar";
@@ -159,11 +176,13 @@ export default {
   data() {
     return {
       purchaseOrders: [],
-      addPurchaseOrderDialog: false,
       allMedicines: [],
+      addPurchaseOrderDialog: false,
       newPurchaseOrderMedicine: null,
       newPurchaseOrderMedicineQuantity: 0,
       newPurchaseOrderMedicines: [],
+      updatePurchaseOrderId: "",
+      endDate: null,
       columns: [
         {
           name: "medicineName",
@@ -179,7 +198,6 @@ export default {
         },
         { name: "action", label: "", field: "action" },
       ],
-      endDate: null,
       offersDialog: false,
       offers: [],
       offersColumns: [
@@ -212,6 +230,7 @@ export default {
         { name: "action", label: "", field: "action" },
       ],
       purchaseOrderOffersShow: null,
+      modeUpdate: false
     };
   },
   methods: {
@@ -230,25 +249,34 @@ export default {
         } else {
           errorFetchingData();
         }
-        this.newPurchaseOrderMedicine = null;
-        this.endDate = null;
-        this.newPurchaseOrderMedicineQuantity = 0;
-        this.newPurchaseOrderMedicines = [];
         this.addPurchaseOrderDialog = false;
         successfulyAddedOrder();
       } else {
         failedToAddOrder();
       }
     },
-    addNewMedicineToPurchaseOrder() {
-      let purchaseOrderMedicine = {
-        medicineId: this.newPurchaseOrderMedicine.id,
-        medicineName: this.newPurchaseOrderMedicine.name,
-        orderQuantity: this.newPurchaseOrderMedicineQuantity,
+    async updatePurchaseOrder() {
+      let data = {
+        endDate: this.endDate,
+        medicines: this.newPurchaseOrderMedicines,
       };
-      this.newPurchaseOrderMedicines.push(purchaseOrderMedicine);
-      this.newPurchaseOrderMedicine = null;
-      this.newPurchaseOrderMedicineQuantity = 0;
+      let success = await PurchaseOrderService.updatePurchaseOrder(this.updatePurchaseOrderId, data);
+      if (success) {
+        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
+
+        if (response.status == 200) {
+          this.purchaseOrders = [...response.data];
+        } else {
+          errorFetchingData();
+        }
+        this.addPurchaseOrderDialog = false;
+        successfulyUpdatedOrder();
+      } else {
+        failedToUpdateOrder();
+      }
+    },
+    async deleteOrder(orderId) {
+
     },
     async showOffers(value) {
       this.purchaseOrderOffersShow = value;
@@ -263,25 +291,59 @@ export default {
         errorFetchingData();
       }
     },
-    getTodayDate() {
-      let timeStamp = Date.now();
-      return date.formatDate(timeStamp, "YYYY-MM-DD");
-    },
     async acceptOffer(supplierId) {
       let response = await PurchaseOrderService.acceptOffer(
         this.purchaseOrderOffersShow.id,
         supplierId
       );
       if (response.status == 200) {
+        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
+
+        if (response) {
+          if (response.status == 200) this.purchaseOrders = [...response.data];
+        } else {
+          errorFetchingData();
+        }
         this.offersDialog = false;
         successfulyAcceptedOffer();
       } else {
         failedToAcceptOffer(response.data);
       }
     },
+    addNewMedicineToPurchaseOrder() {
+      let purchaseOrderMedicine = {
+        medicineId: this.newPurchaseOrderMedicine.id,
+        medicineName: this.newPurchaseOrderMedicine.name,
+        orderQuantity: this.newPurchaseOrderMedicineQuantity,
+      };
+      this.newPurchaseOrderMedicines.push(purchaseOrderMedicine);
+      this.newPurchaseOrderMedicine = null;
+      this.newPurchaseOrderMedicineQuantity = 0;
+    },
+    getTodayDate() {
+      let timeStamp = Date.now();
+      return date.formatDate(timeStamp, "YYYY-MM-DD");
+    },
+    updateOrderDialog(value) {
+      this.newPurchaseOrderMedicine = null;
+      this.newPurchaseOrderMedicineQuantity = 0;
+      this.endDate = JSON.parse(JSON.stringify(value.endDate));
+      this.newPurchaseOrderMedicines = JSON.parse(JSON.stringify(value.medicines));
+      this.updatePurchaseOrderId = value.id;
+      this.addPurchaseOrderDialog = true;
+      this.modeUpdate = true
+    },
+    addNewOrderDialog() {
+      this.newPurchaseOrderMedicine = null;
+      this.newPurchaseOrderMedicineQuantity = 0;
+      this.endDate = null;
+      this.newPurchaseOrderMedicines = [];
+      this.addPurchaseOrderDialog = true;
+      this.modeUpdate = false
+    },
     deletePurchaseOrderMedicine(index) {
-      this.newPurchaseOrderMedicines.splice(index, 1)
-    }
+      this.newPurchaseOrderMedicines.splice(index, 1);
+    },
   },
 };
 </script>

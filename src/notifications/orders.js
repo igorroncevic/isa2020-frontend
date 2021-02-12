@@ -27,6 +27,26 @@ export function failedToAddOrder() {
    Notify.create(config);
 }
 
+export function successfulyUpdatedOrder() {
+   let config = {
+      type: 'positive',
+      color: 'teal',
+      message: `Successfuly updated purchase order!`,
+      icon: "check"
+   }
+
+   Notify.create(config);
+}
+
+export function failedToUpdateOrder() {
+   let config = {
+      type: 'negative',
+      message: `An error occured while updating purchase order.`
+   }
+
+   Notify.create(config);
+}
+
 export function failedToAcceptOffer(errMessage) {
    let config = {
       type: 'negative',
