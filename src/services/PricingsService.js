@@ -34,10 +34,10 @@ class PricingsService {
     return pricings
   }
 
-  async getAllMedicinePricings (medicineId) {
+  async getAllMedicinePricings (pharmacyId, medicineId) {
     let headers = this.setupHeaders()
     const pricings = await this.apiClient
-      .get(`/pharmacy/e93cab4a-f007-412c-b631-7a9a5ee2c6ed/medicine/${medicineId}`, {
+      .get(`/pharmacy/${pharmacyId}/medicine/${medicineId}`, {
         headers
       }) // const ,login not inplemented yet
       .then(response => {

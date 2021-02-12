@@ -4,6 +4,9 @@ import store from './../store/index'
 import {
   cantAccessPatientRoutes
 } from './../notifications/auth'
+import {
+  cantAccessPharmacyAdminRoutes
+} from './../notifications/auth'
 
 import routes from './routes'
 
@@ -51,6 +54,13 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       cantAccessPatientRoutes()
+      next(false)
+    }
+  } else if (to.path.includes("/phadmin") || to.path == "/phadmin") {
+    if (store.getters.getRole == "pharmacyAdmin") {
+      next()
+    } else {
+      cantAccessPharmacyAdminRoutes()
       next(false)
     }
   } else {

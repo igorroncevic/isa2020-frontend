@@ -85,7 +85,7 @@ class VacationService {
   async approveVacation (id) {
     const headers = this.setupHeaders()
     const success = await this.apiClient
-      .patch(`/${id}/approve`, {
+      .patch(`/${id}/approve`, null, {
         headers
       })
       .then(response => {
