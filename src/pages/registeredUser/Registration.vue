@@ -322,7 +322,8 @@
 </template>
 
 <script>
-import AuthService from './../../services/AuthService'
+import AuthService from "./../../services/AuthService";
+import PharmacyAdminService from "./../../services/PharmacyAdminService";
 import DoctorService from './../../services/DoctorService'
 import {
   successfullyRegistered,
@@ -411,6 +412,13 @@ export default {
         }
         if (this.$store.getters.getRole === 'supplier') {
           setTimeout(() => this.$router.push({ path: '/supplier' }), 2000)
+        }
+        if(this.$store.getters.getRole == "pharmacyAdmin") {
+          let responsePhadmin = await PharmacyAdminService.getPharmacyAdminsPharmacy(response.data.userId)
+          if (responsePhadmin.status == 200) {
+            console.log(responsePhadmin.data.id)
+            this.setPharmacy(responsePhadmin.data.id);
+          }
         }
       } else {
         logInError()

@@ -34,10 +34,10 @@ class ReportService {
     return res
   }
 
-  async postReportMedicine(data) {
+  async postReportMedicine(data, pharmacy) {
     let headers = this.setupHeaders()
     const res = this.apiClient
-      .post('/reportMedicine', data, {
+      .post('/reportMedicine/' + pharmacy, data, {
         headers
       })
       .then(response => {
