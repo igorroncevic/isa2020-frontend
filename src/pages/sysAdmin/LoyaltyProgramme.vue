@@ -1,7 +1,9 @@
 <template>
-    <div class="row justify-center q-mt-xl">
+    <div class="q-mt-xl">
+      <div class="row justify-center text-primary text-h4 text-bold">Loyalty programme</div>
+    <div div class="row justify-center">
     <q-table
-      title="Loyalty programme"
+      class="q-pa-md q-mt-xl"
       :data="data"
       :columns="columns"
       row-key="name"
@@ -45,14 +47,12 @@
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 v-model="editedItem.category"
                 label="Loyalty category">
               </q-input>
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 type="number"
                 v-model="editedItem.minPoints"
                 label="Minimal loyalty points">
@@ -60,7 +60,6 @@
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 type="number"
                 v-model="editedItem.maxPoints"
                 label="Maximal loyalty points">
@@ -68,7 +67,6 @@
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 type="number"
                 v-model="editedItem.checkupPoints"
                 label="Checkup points">
@@ -76,7 +74,6 @@
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 type="number"
                 v-model="editedItem.counselingPoints"
                 label="Counseling points">
@@ -84,13 +81,12 @@
               <q-input
                 filled
                 style="width:500px"
-                class="q-pa-md"
                 v-model="editedItem.discount"
                 type="number"
                 label="Discount">
               </q-input>
             <div class="q-mt-lg">
-              <q-btn unelevated type="submit"  size="lg" color="primary" class="full-width text-white" label="Edit loyalty data" />
+              <q-btn unelevated type="submit" size="lg" color="primary" class="full-width text-white" label="Edit loyalty data" />
             </div>
                 </q-form>
             </div>
@@ -99,9 +95,9 @@
     </q-dialog>
         </template>
     </q-table>
-
-    <div class="q-pa-md">
-      <q-btn dense color="primary" label="Add new loyalty" @click="show_dialog = true" no-caps></q-btn>
+    </div>
+    <div class="row justify-center q-pa-md">
+      <q-btn unelevated color="primary" size="lg" label="Add new loyalty" @click="show_dialog = true"></q-btn>
     </div>
 
         <q-dialog v-model="show_dialog">
@@ -196,6 +192,7 @@ table.q-table tbody td
 import LoyaltyService from './../../services/LoyaltyService'
 import {
   successfullyAddedLoyalty,
+  successfullyEditedLoyalty,
   registrationError
 } from './../../notifications/sysAdmin'
 
@@ -242,7 +239,7 @@ export default {
         { name: 'counseling_points', align: 'center', label: 'Counseling points', field: 'counselingPoints', sortable: true },
         { name: 'disc', align: 'center', label: 'Discount', field: 'discount', sortable: true },
         { name: 'actions', align: 'center', label: 'Actions', field: 'actions' },
-        { name: 'id', align: 'center', label: 'id', field: 'id' }
+        { name: 'id', align: 'center', label: '', field: 'id' }
       ]
     }
   },
@@ -299,7 +296,7 @@ export default {
       const success = await LoyaltyService.updateLoyaltyData(data)
 
       if (success) {
-        successfullyAddedLoyalty()
+        successfullyEditedLoyalty()
         this.edit_dialog = false
       } else {
         registrationError()

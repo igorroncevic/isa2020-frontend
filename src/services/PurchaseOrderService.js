@@ -3,6 +3,7 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PurchaseOrderService {
+
     constructor() {
         this.apiClient = axios.create({
             baseURL: getBackendPath() + "/api/orders"

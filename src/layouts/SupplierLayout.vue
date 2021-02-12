@@ -12,17 +12,16 @@
         />
 
         <q-toolbar-title>
-          Pharmacy
         </q-toolbar-title>
 
         <q-icon name="account_circle" size="md"/>
-        <div>Pera Peric</div>
+        <div>Supplier</div>
       </q-toolbar>
     </q-header>
 
     <q-drawer
-    show-if-above
       v-model="leftDrawerOpen"
+      show-if-above
       bordered
       content-class="bg-grey-1"
     >
@@ -57,19 +56,25 @@ const menuData = [
     title: 'My profile',
     caption: 'quasar.dev',
     icon: 'account_circle',
-    link: '/doctor/acc'
+    link: '/supplier/acc'
   },
   {
-    title: 'My calendar',
+    title: 'My medicines',
     caption: 'quasar.dev',
-    icon: 'event',
-    link: '/doctor/calendar'
+    icon: 'medical_services',
+    link: '/supplier/meds'
   },
   {
-    title: 'My patients',
+    title: 'Create new purchase offer',
     caption: 'quasar.dev',
-    icon: 'people',
-    link: '/doctor/patients'
+    icon: 'post_add',
+    link: '/supplier/allpurchaseorders'
+  },
+  {
+    title: 'My purchase offers',
+    caption: 'quasar.dev',
+    icon: 'list_alt',
+    link: '/supplier/purchaseorders'
   },
   {
     title: 'Log out',
@@ -79,7 +84,7 @@ const menuData = [
 ]
 
 export default {
-  name: 'DoctorLayout',
+  name: 'InformationalSystemAdminLayout',
   components: { MenuCard },
   data () {
     return {

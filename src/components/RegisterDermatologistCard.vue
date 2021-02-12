@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import DoctorService from './../services/DoctorService'
+import AuthService from './../services/AuthService'
 import {
   successfullyRegisteredDerm,
   registrationError
@@ -132,9 +132,9 @@ export default {
         city: this.dCity,
         street: this.dAddress
       }
-      const success = await DoctorService.registerNewDermatologist(dermData)
+      const response = await AuthService.registerNewDermatologist(dermData)
 
-      if (success) {
+      if (response.status == 201) {
         successfullyRegisteredDerm()
       } else {
         registrationError()

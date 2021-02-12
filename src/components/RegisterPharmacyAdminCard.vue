@@ -108,7 +108,7 @@
 </template>
 
 <script>
-import PharmacyAdminService from './../services/PharmacyAdminService'
+import AuthService from './../services/AuthService'
 import PharmacyService from './../services/PharmacyService'
 import {
   successfullyRegisteredAdmin,
@@ -147,9 +147,9 @@ export default {
         street: this.aAddress,
         pharmacyName: this.pharmacyName
       }
-      const success = await PharmacyAdminService.registerNewPharmacyAdmin(adminData)
+      const response = await AuthService.registerNewPhAdmin(adminData)
 
-      if (success) {
+      if (response.status == 201) {
         successfullyRegisteredAdmin()
       } else {
         registrationError()

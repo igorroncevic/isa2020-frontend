@@ -3,23 +3,23 @@ import store from './../store/index'
 import { getBackendPath } from './backendPath'
 
 class PharmacyService {
-  constructor() {
+  constructor () {
     this.apiClient = axios.create({
       baseURL: getBackendPath() + '/api/pharmacies'
     })
   }
 
-  setupHeaders() {
-    const jwt = store.getters.getJwt;
-    let headers = {
-      Accept: "application/json",
-      Authorization: "Bearer " + jwt,
-    };
-    return headers;
+  setupHeaders () {
+    const jwt = store.getters.getJwt
+    const headers = {
+      Accept: 'application/json',
+      Authorization: 'Bearer ' + jwt
+    }
+    return headers
   }
 
   // Koristi i neauth korisnik
-  async getAllFilteredPharmacies(filters) {
+  async getAllFilteredPharmacies (filters) {
     const pharmacies = await this.apiClient
       .get(`/search${filters}`)
       .then(response => {
@@ -32,8 +32,8 @@ class PharmacyService {
     return pharmacies
   }
 
-  async registerNewPharmacy(pharmacyData) {
-    let headers = this.setupHeaders()
+  async registerNewPharmacy (pharmacyData) {
+    const headers = this.setupHeaders()
     const success = this.apiClient
       .post('/register', pharmacyData, {
         headers
@@ -49,8 +49,8 @@ class PharmacyService {
     return success
   }
 
-  async getAllPharmacies() {
-    let headers = this.setupHeaders()
+  async getAllPharmacies () {
+    const headers = this.setupHeaders()
     const pharms = []
     await this.apiClient
       .get('/allpharms', {
@@ -68,8 +68,8 @@ class PharmacyService {
     return pharms
   }
 
-  async getAllPatientsPharmacies(id) {
-    let headers = this.setupHeaders()
+  async getAllPatientsPharmacies (id) {
+    const headers = this.setupHeaders()
     const pharmacies = await this.apiClient
       .get(`/patient/${id}`, {
         headers

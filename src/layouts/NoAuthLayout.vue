@@ -70,17 +70,17 @@ export default {
         {
           title: "Home",
           icon: "home",
-          link: "/noauth/",
+          link: "/",
         },
         {
           title: "Search Medicines",
           icon: "medication",
-          link: "/noauth/medicines",
+          link: "/medicines",
         },
         {
           title: "Search Pharmacies",
           icon: "home_work",
-          link: "/noauth/pharmacies",
+          link: "/pharmacies",
         },
         {
           title: "Login",

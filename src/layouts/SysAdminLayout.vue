@@ -61,7 +61,8 @@ const menuData = [
   {
     title: 'Users complaints',
     caption: 'quasar.dev',
-    icon: 'thumb_down_off_alt'
+    icon: 'thumb_down_off_alt',
+    link: '/sysadmin/complaints'
   },
   {
     title: 'Medicines codebook',

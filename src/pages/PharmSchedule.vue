@@ -16,13 +16,13 @@ export default {
     }
   },
   async mounted () {
-    var res = await TermService.getDoctorTerms('b0a591d4-f627-45ba-8aa9-926e85c93e08')
+    var res = await TermService.getDoctorTerms(this.$store.getters.getId)
     res.forEach(element => {
       var patient = {}
       if (element.patient) {
         patient = {
           id: element.patient.id,
-          email: element.patient.email,
+          email: element.patient.mail,
           displayName: element.patient.name + ' ' + element.patient.surname
         }
       } else {

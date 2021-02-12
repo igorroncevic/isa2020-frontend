@@ -158,7 +158,7 @@
               icon="cancel"
               label="Cancel"
               flat
-              @click="__close()"
+              @click="this.dialog=false"
             />
           </div>
           <div>

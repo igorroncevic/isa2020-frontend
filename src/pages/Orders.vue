@@ -231,7 +231,7 @@ export default {
   },
   methods: {
     async getPurchaseOrders() {
-      let response = await PhramacyService.getAllPharmacyPurchaseOrders(this.$store.getters.getPharmacyid);
+      let response = await PhramacyService.getAllPharmacyPurchaseOrders(this.$store.getters.getPharmacy);
 
       if (response) {
         if (response.status == 200) this.purchaseOrders = [...response.data];
