@@ -36,8 +36,25 @@ class PharmacyAdminService {
     return user
   }
 
-  async updateUserData (data) {
-    const headers = this.setupHeaders()
+  async getPharmacyAdminsPharmacy(id) {
+    let headers = this.setupHeaders()
+    const response = await this.apiClient
+      .get(`/${id}/pharmacy`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        console.log(err)
+        return err.response
+      })
+
+    return response
+  }
+
+  async updateUserData(data) {
+    let headers = this.setupHeaders()
     const responseData = this.apiClient
       .put('', data, {
         headers

@@ -11,7 +11,7 @@
 
 <script>
 import AllPurchaseOrdersCard from './../components/AllPurchaseOrdersCard'
-import PurchaseOrderService from './../services/PurchaseOrderService'
+import SupplierOfferService from './../services/SupplierOfferService'
 
 export default {
   components: { AllPurchaseOrdersCard },
@@ -21,7 +21,7 @@ export default {
     }
   },
   async beforeMount () {
-    this.data = await PurchaseOrderService.getAllPurchaseOrders()
+    this.data = await SupplierOfferService.getAllPurchaseOrders()
   }
 }
 </script>

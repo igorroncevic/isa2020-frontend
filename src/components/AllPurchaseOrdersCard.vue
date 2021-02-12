@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import PurchaseOrderService from './../services/PurchaseOrderService'
+import SupplierOfferService from './../services/SupplierOfferService'
 
 export default {
   props: ['object'],
@@ -132,8 +132,8 @@ export default {
   mounted () {
     this.object.medicines.forEach(element => {
       var d = {
-        name: element.name,
-        quantity: element.quantity
+        name: element.medicineName,
+        quantity: element.orderQuantity
       }
       this.data.push(d)
     })
@@ -147,7 +147,7 @@ export default {
         purchaseOrderId: this.object.purchaseOrderId,
         medicines: this.object.medicines
       }
-      var success = await PurchaseOrderService.givePurchaseOffer(data)
+      var success = await SupplierOfferService.givePurchaseOffer(data)
 
       if (success) {
         this.$q.notify({
