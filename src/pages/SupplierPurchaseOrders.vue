@@ -23,7 +23,7 @@
 
 <script>
 import PurchaseOrderCard from './../components/MyPurchaseOrdersCard'
-import PurchaseOrderService from './../services/PurchaseOrderService'
+import SupplierOfferService from './../services/SupplierOfferService'
 
 export default {
   components: { PurchaseOrderCard },
@@ -38,7 +38,7 @@ export default {
     }
   },
   async beforeMount () {
-    this.data = await PurchaseOrderService.getMyPurchaseOrders(this.supplierId)
+    this.data = await SupplierOfferService.getMyPurchaseOrders(this.supplierId)
   },
   computed: {
     filteredList () {

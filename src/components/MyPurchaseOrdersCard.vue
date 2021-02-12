@@ -144,8 +144,8 @@ export default {
   mounted () {
     this.object.medicines.forEach(element => {
       var d = {
-        name: element.name,
-        quantity: element.quantity
+        name: element.medicineName,
+        quantity: element.orderQuantity
       }
       this.data.push(d)
     })

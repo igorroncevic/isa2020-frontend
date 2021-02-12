@@ -1,85 +1,214 @@
 <template>
   <q-page padding>
-    <div class="q-pa-md" style="max-width: 400px">
+    <div>
+      <q-dialog v-model="changePassDialog">
+        <q-card style="height: 450px">
+          <q-card-section
+            class="row items-center q-pb-none bg-primary text-white"
+          >
+            <div class="text-h6">
+              First login,please change your pass then login again:
+            </div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+          <q-card-section class="row items-center justify-center q-pb-none">
+            <q-form @submit="changePass" class="q-gutter-md">
+              <q-input
+                v-model="oldPass"
+                filled
+                label="Old password *"
+                :type="isPwd ? 'password' : 'text'"
+                hint="Input your password"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please input your password',
+                ]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  ></q-icon>
+                </template>
+              </q-input>
+              <q-input
+                v-model="changePass1"
+                filled
+                :type="isPass1 ? 'password' : 'text'"
+                label="New password *"
+                hint="Input your password"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please input your password',
+                ]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPass1 ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPass1 = !isPass1"
+                  ></q-icon>
+                </template>
+              </q-input>
 
-      <q-input :readonly=readOnly
-          rounded outlined
-          v-model="user.name"
-          label="Your name"
+              <q-input
+                v-model="changePass2"
+                filled
+                label="New password *"
+                :type="isPass2 ? 'password' : 'text'"
+                hint="Confirm your password"
+                lazy-rules
+                v-bind:rules="[
+                  (val) =>
+                    (val && val.length > 0) || 'Please confirm your password',
+                  (val) =>
+                    (val && val == changePass1) || 'Passwords do not match!',
+                ]"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPass2 ? 'visibility' : 'visibility_off'"
+                    @click="isPass2 = !isPass2"
+                    class="cursor-pointer"
+                  ></q-icon>
+                </template>
+              </q-input>
+
+              <div>
+                <q-btn label="Change password" type="submit" color="primary" />
+              </div>
+            </q-form>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </div>
+    <div style="max-width: 500px" padd>
+      <q-form @submit="onSubmit" class="q-gutter-md">
+        <q-input
+          filled
+          v-model="phadmin.name"
+          label="Name:"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :disable="!edit"
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
 
-        <q-input :readonly=readOnly
-          rounded outlined
-          v-model="user.surname"
-          label="Your surname"
+        <q-input
+          filled
+          v-model="phadmin.surname"
+          :disable="!edit"
+          label="Surname:"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
-
-        <q-input :readonly=readOnly
-          rounded outlined
-          v-model="user.email"
-          label="Your email"
+        <q-input
+          filled
+          v-model="phadmin.phoneNumber"
+          :disable="!edit"
+          label="Phone number:"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
-
-        <q-input :readonly=readOnly
-          rounded outlined
-          v-model="user.phoneNumber"
-          label="Your phone number"
+        <q-input
+          filled
+          v-model="phadmin.email"
+          :disable="!edit"
+          label="E-mail:"
           lazy-rules
-          :rules="[ val => val && val.length > 0 || 'Please type something']"
+          :rules="[(val) => (val && val.length > 0) || 'Please type something']"
         />
-
         <div>
-          <q-btn round :color="btnColor" :icon="btnIcon" @click="editClick" />
-          <q-btn round color="primary" v-show=!readOnly icon="save" @click="saveClick" />
+          <q-btn
+            label="Save"
+            icon="save"
+            type="submit"
+            color="primary"
+            v-bind:disable="!edit"
+          />
+          <q-btn
+            label="Edit"
+            @click="edit = true"
+            icon="edit"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
+          <q-btn
+            label="Change password"
+            @click="changePassDialog = true"
+            icon="edit"
+            color="primary"
+            flat
+            class="q-ml-sm"
+          />
         </div>
-
+      </q-form>
     </div>
   </q-page>
 </template>
 
 <script>
-import PharmacyAdminService from './../../services/PharmacyAdminService'
-
+import PharmacyAdminService from "./../../services/PharmacyAdminService";
+import AuthService from "./../../services/AuthService";
+import {
+  successfullyChangedPassword,
+  changePasswordError,
+} from "./../../notifications/patients";
 export default {
-  async beforeMount () {
-    this.user = await PharmacyAdminService.getMyData()
-  },
-  data () {
+  data() {
     return {
-      user: {
-      },
-      tempUser: {},
-      readOnly: true,
-      btnColor: 'primary',
-      btnIcon: 'edit'
-    }
+      phadmin: {},
+      edit: false,
+      changePass1: "",
+      changePass2: "",
+      changePassDialog: false,
+      oldPass: "",
+      isPwd: true,
+      isPass1: true,
+      isPass2: true,
+    };
+  },
+  async mounted() {
+    this.phadmin = await PharmacyAdminService.getMyData(this.$store.getters.getId);
   },
   methods: {
-    editClick () {
-      if (this.readOnly === true) {
-        this.readOnly = false
-        this.tempUser = JSON.parse(JSON.stringify(this.user))
-        this.btnColor = 'red'
-        this.btnIcon = 'highlight_off'
+    async onSubmit() {
+      var res = await PharmacyAdminService.updateUserData(this.phadmin);
+      if (res === "err") {
+        this.$q.notify({
+          color: "red-4",
+          textColor: "white",
+          icon: "error",
+          message: "Failed",
+        });
       } else {
-        this.readOnly = true
-        this.user = this.tempUser
-        this.btnColor = 'primary'
-        this.btnIcon = 'edit'
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Submitted",
+        });
       }
+      this.edit = false;
     },
-    async saveClick () {
-      this.user = await PharmacyAdminService.updateUserData(this.user)
-      this.readOnly = true
-      this.btnColor = 'primary'
-      this.btnIcon = 'edit'
-    }
-  }
-}
+    async changePass() {
+      var data = {
+        email: this.$store.getters.getEmail,
+        oldPass: this.oldPass,
+        newPass: this.changePass1,
+      };
+      var res = await AuthService.changePass(data);
+      if (res.status == 200) {
+        successfullyChangedPassword();
+      } else {
+        changePasswordError();
+      }
+      this.changePassDialog = false;
+    },
+  },
+};
 </script>

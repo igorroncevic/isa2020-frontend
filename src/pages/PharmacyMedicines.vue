@@ -127,7 +127,7 @@ import {failedToUpdatePricing} from './../notifications/pricings'
 export default {
   async beforeMount () {
     this.loading = true
-    this.data = await PharmacyMedicinesService.getPharmacyMedicines("e93cab4a-f007-412c-b631-7a9a5ee2c6ed") // Zakucano za sada
+    this.data = await PharmacyMedicinesService.getPharmacyMedicines(this.$store.getters.getPharmacy)
     this.original = JSON.parse(JSON.stringify(this.data))
     this.loading = false
   },
@@ -185,21 +185,21 @@ export default {
     },
     async addNewMedicine(evt) {
         let data = {
-            pharmacyId: "e93cab4a-f007-412c-b631-7a9a5ee2c6ed", //Zakucano za sada
+            pharmacyId: this.$store.getters.getPharmacy, //Zakucano za sada
             medicineId: this.selectedNewMedicine
         }
         let success = await PharmacyMedicinesService.addMedicineToPharmacy(data)
         if(success) {
-            this.data = await PharmacyMedicinesService.getPharmacyMedicines("e93cab4a-f007-412c-b631-7a9a5ee2c6ed")
+            this.data = await PharmacyMedicinesService.getPharmacyMedicines(this.$store.getters.getPharmacy)
             this.card = false
         } else {
             medicineAlreadyExists()
         }
     },
     async deleteval(index){
-      let success = await PharmacyMedicinesService.deletePharmacyMedicine("e93cab4a-f007-412c-b631-7a9a5ee2c6ed", this.data[index].id);
+      let success = await PharmacyMedicinesService.deletePharmacyMedicine(this.$store.getters.getPharmacy, this.data[index].id);
       if(success) {
-        this.data = await PharmacyMedicinesService.getPharmacyMedicines("e93cab4a-f007-412c-b631-7a9a5ee2c6ed");
+        this.data = await PharmacyMedicinesService.getPharmacyMedicines(this.$store.getters.getPharmacy);
         successfulyDeletedMedicine()
       } else {
         cantDeleteMedicine()
@@ -207,7 +207,7 @@ export default {
     },
     async showPricings(index) {
       this.selectedMedicine = this.data[index]
-      this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+      this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.$store.getters.getPharmacy, this.selectedMedicine.id)
       this.dataPricingHistory.sort(function(a,b){ return new Date(a.startDate) - new Date(b.startDate) });
       this.pricingsDialog = true
     },
@@ -215,7 +215,7 @@ export default {
       console.log(index)
       let success = await PricingsService.deletePricing(this.dataPricingHistory[index].id)
       if(success) {
-        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.$store.getters.getPharmacy, this.selectedMedicine.id)
         this.dataPricingHistory.sort(function(a,b){ return new Date(a.startDate) - new Date(b.startDate) });
         successfulyDeletedPricing()
       } else {
@@ -226,14 +226,14 @@ export default {
       console.log(this.newUpdatePricing.startDate)
       let newPricing = {
         medicineId: this.selectedMedicine.id,
-        pharmacyId: "e93cab4a-f007-412c-b631-7a9a5ee2c6ed",
+        pharmacyId: this.$store.getters.getPharmacy,
         startDate: this.newUpdatePricing.startDate,
         endDate: this.newUpdatePricing.endDate,
         price: this.newUpdatePricing.price
       }
       let success = await PricingsService.addNewPricing(newPricing)
       if(success) {
-        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.$store.getters.getPharmacy, this.selectedMedicine.id)
         this.dataPricingHistory.sort(function(a,b){ return new Date(a.startDate) - new Date(b.startDate) });
         addedNewPricing()
         this.newUpdatePricingDialog = false
@@ -245,7 +245,7 @@ export default {
       console.log(this.newUpdatePricing)
       let response = await PricingsService.updatePricing(this.selectedPricingUpdate.id, this.newUpdatePricing)
       if (response.status == 200) {
-        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.selectedMedicine.id)
+        this.dataPricingHistory = await PricingsService.getAllMedicinePricings(this.$store.getters.getPharmacy, this.selectedMedicine.id)
         this.dataPricingHistory.sort(function(a,b){ return new Date(a.startDate) - new Date(b.startDate) });
         successfulyUpdatedPricing()
         this.newUpdatePricingDialog = false

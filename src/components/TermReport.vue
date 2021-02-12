@@ -507,7 +507,7 @@ export default {
             name: this.medicine.label
           }
         }
-        reportService.postReportMedicine(reportMedicine)
+        reportService.postReportMedicine(reportMedicine, this.pharmacyId)
         if (this.derm) {
           this.$router.push('/doctor/derm')
         } else {

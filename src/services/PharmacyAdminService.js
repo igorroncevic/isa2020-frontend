@@ -18,10 +18,10 @@ class PharmacyAdminService {
     return headers
   }
 
-  async getMyData () {
+  async getMyData (id) {
     const headers = this.setupHeaders()
     const user = await this.apiClient
-      .get('/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa', {
+      .get('/' + id, {
         headers
       }) // Zakucano dok ne implementiramo autorizaciju
       .then(response => {
@@ -36,8 +36,25 @@ class PharmacyAdminService {
     return user
   }
 
-  async updateUserData (data) {
-    const headers = this.setupHeaders()
+  async getPharmacyAdminsPharmacy(id) {
+    let headers = this.setupHeaders()
+    const response = await this.apiClient
+      .get(`/${id}/pharmacy`, {
+        headers
+      })
+      .then(response => {
+        return response
+      })
+      .catch(err => {
+        console.log(err)
+        return err.response
+      })
+
+    return response
+  }
+
+  async updateUserData(data) {
+    let headers = this.setupHeaders()
     const responseData = this.apiClient
       .put('', data, {
         headers

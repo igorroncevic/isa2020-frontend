@@ -12,35 +12,7 @@ const routes = [
     path: '/ostali',
     component: () => import('layouts/DoctorDermLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
-      {
-        path: '/phadmin/profile',
-        component: () => import('pages/profiles/PharmacyAdminProfile.vue')
-      },
-      {
-        path: '/pharmacists',
-        component: () => import('pages/PharmacistsList.vue')
-      },
-      {
-        path: '/dermatologists',
-        component: () => import('pages/DermatologistsList.vue')
-      },
-      {
-        path: '/vacations',
-        component: () => import('pages/VacationList.vue')
-      },
-      {
-        path: '/pricings',
-        component: () => import('pages/Pricings.vue')
-      },
-      {
-        path: '/pharmacyMedicines',
-        component: () => import('pages/PharmacyMedicines.vue')
-      },
-      {
-        path: '/promotions',
-        component: () => import('pages/Promotions.vue')
-      }
+      { path: '', component: () => import('pages/Index.vue') }
     ]
   },
   {
@@ -56,7 +28,9 @@ const routes = [
       { path: 'schedule/checkups', component: () => import('pages/terms/ScheduleCheckup.vue') },
       { path: 'schedule/counselings', component: () => import('pages/terms/ScheduleCounseling.vue') },
       { path: 'mark', component: () => import('pages/Mark.vue') },
-      { path: '', component: () => import('pages/homePages/PatientHome.vue') }
+      { path: '', component: () => import('pages/homePages/PatientHome.vue') },
+      { path: 'pharmacists', component: () => import('pages/PharmacistsList.vue') },
+      { path: 'dermatologists', component: () => import('pages/DermatologistsList.vue') }
     ]
   },
   {
@@ -89,7 +63,8 @@ const routes = [
       { path: '', component: () => import('pages/sysAdmin/SysAdminUserRegistration.vue') },
       { path: 'loyalty', component: () => import('pages/sysAdmin/LoyaltyProgramme.vue') },
       { path: 'codebook', component: () => import('pages/sysAdmin/MedicinesCodebook.vue') },
-      { path: 'complaints', component: () => import('pages/sysAdmin/UsersComplaints.vue') }
+      { path: 'complaints', component: () => import('pages/sysAdmin/UsersComplaints.vue') },
+      { path: 'vacations', component: () => import('pages/VacationList.vue') }
     ]
   },
   {
@@ -101,6 +76,20 @@ const routes = [
       { path: 'meds', component: () => import('pages/SupplierMedicines.vue') },
       { path: 'purchaseorders', component: () => import('pages/SupplierPurchaseOrders.vue') },
       { path: 'allpurchaseorders', component: () => import('pages/PurchaseOrders.vue') }
+    ]
+  },
+  {
+    path: '/phadmin',
+    component: () => import('layouts/PharmacyAdminLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/PharmacyMedicines.vue') },
+      { path: 'acc', component: () => import('pages/profiles/PharmacyAdminProfile.vue') },
+      { path: 'pharmacyMedicines', component: () => import('pages/PharmacyMedicines.vue') },
+      { path: 'promotions', component: () => import('pages/Promotions.vue') },
+      { path: 'orders', component: () => import('pages/Orders.vue') },
+      { path: 'vacations', component: () => import('pages/VacationList.vue') },
+      { path: 'pharmacists', component: () => import('pages/PharmacyPharmacistsList.vue') },
+      { path: 'dermatologists', component: () => import('pages/PharmacyDermatologistsList.vue') }
     ]
   },
   {
