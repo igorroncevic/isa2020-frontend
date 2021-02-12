@@ -14,12 +14,12 @@
 
 <script>
 export default {
-    methods: {
-        navigateToLogin(){
-            this.$router.push({path: "/register"})
-        }
+  methods: {
+    navigateToLogin () {
+      this.$router.push({ path: '/register' })
     }
-};
+  }
+}
 </script>
 
 <style scoped>
@@ -28,7 +28,6 @@ export default {
     grid-template-rows: 5rem 10rem 10rem;
     justify-items: center;
 }
-
 
 .noauth-title{
     grid-row: 1;

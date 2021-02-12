@@ -82,6 +82,19 @@ class PatientService {
     return res
   }
 
+  async getPatientDoctors (patient, role) {
+    const headers = this.setupHeaders()
+    var res = await this.apiClient
+      .get('/doctors/' + patient + '/' + role, {
+        headers
+      })
+      .then(response => {
+        return response.data
+      })
+      .catch(console.error())
+    return res
+  }
+
   async getPatientsProfileInfo (id) {
     const headers = this.setupHeaders()
     const patient = await this.apiClient

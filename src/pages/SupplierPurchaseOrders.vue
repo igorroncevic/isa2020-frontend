@@ -33,9 +33,8 @@ export default {
       supplierId: this.$store.getters.getId,
       group: 'accepted',
       options: [
-        { label: 'Accepted', value: 'accepted' },
-        { label: 'Waiting for response', value: 'waiting_for_response' },
-        { label: 'Rejected', value: 'rejected' }]
+        { label: 'Resolved', value: 'accepted' },
+        { label: 'Pending', value: 'waiting_for_response' }]
     }
   },
   async beforeMount () {
