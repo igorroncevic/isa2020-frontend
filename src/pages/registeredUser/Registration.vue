@@ -419,6 +419,7 @@ export default {
             console.log(responsePhadmin.data.id)
             this.setPharmacy(responsePhadmin.data.id);
           }
+          setTimeout(() => this.$router.push({ path: '/phadmin' }), 2000)
         }
       } else {
         logInError()

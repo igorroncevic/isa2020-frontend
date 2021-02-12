@@ -84,46 +84,40 @@ export default {
       anyOtherActive: false,
       menuItems: [
         {
-          title: "Home",
-          icon: "home",
-          link: "/patient",
-        },
-        {
-          title: "Upcoming Terms",
-          icon: "event",
-          link: "/patient/calendar",
-        },
-        {
-          title: "Term History",
-          icon: "history",
-          link: "/patient/history",
-        },
-        {
           title: "Medicines",
           icon: "medication",
-          link: "/patient/medicines",
+          link: "/phadmin/pharmacyMedicines",
         },
         {
-          title: "Pharmacies",
-          icon: "home_work",
-          link: "/patient/pharmacies",
+          title: "Promotions",
+          icon: "event",
+          link: "/phadmin/promotions",
+        },
+        {
+          title: "Purchase orders",
+          icon: "history",
+          link: "/phadmin/orders",
+        },
+        {
+          title: "Vacation requests",
+          icon: "flight_takeoff",
+          link: "/phadmin/vacations",
         },
         {
           title: "Pharmacists",
-          icon: "face",
-          link: "/patient/pharmacists",
+          icon: "home_work",
+          link: "/phadmin/pharmacists",
         },
         {
           title: "Dermatologists",
-          icon: "face",
-          link: "/patient/dermatologists",
+          icon: "home_work",
+          link: "/phadmin/dermatologists",
         },
         {
           title: "My profile",
           icon: "account_circle",
-          link: "/patient/profile",
+          link: "/phadmin/acc",
         },
-
         {
           title: "Log out",
           icon: "logout",

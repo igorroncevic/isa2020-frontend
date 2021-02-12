@@ -77,6 +77,12 @@ const menuData = [
     link: '/sysadmin/loyalty'
   },
   {
+    title: 'Vacation requests',
+    caption: 'quasar.dev',
+    icon: 'flight_takeoff',
+    link: '/sysadmin/vacations'
+  },
+  {
     title: 'Log out',
     caption: 'quasar.dev',
     icon: 'logout'

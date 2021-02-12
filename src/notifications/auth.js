@@ -15,3 +15,12 @@ export function cantAccessPatientRoutes() {
 
     Notify.create(config)
 }
+
+export function cantAccessPharmacyAdminRoutes() {
+    const config = {
+        type: 'negative',
+        message: 'You cannot access this route. Please log in as pharmacy admin to continue.'
+    }
+
+    Notify.create(config)
+}

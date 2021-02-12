@@ -18,10 +18,10 @@ class PharmacyAdminService {
     return headers
   }
 
-  async getMyData () {
+  async getMyData (id) {
     const headers = this.setupHeaders()
     const user = await this.apiClient
-      .get('/40c88a70-d8cd-4d8f-b56f-eb158f7c27fa', {
+      .get('/' + id, {
         headers
       }) // Zakucano dok ne implementiramo autorizaciju
       .then(response => {

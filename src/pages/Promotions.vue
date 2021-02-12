@@ -73,7 +73,7 @@ export default {
   components: { PharmacyPromotionCard },
   async beforeMount() {
     let response = await PromotionService.getAllPharmacyPromotions(
-      "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
+      this.$store.getters.getPharmacy
     );
 
     if (response) {
@@ -96,12 +96,12 @@ export default {
   methods: {
     async addNewPromotion() {
       let success = await PromotionService.addNewPromotion(
-        "e93cab4a-f007-412c-b631-7a9a5ee2c6ed",
+        this.$store.getters.getPharmacy,
         this.newPromotion
       );
       if (success) {
         let response = await PromotionService.getAllPharmacyPromotions(
-          "e93cab4a-f007-412c-b631-7a9a5ee2c6ed"
+          this.$store.getters.getPharmacy
         );
 
         if (response) {
