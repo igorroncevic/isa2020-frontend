@@ -54,6 +54,24 @@ class PurchaseOrderService {
         return success;
     }
 
+    async deletePurchaseOrder(id) {
+        let headers = this.setupHeaders()
+        let success = await this.apiClient
+            .delete(`/${id}`, {
+                headers
+            })
+            .then(response => {
+                console.log(response.data)
+                return true;
+            })
+            .catch(err => {
+                console.log(err.response)
+                return false;
+            });
+
+        return success;
+    }
+
     async getAllOffersForOrder(id) {
         let headers = this.setupHeaders()
         let response = await this.apiClient

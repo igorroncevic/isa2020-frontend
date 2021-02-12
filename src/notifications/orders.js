@@ -47,6 +47,26 @@ export function failedToUpdateOrder() {
    Notify.create(config);
 }
 
+export function successfulyDeletedOrder() {
+   let config = {
+      type: 'positive',
+      color: 'teal',
+      message: `Successfuly deleted purchase order!`,
+      icon: "check"
+   }
+
+   Notify.create(config);
+}
+
+export function failedToDeleteOrder() {
+   let config = {
+      type: 'negative',
+      message: `An error occured while deleting purchase order.`
+   }
+
+   Notify.create(config);
+}
+
 export function failedToAcceptOffer(errMessage) {
    let config = {
       type: 'negative',

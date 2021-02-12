@@ -157,6 +157,8 @@ import { successfulyAddedOrder } from "./../notifications/orders";
 import { failedToAddOrder } from "./../notifications/orders";
 import { successfulyUpdatedOrder } from "./../notifications/orders";
 import { failedToUpdateOrder } from "./../notifications/orders";
+import { successfulyDeletedOrder } from "./../notifications/orders";
+import { failedToDeleteOrder } from "./../notifications/orders";
 import { failedToAcceptOffer } from "./../notifications/orders";
 import { successfulyAcceptedOffer } from "./../notifications/orders";
 import { date } from "quasar";
@@ -164,13 +166,7 @@ import { date } from "quasar";
 export default {
   components: { PurchaseOrderCard },
   async beforeMount() {
-    let response = await PhramacyService.getAllPharmacyPurchaseOrders();
-
-    if (response) {
-      if (response.status == 200) this.purchaseOrders = [...response.data];
-    } else {
-      errorFetchingData();
-    }
+    this.getPurchaseOrders()
     this.allMedicines = await MedicineService.getAllMedicines();
   },
   data() {
@@ -230,10 +226,19 @@ export default {
         { name: "action", label: "", field: "action" },
       ],
       purchaseOrderOffersShow: null,
-      modeUpdate: false
+      modeUpdate: false,
     };
   },
   methods: {
+    async getPurchaseOrders() {
+      let response = await PhramacyService.getAllPharmacyPurchaseOrders();
+
+      if (response) {
+        if (response.status == 200) this.purchaseOrders = [...response.data];
+      } else {
+        errorFetchingData();
+      }
+    },
     async addNewPurchaseOrder() {
       let data = {
         pharmacyAdminId: "40c88a70-d8cd-4d8f-b56f-eb158f7c27fa",
@@ -242,13 +247,7 @@ export default {
       };
       let success = await PurchaseOrderService.addNewPurchaseOrder(data);
       if (success) {
-        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
-
-        if (response.status == 200) {
-          this.purchaseOrders = [...response.data];
-        } else {
-          errorFetchingData();
-        }
+        this.getPurchaseOrders()
         this.addPurchaseOrderDialog = false;
         successfulyAddedOrder();
       } else {
@@ -260,15 +259,12 @@ export default {
         endDate: this.endDate,
         medicines: this.newPurchaseOrderMedicines,
       };
-      let success = await PurchaseOrderService.updatePurchaseOrder(this.updatePurchaseOrderId, data);
+      let success = await PurchaseOrderService.updatePurchaseOrder(
+        this.updatePurchaseOrderId,
+        data
+      );
       if (success) {
-        let response = await PhramacyService.getAllPharmacyPurchaseOrders();
-
-        if (response.status == 200) {
-          this.purchaseOrders = [...response.data];
-        } else {
-          errorFetchingData();
-        }
+        this.getPurchaseOrders();
         this.addPurchaseOrderDialog = false;
         successfulyUpdatedOrder();
       } else {
@@ -276,7 +272,13 @@ export default {
       }
     },
     async deleteOrder(orderId) {
-
+      let success = await PurchaseOrderService.deletePurchaseOrder(orderId)
+      if (success) {
+        this.getPurchaseOrders();
+        successfulyDeletedOrder();
+      } else {
+        failedToDeleteOrder();
+      }
     },
     async showOffers(value) {
       this.purchaseOrderOffersShow = value;
@@ -328,10 +330,12 @@ export default {
       this.newPurchaseOrderMedicine = null;
       this.newPurchaseOrderMedicineQuantity = 0;
       this.endDate = JSON.parse(JSON.stringify(value.endDate));
-      this.newPurchaseOrderMedicines = JSON.parse(JSON.stringify(value.medicines));
+      this.newPurchaseOrderMedicines = JSON.parse(
+        JSON.stringify(value.medicines)
+      );
       this.updatePurchaseOrderId = value.id;
       this.addPurchaseOrderDialog = true;
-      this.modeUpdate = true
+      this.modeUpdate = true;
     },
     addNewOrderDialog() {
       this.newPurchaseOrderMedicine = null;
@@ -339,7 +343,7 @@ export default {
       this.endDate = null;
       this.newPurchaseOrderMedicines = [];
       this.addPurchaseOrderDialog = true;
-      this.modeUpdate = false
+      this.modeUpdate = false;
     },
     deletePurchaseOrderMedicine(index) {
       this.newPurchaseOrderMedicines.splice(index, 1);
